@@ -1,0 +1,47 @@
+root { 
+    display: block;
+}
+
+body {
+    font-family: sans-serif;
+    font-size: 14px;
+}
+
+table
+{
+    border-collapse: collapse
+}
+
+table.edit tr td, table.edit tr th
+{
+    padding: 5px 10px;
+}
+
+table.edit tr th
+{
+    text-align: left;
+    /* background-color: #ddd; */
+}
+
+table.edit tr:nth-child(odd)
+{
+    background-color: #cde;
+}
+
+#tools
+{
+    padding-top: 24px;
+}
+
+table.edit tr td.button_row
+{
+    text-align: right;
+    padding-top: 16px;
+    background-color: #fff;
+    border-top: 1px solid lightgray;
+}
+
+table.stats_data_table td
+{
+    background-color: #EEE;
+}
