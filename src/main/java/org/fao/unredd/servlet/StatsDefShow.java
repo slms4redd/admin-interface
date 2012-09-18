@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.fao.unredd.Util;
 
 /**

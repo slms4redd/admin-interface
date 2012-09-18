@@ -9,7 +9,6 @@ import it.geosolutions.geostore.core.model.Resource;
 import it.geosolutions.geostore.services.rest.GeoStoreClient;
 import it.geosolutions.unredd.geostore.UNREDDGeostoreManager;
 import it.geosolutions.unredd.geostore.model.UNREDDCategories;
-import it.geosolutions.unredd.geostore.model.UNREDDChartScript;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
