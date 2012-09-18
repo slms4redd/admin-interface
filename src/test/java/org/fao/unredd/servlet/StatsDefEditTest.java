@@ -61,7 +61,7 @@ public class StatsDefEditTest {
         client.setUsername("admin");
         client.setPassword("admin");
 
-        long id;
+        //long id;
 
         // Insert a new unreddStatsDef
         {

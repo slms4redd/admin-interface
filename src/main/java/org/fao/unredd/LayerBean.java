@@ -58,8 +58,9 @@ public class LayerBean {
         Resource resource = client.getResource(id);
         
         // throw exception if not a Layer
-        if (!UNREDDCategories.LAYER.getName().equals(resource.getCategory().getName()))
+        if (!UNREDDCategories.LAYER.getName().equals(resource.getCategory().getName())) {
             throw new Exception("Resource with id=" + id + " is not a Layer");
+        }
         
         newLayer = false;
         
