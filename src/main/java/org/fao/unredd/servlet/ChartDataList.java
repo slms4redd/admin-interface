@@ -5,9 +5,7 @@ package org.fao.unredd.servlet;
  * the editor.
  */
 import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.geostore.services.rest.GeoStoreClient;
 import it.geosolutions.unredd.geostore.UNREDDGeostoreManager;
-import it.geosolutions.unredd.geostore.model.UNREDDCategories;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.RequestDispatcher;

@@ -33,6 +33,9 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
                     month
                 </th>
                 <th>
+                    day
+                </th>
+                <th>
                     published
                 </th>
                 <th>
@@ -58,6 +61,7 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
                     <td><%= unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.LAYER) %></td>
                     <td><%= unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.YEAR) %></td>
                     <td><%= unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.MONTH) == null ? "&mdash;" : unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.MONTH) %></td>
+                    <td><%= unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.DAY) == null ? "&mdash;" : unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.DAY) %></td>
                     <td>
                         <% if ("true".equals(unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.PUBLISHED))) { %>
                             <span style="color:green">yes</span>
