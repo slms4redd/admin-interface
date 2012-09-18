@@ -4,7 +4,6 @@
  */
 package org.fao.unredd.servlet;
 
-import it.geosolutions.geostore.services.rest.GeoStoreClient;
 import it.geosolutions.unredd.geostore.UNREDDGeostoreManager;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
