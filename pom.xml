@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.fao</groupId>
-    <artifactId>UNREDDAdmin</artifactId>
+    <artifactId>unredd-admin</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>UNREDDAdmin</name>
+    <name>UNREDD Admin</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
