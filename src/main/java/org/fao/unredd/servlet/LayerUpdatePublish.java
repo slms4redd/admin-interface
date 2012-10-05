@@ -8,6 +8,7 @@ package org.fao.unredd.servlet;
 import it.geosolutions.geostore.services.rest.GeoStoreClient;
 import it.geosolutions.geostore.services.rest.model.RESTResource;
 import it.geosolutions.unredd.geostore.model.UNREDDLayerUpdate;
+import java.io.File;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -39,30 +40,25 @@ public class LayerUpdatePublish extends HttpServlet {
         String layerName = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.LAYER);
         String year      = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.YEAR);
         String month     = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.MONTH);
+        String day       = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.DAY);
         
         boolean publish   = "publish".equals(action);
-        boolean republish = "republish".equals(action);
+        //boolean unpublish = "republish".equals(action); // unpublish action not yet implemented
         
-        unreddLayerUpdate.setAttribute(UNREDDLayerUpdate.Attributes.PUBLISHED, "" + (publish || republish));
+        unreddLayerUpdate.setAttribute(UNREDDLayerUpdate.Attributes.PUBLISHED, "" + (publish));
         
         RESTResource resource = unreddLayerUpdate.createRESTResource();
         resource.setCategory(null); // Category needs to be null for updates
         
         String xml;
-        if (publish) {
-            xml = getPublishXml(layerName, year, month);
-        } else if (republish) {
-            xml = getRepublishXml(layerName, year, month);
-        } else {
-            xml = getUnpublishXml(layerName, year, month);
+        if (publish) { // only publish action is implemented in GeoBatch for now
+            xml = getPublishXml(layerName, year, month, day);
+            Util.saveReprocessFile(getServletContext(), xml, Util.getGeostoreFlowSaveDir(getServletContext()) + File.separator + "publish");
+            client.updateResource(layerUpdateId, resource);
+            
+            response.sendRedirect("LayerUpdateList?layer=" + layerName);
         }
-        
-        Util.saveReprocessFile(getServletContext(), xml, Util.getGeostoreFlowSaveDir(getServletContext()));
-        client.updateResource(layerUpdateId, resource);
-        
-        //RequestDispatcher rd = request.getRequestDispatcher("LayerUpdateList?layer=" + layerName);
-        //rd.forward(request, response);
-        response.sendRedirect("LayerUpdateList?layer=" + layerName);
+                
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -101,28 +97,19 @@ public class LayerUpdatePublish extends HttpServlet {
         return "Short description";
     }// </editor-fold>
     
-    private String getPublishXml(String layerName, String year, String month) {
+    private String getPublishXml(String layerName, String year, String month, String day) {
         StringBuilder xml = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r");
         xml.append("<PublishLayer>\r");
         xml.append("\t<layerName>").append(layerName).append("</layerName>\r");
-        xml.append("\t<month>").append(month).append("</month>\r");
+        if (day != null)   xml.append("\t<dat>").append(day).append("</dat>\n");
+        if (month != null) xml.append("\t<month>").append(month).append("</month>\n");
         xml.append("\t<year>").append(year).append("</year>\r");
         xml.append("</PublishLayer>\r");
         
         return xml.toString();
     }
     
-    private String getRepublishXml(String layerName, String year, String month) {
-        StringBuilder xml = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r");
-        xml.append("<RepublishLayer>\r");
-        xml.append("\t<layerName>").append(layerName).append("</layerName>\r");
-        xml.append("\t<month>").append(month).append("</month>\r");
-        xml.append("\t<year>").append(year).append("</year>\r");
-        xml.append("</RepublishLayer>\r");
-        
-        return xml.toString();
-    }
-    
+    /*
     private String getUnpublishXml(String layerName, String year, String month) {
         StringBuilder xml = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r");
         xml.append("<UnpublishLayer>\r");
@@ -133,5 +120,5 @@ public class LayerUpdatePublish extends HttpServlet {
         
         return xml.toString();
     }
-    
+    */
 }
