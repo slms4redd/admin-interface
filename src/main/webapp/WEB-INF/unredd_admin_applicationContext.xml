@@ -20,7 +20,7 @@ default-autowire="autodetect">
     <import resource="security.xml"/>
 
     <bean id="geostoreRestUrl" class="java.lang.String">
-    	<constructor-arg type="String" value="http://localhost:9191/geostore/rest"/>
+    	<constructor-arg type="String" value="http://localhost/stg_geostore/rest"/>
     </bean>
     <bean id="geostoreUsername" class="java.lang.String">
     	<constructor-arg type="String" value="admin"/>
@@ -49,8 +49,7 @@ default-autowire="autodetect">
     -->
     
     <bean id="configure" class="org.fao.unredd.Configure">
-        <property name="geobatchFlowSaveDir" value="/Users/sgiaccio/test" />
-        <!-- <property name="geobatchFlowSaveDir" value="/var/geobatch/drc/input" /> -->
+        <property name="geobatchFlowSaveDir" value="/var/stg_geobatch/input" />
     </bean>
         
 </beans>
