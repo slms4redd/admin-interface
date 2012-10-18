@@ -16,7 +16,7 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
         <h1>Chart Data - <%= request.getParameter("chart_script") %></h1>
             <% 
                 for (Resource res : (List<Resource>)request.getAttribute("chartData")) { %>
-                <a href="/stg_geostore/rest/misc/category/name/ChartData/resource/name/par_ndvi_by_region_chart_2_en/data?name=<%= res.getName() %>"><%= res.getName() %></a><br>
+                <a href="<%= request.getAttribute("geostoreURL") %>/misc/category/name/ChartData/resource/name/<%= res.getName() %>/data?name=<%= res.getName() %>"><%= res.getName() %></a><br>
             <% } %>
         </table>
     </body>

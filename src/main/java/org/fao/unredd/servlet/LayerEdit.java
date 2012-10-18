@@ -36,6 +36,7 @@ public class LayerEdit extends HttpServlet {
         String layerType            = request.getParameter(UNREDDLayer.Attributes.LAYERTYPE.getName());
         String origDataDestPath     = request.getParameter(UNREDDLayer.Attributes.ORIGDATADESTPATH.getName());
         String mosaicPath           = request.getParameter(UNREDDLayer.Attributes.MOSAICPATH.getName());
+        String dissMosaicPath       = request.getParameter(UNREDDLayer.Attributes.DISSMOSAICPATH.getName());
         String rasterAttribName     = request.getParameter(UNREDDLayer.Attributes.RASTERATTRIBNAME.getName());
         String rasterCqlFilter      = request.getParameter(UNREDDLayer.Attributes.RASTERCQLFILTER.getName());
         String rasterNoData         = request.getParameter(UNREDDLayer.Attributes.RASTERNODATA.getName());
@@ -56,7 +57,8 @@ public class LayerEdit extends HttpServlet {
         unreddLayer.setAttribute(UNREDDLayer.Attributes.LAYERTYPE, layerType); // “raster” | “vector”
         unreddLayer.setAttribute(UNREDDLayer.Attributes.ORIGDATADESTPATH, origDataDestPath); // relative path where the geotiff has to be copied in
         unreddLayer.setAttribute(UNREDDLayer.Attributes.MOSAICPATH, mosaicPath); // relative path where the orig/data has to be moved in
-        
+        unreddLayer.setAttribute(UNREDDLayer.Attributes.DISSMOSAICPATH, dissMosaicPath);
+
         unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERPIXELHEIGHT, rasterPixelHeight);
         unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERPIXELWIDTH, rasterPixelWidth);
         unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERX0, rasterX0);

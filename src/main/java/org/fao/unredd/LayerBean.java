@@ -26,6 +26,7 @@ public class LayerBean {
     
     protected String layerType;
     protected String mosaicPath;
+    protected String dissMosaicPath;
     protected String origDataDestPath;
     
     protected long   rasterPixelWidth;
@@ -71,6 +72,7 @@ public class LayerBean {
         
         this.layerType            = unreddLayer.getAttribute(UNREDDLayer.Attributes.LAYERTYPE);
         this.mosaicPath           = unreddLayer.getAttribute(UNREDDLayer.Attributes.MOSAICPATH);
+        this.dissMosaicPath       = unreddLayer.getAttribute(UNREDDLayer.Attributes.DISSMOSAICPATH);
         this.origDataDestPath     = unreddLayer.getAttribute(UNREDDLayer.Attributes.ORIGDATADESTPATH);
         
         this.rasterPixelWidth     = (long)Double.parseDouble(unreddLayer.getAttribute(UNREDDLayer.Attributes.RASTERPIXELWIDTH));
@@ -157,6 +159,14 @@ public class LayerBean {
 
     public void setMosaicPath(String mosaicPath) {
         this.mosaicPath = mosaicPath;
+    }
+
+    public String getDissMosaicPath() {
+        return dissMosaicPath;
+    }
+
+    public void setDissMosaicPath(String dissMosaicPath) {
+        this.dissMosaicPath = dissMosaicPath;
     }
 
     public String getLayerType() {

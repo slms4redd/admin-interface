@@ -33,11 +33,19 @@
                 </td>
             </tr>
             <tr>
-                <td title="Relative path where the geotiff has to be copied in">
-                    Destination absolute path
+                <td title="Absolute path where the geotiff has to be copied in, during ingestion flow">
+                    Staging mosaic path
                 </td>
                 <td>
                     ${layer.mosaicPath}
+                </td>
+            </tr>
+            <tr>
+                <td title="Absolute path where the geotiff has to be copied in, during publish flow">
+                    Dissemination mosaic path
+                </td>
+                <td>
+                    ${layer.dissMosaicPath}
                 </td>
             </tr>
             <tr>
