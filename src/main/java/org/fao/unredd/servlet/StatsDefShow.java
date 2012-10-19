@@ -60,6 +60,9 @@ public class StatsDefShow extends HttpServlet {
                 request.setAttribute("storedData", data);
 
                 UNREDDStatsDef statsDef = new UNREDDStatsDef(res);
+                
+                //System.out.println(statsDef.toJSON()); // DEBUG
+                
                 String zonalLayer = statsDef.getAttribute(UNREDDStatsDef.Attributes.ZONALLAYER);
                 request.setAttribute("zonalLayer", zonalLayer);
 
