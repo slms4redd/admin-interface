@@ -218,7 +218,7 @@
 						<artifactId>maven-surefire-plugin</artifactId>
 						<version>2.13</version>
 						<configuration>
-							<excludedGroups>org.fao.tests.FunctionalTestSuite</excludedGroups>
+							<excludedGroups>org.fao.test.FunctionalTestSuite</excludedGroups>
 						</configuration>
 					</plugin>
 				</plugins>
