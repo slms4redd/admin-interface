@@ -54,6 +54,11 @@
             <version>4.8.2</version>
             <scope>test</scope>
         </dependency>
+		<dependency>
+			<groupId>com.sun.jersey.jersey-test-framework</groupId>
+			<artifactId>jersey-test-framework-inmemory</artifactId>
+			<version>1.12</version>
+		</dependency>
  		<dependency>
 			<groupId>org.fao</groupId>
 			<artifactId>common-tests</artifactId>

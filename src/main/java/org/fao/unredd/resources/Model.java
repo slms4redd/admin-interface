@@ -18,4 +18,8 @@ public class Model {
 		layerList.put(layer.id, layer);
 	}
 
+	public void clear() {
+		layerList.clear();
+	}
+
 }
