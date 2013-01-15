@@ -44,6 +44,15 @@
         <param-value>admin</param-value>
     </context-param>
     -->
+	<servlet>
+		<servlet-name>Jersey REST Service</servlet-name>
+		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>org.fao.unredd.resources</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
     <servlet>
         <servlet-name>LayerList</servlet-name>
         <servlet-class>org.fao.unredd.servlet.ResourceList</servlet-class>
@@ -198,6 +207,10 @@
         <servlet-name>ChartDataList</servlet-name>
         <servlet-class>org.fao.unredd.servlet.ChartDataList</servlet-class>
     </servlet>
+	<servlet-mapping>
+		<servlet-name>Jersey REST Service</servlet-name>
+		<url-pattern>/api/*</url-pattern>
+	</servlet-mapping>
     <servlet-mapping>
         <servlet-name>LayerList</servlet-name>
         <url-pattern>/LayerList</url-pattern>

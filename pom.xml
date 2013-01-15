@@ -145,6 +145,24 @@
             <version>3.0.1.RELEASE</version>
         </dependency>
 
+		<!-- Jersey for restful interface. We are matching the version Geostore
+			client uses although there is a new one -->
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-server</artifactId>
+			<version>1.12</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-servlet</artifactId>
+			<version>1.12</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-json</artifactId>
+			<version>1.12</version>
+		</dependency>
+
 		<!-- Jetty, with jsp support -->
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
