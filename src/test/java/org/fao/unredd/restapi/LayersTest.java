@@ -18,9 +18,9 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.test.framework.JerseyTest;
 
-public class RestTest extends JerseyTest {
+public class LayersTest extends JerseyTest {
 
-	public RestTest() {
+	public LayersTest() {
 		super("org.fao.unredd.resources");
 	}
 
