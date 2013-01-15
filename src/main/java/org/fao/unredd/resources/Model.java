@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 public class Model {
 
+	private static int serial = 0;
+
 	private HashMap<String, Layer> layerList = new HashMap<String, Layer>();
 
 	public Layer[] getLayers() {
@@ -14,8 +16,11 @@ public class Model {
 		return layerList.get(id);
 	}
 
-	public void addLayer(Layer layer) {
+	public String addLayer(Layer layer) {
+		layer.id = Integer.toString(serial++);
 		layerList.put(layer.id, layer);
+
+		return layer.id;
 	}
 
 	public void clear() {

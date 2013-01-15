@@ -19,4 +19,8 @@ public class Layer {
 		this.type = type;
 	}
 
+	public String getETag() {
+		return id + name + type;
+	}
+
 }
