@@ -21,7 +21,7 @@ import com.sun.jersey.test.framework.JerseyTest;
 public class LayersTest extends JerseyTest {
 
 	public LayersTest() {
-		super("org.fao.unredd.resources");
+		super("org.fao.unredd.resources", "org.codehaus.jackson.jaxrs");
 	}
 
 	@Before
@@ -38,14 +38,35 @@ public class LayersTest extends JerseyTest {
 		fail("query at the location and check a 200 return code");
 	}
 
-	private ClientResponse createLayerOk(Layer layer) {
-		WebResource webResource = resource();
-		ClientResponse responseMsg = webResource.path("layers")
-				.type(MediaType.APPLICATION_JSON).entity(layer)
-				.post(ClientResponse.class);
-		assertEquals(ClientResponse.Status.CREATED,
-				responseMsg.getClientResponseStatus());
-		return responseMsg;
+	@Test
+	public void testCreateLayerNullFail() throws Exception {
+		Layer layer = new Layer(null, null, null);
+		ClientResponse response = createLayer(layer);
+		assertEquals(ClientResponse.Status.BAD_REQUEST,
+				response.getClientResponseStatus());
+		JSONArray errorList = response.getEntity(JSONObject.class)
+				.getJSONArray("errorList");
+		assertEquals(errorList.length(), 2);
+	}
+
+	@Test
+	public void testCreateLayerWithIdFail() throws Exception {
+		Layer layer = new Layer("1", "name", LayerType.RASTER);
+		ClientResponse response = createLayer(layer);
+		assertEquals(ClientResponse.Status.BAD_REQUEST,
+				response.getClientResponseStatus());
+		JSONArray errorList = response.getEntity(JSONObject.class)
+				.getJSONArray("errorList");
+		assertEquals(errorList.length(), 1);
+	}
+
+	@Test
+	public void testGetEmptyLayers() throws Exception {
+		ClientResponse response = getLayersOk();
+
+		JSONObject res = response.getEntity(JSONObject.class);
+		JSONArray array = res.getJSONArray(res.names().getString(0));
+		assertEquals(array.length(), 0);
 	}
 
 	@Test
@@ -65,6 +86,21 @@ public class LayersTest extends JerseyTest {
 				.matches("newlayer."));
 		assertTrue(!array.getJSONObject(0).getString("name")
 				.equals(array.getJSONObject(1).getString("name")));
+	}
+
+	private ClientResponse createLayerOk(Layer layer) {
+		ClientResponse response = createLayer(layer);
+		assertEquals(ClientResponse.Status.CREATED,
+				response.getClientResponseStatus());
+		return response;
+	}
+
+	private ClientResponse createLayer(Layer layer) {
+		WebResource webResource = resource();
+		ClientResponse response = webResource.path("layers")
+				.type(MediaType.APPLICATION_JSON).entity(layer)
+				.post(ClientResponse.class);
+		return response;
 	}
 
 	private ClientResponse getLayersOk() {

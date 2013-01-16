@@ -1,5 +1,8 @@
 package org.fao.unredd.resources;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -24,8 +27,9 @@ public class LayerListResource {
 
 	static {
 		model = new Model();
-		model.addLayer(new Layer("0", "administrative areas", LayerType.VECTOR));
-		model.addLayer(new Layer("1", "forest mask", LayerType.RASTER));
+		// model.addLayer(new Layer("0", "administrative areas",
+		// LayerType.VECTOR));
+		// model.addLayer(new Layer("1", "forest mask", LayerType.RASTER));
 	}
 
 	@GET
@@ -37,6 +41,21 @@ public class LayerListResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addLayer(Layer layer) {
+		List<String> errors = new ArrayList<String>();
+		if (layer.id != null) {
+			errors.add("id is assigned by the server. Must be null");
+		}
+		if (layer.name == null) {
+			errors.add("name cannot be null");
+		}
+		if (layer.type == null) {
+			errors.add("type cannot be null");
+		}
+		if (errors.size() > 0) {
+			throw new BadRequestException(errors.toArray(new String[errors
+					.size()]));
+		}
+
 		String id = model.addLayer(layer);
 		UriBuilder uriBuilder = UriBuilder.fromUri(uriInfo.getRequestUri());
 		uriBuilder.path("{id}");

@@ -48,8 +48,12 @@
 		<servlet-name>Jersey REST Service</servlet-name>
 		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
 		<init-param>
+			<!-- 
+			We need to include jackson here in order to use it to serialize return
+			results to JSON, which is way better
+			-->
 			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>org.fao.unredd.resources</param-value>
+			<param-value>org.fao.unredd.resources;org.codehaus.jackson.jaxrs</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
