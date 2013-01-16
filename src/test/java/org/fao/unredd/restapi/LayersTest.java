@@ -44,9 +44,8 @@ public class LayersTest extends JerseyTest {
 		ClientResponse response = createLayer(layer);
 		assertEquals(ClientResponse.Status.BAD_REQUEST,
 				response.getClientResponseStatus());
-		JSONArray errorList = response.getEntity(JSONObject.class)
-				.getJSONArray("errorList");
-		assertEquals(errorList.length(), 2);
+		JSONArray errorList = response.getEntity(JSONArray.class);
+		assertEquals(2, errorList.length());
 	}
 
 	@Test
@@ -64,9 +63,18 @@ public class LayersTest extends JerseyTest {
 	public void testGetEmptyLayers() throws Exception {
 		ClientResponse response = getLayersOk();
 
-		JSONObject res = response.getEntity(JSONObject.class);
-		JSONArray array = res.getJSONArray(res.names().getString(0));
+		JSONArray array = response.getEntity(JSONArray.class);
 		assertEquals(array.length(), 0);
+	}
+
+	@Test
+	public void testGetOneLayer() throws Exception {
+		createLayerOk(new Layer(null, "newlayer1", LayerType.RASTER));
+
+		ClientResponse response = getLayersOk();
+
+		JSONArray array = response.getEntity(JSONArray.class);
+		assertEquals(array.length(), 1);
 	}
 
 	@Test
@@ -76,9 +84,7 @@ public class LayersTest extends JerseyTest {
 
 		ClientResponse response = getLayersOk();
 
-		JSONObject res = response.getEntity(JSONObject.class);
-		assertEquals(res.names().length(), 1);
-		JSONArray array = res.getJSONArray(res.names().getString(0));
+		JSONArray array = response.getEntity(JSONArray.class);
 		assertEquals(array.length(), 2);
 		assertTrue(array.getJSONObject(0).getString("name")
 				.matches("newlayer."));
