@@ -1,8 +1,5 @@
 package org.fao.unredd.resources;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
 public class Layer {
 
 	public String id;
