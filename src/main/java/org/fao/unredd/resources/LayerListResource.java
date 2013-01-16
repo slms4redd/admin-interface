@@ -52,8 +52,7 @@ public class LayerListResource {
 			errors.add("type cannot be null");
 		}
 		if (errors.size() > 0) {
-			throw new BadRequestException(errors.toArray(new String[errors
-					.size()]));
+			throw new BadRequestException(errors);
 		}
 
 		String id = model.addLayer(layer);

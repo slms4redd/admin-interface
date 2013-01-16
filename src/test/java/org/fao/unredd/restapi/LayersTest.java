@@ -7,7 +7,6 @@ import static org.junit.Assert.fail;
 import javax.ws.rs.core.MediaType;
 
 import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONObject;
 import org.fao.unredd.resources.Layer;
 import org.fao.unredd.resources.LayerListResource;
 import org.fao.unredd.resources.LayerType;
@@ -54,9 +53,8 @@ public class LayersTest extends JerseyTest {
 		ClientResponse response = createLayer(layer);
 		assertEquals(ClientResponse.Status.BAD_REQUEST,
 				response.getClientResponseStatus());
-		JSONArray errorList = response.getEntity(JSONObject.class)
-				.getJSONArray("errorList");
-		assertEquals(errorList.length(), 1);
+		JSONArray errorList = response.getEntity(JSONArray.class);
+		assertEquals(1, errorList.length());
 	}
 
 	@Test
@@ -103,10 +101,21 @@ public class LayersTest extends JerseyTest {
 
 	private ClientResponse createLayer(Layer layer) {
 		WebResource webResource = resource();
+		String jsonString = "{\"id\":" + jsonAttribute(layer.id) + ",\"name\":"
+				+ jsonAttribute(layer.name) + ",\"type\":"
+				+ jsonAttribute(layer.type) + "}";
 		ClientResponse response = webResource.path("layers")
-				.type(MediaType.APPLICATION_JSON).entity(layer)
+				.type(MediaType.APPLICATION_JSON).entity(jsonString)
 				.post(ClientResponse.class);
 		return response;
+	}
+
+	private String jsonAttribute(Object attribute) {
+		if (attribute == null) {
+			return "null";
+		} else {
+			return "\"" + attribute + "\"";
+		}
 	}
 
 	private ClientResponse getLayersOk() {
