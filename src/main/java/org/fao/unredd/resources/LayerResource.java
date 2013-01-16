@@ -12,7 +12,11 @@ public class LayerResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Layer asJSON(@PathParam("id") String id) {
-		return LayerListResource.model.getLayer(id);
+		try {
+			return LayerListResource.model.getLayer(id);
+		} catch (IllegalArgumentException e) {
+			throw new NotFoundException("No layer with the id: " + id);
+		}
 	}
 
 }

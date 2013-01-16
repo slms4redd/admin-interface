@@ -12,7 +12,19 @@ public class Model {
 		return layerList.values().toArray(new Layer[layerList.size()]);
 	}
 
-	public Layer getLayer(String id) {
+	/**
+	 * Get the layer with the specified ID
+	 * 
+	 * @param id
+	 *            ID of the layer to be retrieved
+	 * @return
+	 * @throws IllegalArgumentException
+	 *             If the specified id does not correspond to any layer
+	 */
+	public Layer getLayer(String id) throws IllegalArgumentException {
+		if (!layerList.containsKey(id)) {
+			throw new IllegalArgumentException();
+		}
 		return layerList.get(id);
 	}
 
