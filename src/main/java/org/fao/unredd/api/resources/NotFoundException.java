@@ -1,4 +1,4 @@
-package org.fao.unredd.resources;
+package org.fao.unredd.api.resources;
 
 import java.util.Collections;
 

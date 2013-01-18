@@ -1,5 +1,6 @@
-package org.fao.unredd.resources;
+package org.fao.unredd.api.resources;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,52 +17,49 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.codec.binary.Hex;
+import org.fao.unredd.api.json.AddLayerRequest;
+import org.fao.unredd.api.json.LayerRepresentation;
+import org.fao.unredd.api.json.ResponseRoot;
+import org.fao.unredd.api.model.Layer;
+import org.fao.unredd.api.model.Layers;
 
 @Path("/layers")
 public class LayerListResource {
 
-	public static Model model;
+	public static Layers layers;
 
 	@Context
 	private UriInfo uriInfo;
 
-	static {
-		model = new Model();
-		// model.addLayer(new Layer("0", "administrative areas",
-		// LayerType.VECTOR));
-		// model.addLayer(new Layer("1", "forest mask", LayerType.RASTER));
-	}
-
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Layer[] asJSON() {
-		return model.getLayers();
+	public ResponseRoot asJSON() {
+		return new ResponseRoot("layers", layers.getJSON());
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addLayer(Layer layer) {
+	public Response addLayer(AddLayerRequest layerRequest) {
 		List<String> errors = new ArrayList<String>();
-		if (layer.id != null) {
-			errors.add("id is assigned by the server. Must be null");
-		}
-		if (layer.name == null) {
+		if (layerRequest.getName() == null) {
 			errors.add("name cannot be null");
 		}
-		if (layer.type == null) {
+		if (layerRequest.getType() == null) {
 			errors.add("type cannot be null");
 		}
 		if (errors.size() > 0) {
 			throw new BadRequestException(errors);
 		}
 
-		String id = model.addLayer(layer);
+		Layer layer = layers.addLayer(layerRequest);
 		UriBuilder uriBuilder = UriBuilder.fromUri(uriInfo.getRequestUri());
 		uriBuilder.path("{id}");
-		char[] chars = Hex.encodeHex(layer.getETag().getBytes());
+		LayerRepresentation jsonLayer = layer.getJSON();
+		char[] chars = Hex.encodeHex(jsonLayer.getETag().getBytes());
 		String etagString = new String(chars);
 		EntityTag etag = new EntityTag(etagString);
-		return Response.created(uriBuilder.build(id)).tag(etag).entity(layer)
+		URI location = uriBuilder.build(jsonLayer.getId());
+		return Response.created(location).tag(etag).entity(jsonLayer)
 				.type(MediaType.APPLICATION_JSON).build();
 	}
 }
