@@ -22,11 +22,14 @@ import org.fao.unredd.api.json.LayerRepresentation;
 import org.fao.unredd.api.json.ResponseRoot;
 import org.fao.unredd.api.model.Layer;
 import org.fao.unredd.api.model.Layers;
+import org.fao.unredd.api.model.geostore.GeostoreLayers;
 
 @Path("/layers")
 public class LayerListResource {
 
-	public static Layers layers;
+	public static Layers layers = new GeostoreLayers(
+			"http://demo1.geo-solutions.it/stg_geostore/rest", "admin",
+			"Unr3dd");
 
 	@Context
 	private UriInfo uriInfo;
