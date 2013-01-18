@@ -3,11 +3,12 @@ package org.fao.unredd.api.model.geostore;
 import it.geosolutions.geostore.core.model.Attribute;
 import it.geosolutions.geostore.core.model.Resource;
 
-import java.util.List;
-
 import org.fao.unredd.api.json.LayerRepresentation;
 import org.fao.unredd.api.model.Layer;
 import org.fao.unredd.api.model.LayerType;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 
 public class GeostoreLayer implements Layer {
 
@@ -19,14 +20,34 @@ public class GeostoreLayer implements Layer {
 
 	@Override
 	public LayerRepresentation getJSON() {
-		List<Attribute> attributes = resource.getAttribute();
-		LayerType layerType = null;
-		for (Attribute attribute : attributes) {
-			if ("LayerType".equals(attribute.getName())) {
-				layerType = LayerType.valueOf(attribute.getValue());
-			}
-		}
 		return new LayerRepresentation(Long.toString(resource.getId()),
-				resource.getName(), layerType);
+				resource.getName(), LayerType.valueOf(getAttribute("LayerType")
+						.getValue()), getAttribute("stgMosaicPath").getValue(),
+				getAttribute("dissMosaicPath").getValue(), getAttribute(
+						"DestOrigAbsPath").getValue(), getAttribute(
+						"pixelWidth").getNumberValue().intValue(),
+				getAttribute("pixelHeight").getNumberValue().intValue(),
+				getAttribute("minx").getNumberValue(), getAttribute("maxx")
+						.getNumberValue(), getAttribute("miny")
+						.getNumberValue(), getAttribute("maxy")
+						.getNumberValue(), getAttribute("data").getValue());
+	}
+
+	private Attribute getAttribute(String attributeName) {
+		return Iterables.find(resource.getAttribute(), new AttributeFinder(
+				attributeName));
+	}
+
+	private class AttributeFinder implements Predicate<Attribute> {
+
+		private String attributeName;
+
+		public AttributeFinder(String attributeName) {
+			this.attributeName = attributeName;
+		}
+
+		public boolean apply(Attribute at) {
+			return at.getName().equals(attributeName);
+		}
 	}
 }
