@@ -60,7 +60,7 @@ public class GeostoreLayers implements Layers {
 		List<Resource> resourceList = geostoreClient.searchResources(filter,
 				null, null, true, true).getList();
 		if (CollectionUtils.isEmpty(resourceList)) {
-			return null;
+			throw new IllegalArgumentException();
 		}
 		Resource layerResource = resourceList.get(0);
 		return new GeostoreLayer(layerResource);

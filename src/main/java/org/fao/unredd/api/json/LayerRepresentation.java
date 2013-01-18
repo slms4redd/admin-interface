@@ -14,7 +14,6 @@ public class LayerRepresentation extends AddLayerRequest {
 	protected Double maxx;
 	protected Double miny;
 	protected Double maxy;
-	protected String data;
 
 	/**
 	 * Necessary for jackson
@@ -31,13 +30,13 @@ public class LayerRepresentation extends AddLayerRequest {
 	 */
 	public LayerRepresentation(String id, String name, LayerType type) {
 		this(id, name, type, null, null, null, null, null, null, null, null,
-				null, null);
+				null);
 	}
 
 	public LayerRepresentation(String id, String name, LayerType type,
 			String stgMosaicPath, String dissMosaicPath,
 			String destOrigAbsPath, Integer pixelWidth, Integer pixelHeight,
-			Double minx, Double maxx, Double miny, Double maxy, String data) {
+			Double minx, Double maxx, Double miny, Double maxy) {
 		super(name, type);
 		this.id = id;
 		this.stgMosaicPath = stgMosaicPath;
@@ -49,7 +48,6 @@ public class LayerRepresentation extends AddLayerRequest {
 		this.maxx = maxx;
 		this.miny = miny;
 		this.maxy = maxy;
-		this.data = data;
 	}
 
 	public String getId() {
@@ -90,10 +88,6 @@ public class LayerRepresentation extends AddLayerRequest {
 
 	public Double getMaxy() {
 		return maxy;
-	}
-
-	public String getData() {
-		return data;
 	}
 
 	public String getETag() {

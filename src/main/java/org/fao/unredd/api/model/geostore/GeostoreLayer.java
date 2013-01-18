@@ -3,6 +3,8 @@ package org.fao.unredd.api.model.geostore;
 import it.geosolutions.geostore.core.model.Attribute;
 import it.geosolutions.geostore.core.model.Resource;
 
+import java.util.NoSuchElementException;
+
 import org.fao.unredd.api.json.LayerRepresentation;
 import org.fao.unredd.api.model.Layer;
 import org.fao.unredd.api.model.LayerType;
@@ -22,20 +24,27 @@ public class GeostoreLayer implements Layer {
 	public LayerRepresentation getJSON() {
 		return new LayerRepresentation(Long.toString(resource.getId()),
 				resource.getName(), LayerType.valueOf(getAttribute("LayerType")
-						.getValue()), getAttribute("stgMosaicPath").getValue(),
-				getAttribute("dissMosaicPath").getValue(), getAttribute(
-						"DestOrigAbsPath").getValue(), getAttribute(
-						"pixelWidth").getNumberValue().intValue(),
-				getAttribute("pixelHeight").getNumberValue().intValue(),
-				getAttribute("minx").getNumberValue(), getAttribute("maxx")
-						.getNumberValue(), getAttribute("miny")
-						.getNumberValue(), getAttribute("maxy")
-						.getNumberValue(), getAttribute("data").getValue());
+						.getValue()), getAttribute("MosaicPath").getValue(),
+				getAttribute("DissMosaicPath").getValue(), getAttribute(
+						"OrigDataDestPath").getValue(), getAttribute(
+						"RasterPixelWidth").getNumberValue().intValue(),
+				getAttribute("RasterPixelHeight").getNumberValue().intValue(),
+				getAttribute("RasterX0").getNumberValue(), getAttribute(
+						"RasterX1").getNumberValue(), getAttribute("RasterY0")
+						.getNumberValue(), getAttribute("RasterY1")
+						.getNumberValue());
 	}
 
 	private Attribute getAttribute(String attributeName) {
-		return Iterables.find(resource.getAttribute(), new AttributeFinder(
-				attributeName));
+		try {
+			return Iterables.find(resource.getAttribute(), new AttributeFinder(
+					attributeName));
+		} catch (NoSuchElementException e) {
+			/*
+			 * Should never ask for an non existing attribute
+			 */
+			throw new RuntimeException(attributeName);
+		}
 	}
 
 	private class AttributeFinder implements Predicate<Attribute> {
