@@ -7,15 +7,22 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.fao.unredd.api.json.LayerRepresentation;
+import org.fao.unredd.api.model.Layers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 @Path("/layers/{id}")
 public class LayerResource {
+
+	@Autowired
+	private Layers layers;
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public LayerRepresentation asJSON(@PathParam("id") String id) {
 		try {
-			return LayerListResource.layers.getLayer(id).getJSON();
+			return layers.getLayer(id).getJSON();
 		} catch (IllegalArgumentException e) {
 			throw new NotFoundException("No layer with the ID: " + id);
 		}

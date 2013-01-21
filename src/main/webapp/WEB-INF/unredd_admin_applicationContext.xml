@@ -19,6 +19,8 @@ http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
 default-autowire="autodetect">
     <import resource="security.xml"/>
 
+	<context:component-scan base-package="org.fao.unredd.api" />
+
     <bean id="geostoreRestUrl" class="java.lang.String">
     	<constructor-arg type="String" value="http://localhost/stg_geostore/rest"/>
     </bean>
