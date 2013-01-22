@@ -46,7 +46,7 @@
     -->
 	<servlet>
 		<servlet-name>Jersey REST Service</servlet-name>
-		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
 		<init-param>
 			<!-- 
 			We need to include jackson here in order to use it to serialize return

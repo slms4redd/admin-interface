@@ -25,11 +25,12 @@ public class GeostoreLayers implements Layers {
 
 	private GeoStoreClient geostoreClient;
 
-	public GeostoreLayers(String host, String user, String pwd) {
+	public GeostoreLayers(String geostoreRestUrl, String geostoreUsername,
+			String geostorePassword) {
 		geostoreClient = new GeoStoreClient();
-		geostoreClient.setGeostoreRestUrl(host);
-		geostoreClient.setUsername(user);
-		geostoreClient.setPassword(pwd);
+		geostoreClient.setGeostoreRestUrl(geostoreRestUrl);
+		geostoreClient.setUsername(geostoreUsername);
+		geostoreClient.setPassword(geostorePassword);
 	}
 
 	@Override

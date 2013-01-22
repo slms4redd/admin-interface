@@ -1,4 +1,4 @@
-package org.fao.unredd.restapi;
+package org.fao.unredd.api;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -20,26 +20,37 @@ import org.fao.unredd.api.json.LayerRepresentation;
 import org.fao.unredd.api.model.Layer;
 import org.fao.unredd.api.model.LayerType;
 import org.fao.unredd.api.model.Layers;
-import org.fao.unredd.api.resources.LayerListResource;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.request.RequestContextListener;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 import com.sun.jersey.test.framework.JerseyTest;
+import com.sun.jersey.test.framework.WebAppDescriptor;
 
 public class LayersTest extends JerseyTest {
 
-	private Layers model;
+	@Autowired
+	private Layers layers;
 
 	public LayersTest() {
-		super("org.fao.unredd.api.resources", "org.codehaus.jackson.jaxrs");
-	}
+		super(
+				new WebAppDescriptor.Builder("org.fao.unredd.api.resources",
+						"org.codehaus.jackson.jaxrs")
+						.contextParam("contextConfigLocation",
+								"classpath:/adminTestApplicationContext.xml")
+						.initParam("com.sun.jersey.config.property.packages",
+								"org.fao.unredd.api.resources;org.codehaus.jackson.jaxrs")
+						.contextPath("/admin")
+						.servletClass(SpringServlet.class)
+						.contextListenerClass(ContextLoaderListener.class)
+						.requestListenerClass(RequestContextListener.class)
+						.build());
 
-	@Before
-	public void setup() {
-		model = mock(Layers.class);
-		LayerListResource.layers = model;
+		TestInjector.wire(this);
 	}
 
 	@Test
@@ -54,7 +65,7 @@ public class LayersTest extends JerseyTest {
 
 	@Test
 	public void testGetEmptyLayers() throws Exception {
-		when(model.getJSON()).thenReturn(
+		when(layers.getJSON()).thenReturn(
 				Collections.<LayerRepresentation> emptyList());
 
 		ClientResponse response = getLayersOk();
@@ -71,7 +82,7 @@ public class LayersTest extends JerseyTest {
 				LayerType.RASTER);
 		List<LayerRepresentation> layerList = Collections
 				.<LayerRepresentation> singletonList((LayerRepresentation) layer);
-		when(model.getJSON()).thenReturn(layerList);
+		when(layers.getJSON()).thenReturn(layerList);
 
 		ClientResponse response = getLayersOk();
 
@@ -88,7 +99,7 @@ public class LayersTest extends JerseyTest {
 				LayerType.RASTER));
 		layerList.add(new LayerRepresentation("1", "newLayer1",
 				LayerType.VECTOR));
-		when(model.getJSON()).thenReturn(layerList);
+		when(layers.getJSON()).thenReturn(layerList);
 
 		ClientResponse response = getLayersOk();
 
@@ -107,14 +118,14 @@ public class LayersTest extends JerseyTest {
 		Layer layer = mock(Layer.class);
 		when(layer.getJSON()).thenReturn(
 				new LayerRepresentation("12", "newlayer", LayerType.RASTER));
-		when(model.addLayer(any(AddLayerRequest.class))).thenReturn(layer);
+		when(layers.addLayer(any(AddLayerRequest.class))).thenReturn(layer);
 
 		ClientResponse response = createLayerOk(new AddLayerRequest("newlayer",
 				LayerType.RASTER));
 		String location = response.getHeaders().getFirst("location");
 
 		assertTrue(location.endsWith("/layers/12"));
-		verify(model).addLayer(
+		verify(layers).addLayer(
 				new AddLayerRequest("newlayer", LayerType.RASTER));
 	}
 
@@ -123,7 +134,7 @@ public class LayersTest extends JerseyTest {
 		Layer layer = mock(Layer.class);
 		when(layer.getJSON()).thenReturn(
 				new LayerRepresentation("12", "new_layer", LayerType.VECTOR));
-		when(model.getLayer("12")).thenReturn(layer);
+		when(layers.getLayer("12")).thenReturn(layer);
 
 		// Check actual contents by expected path
 		ClientResponse response = getLayerOk("12");
@@ -134,7 +145,7 @@ public class LayersTest extends JerseyTest {
 
 	@Test
 	public void testGetUnexistingLayerGives404() throws Exception {
-		when(model.getLayer("an-id-that-does-not-exist")).thenThrow(
+		when(layers.getLayer("an-id-that-does-not-exist")).thenThrow(
 				new IllegalArgumentException());
 
 		ClientResponse response = getLayer("an-id-that-does-not-exist");
