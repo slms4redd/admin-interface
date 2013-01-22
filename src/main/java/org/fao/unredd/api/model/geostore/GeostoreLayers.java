@@ -17,12 +17,10 @@ import org.fao.unredd.api.json.AddLayerRequest;
 import org.fao.unredd.api.json.LayerRepresentation;
 import org.fao.unredd.api.model.Layer;
 import org.fao.unredd.api.model.Layers;
-import org.springframework.stereotype.Component;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 
-@Component
 public class GeostoreLayers implements Layers {
 
 	private GeoStoreClient geostoreClient;

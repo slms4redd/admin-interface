@@ -20,26 +20,37 @@ import org.fao.unredd.api.json.LayerRepresentation;
 import org.fao.unredd.api.model.Layer;
 import org.fao.unredd.api.model.LayerType;
 import org.fao.unredd.api.model.Layers;
-import org.fao.unredd.api.resources.LayerListResource;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.request.RequestContextListener;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 import com.sun.jersey.test.framework.JerseyTest;
+import com.sun.jersey.test.framework.WebAppDescriptor;
 
 public class LayersTest extends JerseyTest {
 
+	@Autowired
 	private Layers model;
 
 	public LayersTest() {
-		super("org.fao.unredd.api.resources", "org.codehaus.jackson.jaxrs");
-	}
+		super(
+				new WebAppDescriptor.Builder("org.fao.unredd.api.resources",
+						"org.codehaus.jackson.jaxrs")
+						.contextParam("contextConfigLocation",
+								"classpath:/adminTestApplicationContext.xml")
+						.initParam("com.sun.jersey.config.property.packages",
+								"org.fao.unredd.api.resources;org.codehaus.jackson.jaxrs")
+						.contextPath("/admin")
+						.servletClass(SpringServlet.class)
+						.contextListenerClass(ContextLoaderListener.class)
+						.requestListenerClass(RequestContextListener.class)
+						.build());
 
-	@Before
-	public void setup() {
-		model = mock(Layers.class);
-		LayerListResource.layers = model;
+		TestInjector.wire(this);
 	}
 
 	@Test
