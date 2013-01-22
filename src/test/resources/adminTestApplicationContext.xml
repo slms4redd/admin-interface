@@ -18,7 +18,7 @@ http://www.springframework.org/schema/tx
 http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
 default-autowire="autodetect">
 
-	<context:component-scan base-package="org.fao.unredd.api.resources,org.fao.unredd.restapi" />
+	<context:component-scan base-package="org.fao.unredd.api.resources,org.fao.unredd.api" />
 
     <bean id="geostoreRestUrl" class="java.lang.String">
     	<constructor-arg type="String" value="http://demo1.geo-solutions.it/stg_geostore/rest"/>
@@ -29,6 +29,6 @@ default-autowire="autodetect">
     <bean id="geostorePassword" class="java.lang.String">
     	<constructor-arg type="String" value="Unr3dd"/>
     </bean>
-    <bean id="layers" class="org.fao.unredd.restapi.MockFactory" factory-method="mockLayers"/>
+    <bean id="layers" class="org.fao.unredd.api.MockFactory" factory-method="mockLayers"/>
 
 </beans>

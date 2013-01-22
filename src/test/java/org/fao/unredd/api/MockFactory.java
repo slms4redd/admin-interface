@@ -1,4 +1,4 @@
-package org.fao.unredd.restapi;
+package org.fao.unredd.api;
 
 import static org.mockito.Mockito.mock;
 
