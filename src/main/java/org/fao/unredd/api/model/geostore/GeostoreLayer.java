@@ -2,6 +2,7 @@ package org.fao.unredd.api.model.geostore;
 
 import it.geosolutions.geostore.core.model.Attribute;
 import it.geosolutions.geostore.core.model.Resource;
+import it.geosolutions.unredd.geostore.model.UNREDDLayer;
 
 import java.util.NoSuchElementException;
 
@@ -22,16 +23,28 @@ public class GeostoreLayer implements Layer {
 
 	@Override
 	public LayerRepresentation getJSON() {
-		return new LayerRepresentation(Long.toString(resource.getId()),
-				resource.getName(), LayerType.valueOf(getAttribute("LayerType")
-						.getValue()), getAttribute("MosaicPath").getValue(),
-				getAttribute("DissMosaicPath").getValue(), getAttribute(
-						"OrigDataDestPath").getValue(), getAttribute(
-						"RasterPixelWidth").getNumberValue().intValue(),
-				getAttribute("RasterPixelHeight").getNumberValue().intValue(),
-				getAttribute("RasterX0").getNumberValue(), getAttribute(
-						"RasterX1").getNumberValue(), getAttribute("RasterY0")
-						.getNumberValue(), getAttribute("RasterY1")
+		return new LayerRepresentation(
+				Long.toString(resource.getId()),
+				resource.getName(),
+				LayerType.valueOf(getAttribute(
+						UNREDDLayer.Attributes.LAYERTYPE.getName()).getValue()),
+				getAttribute(UNREDDLayer.Attributes.MOSAICPATH.getName())
+						.getValue(), getAttribute(
+						UNREDDLayer.Attributes.DISSMOSAICPATH.getName())
+						.getValue(), getAttribute(
+						UNREDDLayer.Attributes.ORIGDATADESTPATH.getName())
+						.getValue(), getAttribute(
+						UNREDDLayer.Attributes.RASTERPIXELWIDTH.getName())
+						.getNumberValue().intValue(), getAttribute(
+						UNREDDLayer.Attributes.RASTERPIXELHEIGHT.getName())
+						.getNumberValue().intValue(), getAttribute(
+						UNREDDLayer.Attributes.RASTERX0.getName())
+						.getNumberValue(), getAttribute(
+						UNREDDLayer.Attributes.RASTERX1.getName())
+						.getNumberValue(), getAttribute(
+						UNREDDLayer.Attributes.RASTERY0.getName())
+						.getNumberValue(), getAttribute(
+						UNREDDLayer.Attributes.RASTERY1.getName())
 						.getNumberValue());
 	}
 
