@@ -3,12 +3,20 @@ package org.fao.unredd.api;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import it.geosolutions.geostore.core.model.Attribute;
+import it.geosolutions.geostore.core.model.Resource;
+import it.geosolutions.geostore.core.model.enums.DataType;
+import it.geosolutions.geostore.services.dto.search.SearchFilter;
+import it.geosolutions.geostore.services.rest.GeoStoreClient;
+import it.geosolutions.geostore.services.rest.model.RESTCategory;
+import it.geosolutions.geostore.services.rest.model.ResourceList;
+import it.geosolutions.unredd.geostore.model.UNREDDLayer;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.core.MediaType;
@@ -16,10 +24,7 @@ import javax.ws.rs.core.MediaType;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.fao.unredd.api.json.AddLayerRequest;
-import org.fao.unredd.api.json.LayerRepresentation;
-import org.fao.unredd.api.model.Layer;
 import org.fao.unredd.api.model.LayerType;
-import org.fao.unredd.api.model.Layers;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.ContextLoaderListener;
@@ -34,7 +39,7 @@ import com.sun.jersey.test.framework.WebAppDescriptor;
 public class LayersTest extends JerseyTest {
 
 	@Autowired
-	private Layers layers;
+	private GeoStoreClient geostoreClient;
 
 	public LayersTest() {
 		super(
@@ -65,8 +70,8 @@ public class LayersTest extends JerseyTest {
 
 	@Test
 	public void testGetEmptyLayers() throws Exception {
-		when(layers.getJSON()).thenReturn(
-				Collections.<LayerRepresentation> emptyList());
+		ResourceList resourceList = mockResourceList();
+		mockGeostoreSearchAnswer(resourceList);
 
 		ClientResponse response = getLayersOk();
 
@@ -78,11 +83,9 @@ public class LayersTest extends JerseyTest {
 
 	@Test
 	public void testGetOneLayer() throws Exception {
-		LayerRepresentation layer = new LayerRepresentation("0", "newLayer",
-				LayerType.RASTER);
-		List<LayerRepresentation> layerList = Collections
-				.<LayerRepresentation> singletonList((LayerRepresentation) layer);
-		when(layers.getJSON()).thenReturn(layerList);
+		ResourceList resourceList = mockResourceList(mockResource(1L,
+				"newLayer", LayerType.RASTER));
+		mockGeostoreSearchAnswer(resourceList);
 
 		ClientResponse response = getLayersOk();
 
@@ -94,12 +97,10 @@ public class LayersTest extends JerseyTest {
 
 	@Test
 	public void testGetLayers() throws Exception {
-		ArrayList<LayerRepresentation> layerList = new ArrayList<LayerRepresentation>();
-		layerList.add(new LayerRepresentation("0", "newLayer0",
-				LayerType.RASTER));
-		layerList.add(new LayerRepresentation("1", "newLayer1",
-				LayerType.VECTOR));
-		when(layers.getJSON()).thenReturn(layerList);
+		ResourceList resourceList = mockResourceList(
+				mockResource(0L, "newLayer0", LayerType.RASTER),
+				mockResource(1L, "newLayer1", LayerType.VECTOR));
+		mockGeostoreSearchAnswer(resourceList);
 
 		ClientResponse response = getLayersOk();
 
@@ -115,26 +116,20 @@ public class LayersTest extends JerseyTest {
 
 	@Test
 	public void testCreateLayer() throws Exception {
-		Layer layer = mock(Layer.class);
-		when(layer.getJSON()).thenReturn(
-				new LayerRepresentation("12", "newlayer", LayerType.RASTER));
-		when(layers.addLayer(any(AddLayerRequest.class))).thenReturn(layer);
+		when(geostoreClient.insert(any(RESTCategory.class))).thenReturn(12L);
+		mockGeostoreSearchAnswer(mockResourceList(mockResource(12L, "newlayer",
+				LayerType.RASTER)));
 
 		ClientResponse response = createLayerOk(new AddLayerRequest("newlayer",
 				LayerType.RASTER));
 		String location = response.getHeaders().getFirst("location");
-
 		assertTrue(location.endsWith("/layers/12"));
-		verify(layers).addLayer(
-				new AddLayerRequest("newlayer", LayerType.RASTER));
 	}
 
 	@Test
 	public void testGetLayer() throws Exception {
-		Layer layer = mock(Layer.class);
-		when(layer.getJSON()).thenReturn(
-				new LayerRepresentation("12", "new_layer", LayerType.VECTOR));
-		when(layers.getLayer("12")).thenReturn(layer);
+		mockGeostoreSearchAnswer(mockResourceList(mockResource(12L,
+				"new_layer", LayerType.VECTOR)));
 
 		// Check actual contents by expected path
 		ClientResponse response = getLayerOk("12");
@@ -145,12 +140,76 @@ public class LayersTest extends JerseyTest {
 
 	@Test
 	public void testGetUnexistingLayerGives404() throws Exception {
-		when(layers.getLayer("an-id-that-does-not-exist")).thenThrow(
-				new IllegalArgumentException());
+		mockGeostoreSearchAnswer(mockResourceList());
 
 		ClientResponse response = getLayer("an-id-that-does-not-exist");
 		assertEquals(ClientResponse.Status.NOT_FOUND,
 				response.getClientResponseStatus());
+	}
+
+	private void mockGeostoreSearchAnswer(ResourceList resourceList) {
+		when(
+				geostoreClient.searchResources(any(SearchFilter.class),
+						anyInt(), anyInt(), anyBoolean(), anyBoolean()))
+				.thenReturn(resourceList);
+	}
+
+	private ResourceList mockResourceList(Resource... resources) {
+		ResourceList resourceList = mock(ResourceList.class);
+		ArrayList<Resource> list = new ArrayList<Resource>();
+		for (Resource resource : resources) {
+			list.add(resource);
+		}
+		when(resourceList.getList()).thenReturn(list);
+		return resourceList;
+	}
+
+	private Resource mockResource(long id, String name, LayerType layerType) {
+		Resource resource = mock(Resource.class);
+		when(resource.getId()).thenReturn(id);
+		when(resource.getName()).thenReturn(name);
+		List<Attribute> attributes = createAttributeList(newAttribute(
+				UNREDDLayer.Attributes.LAYERTYPE.getName(),
+				layerType.toString()));
+		when(resource.getAttribute()).thenReturn(attributes);
+		return resource;
+	}
+
+	private List<Attribute> createAttributeList(Attribute layerType) {
+		List<Attribute> ret = new ArrayList<Attribute>();
+		ret.add(layerType);
+		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERY1.getName(), 1d));
+		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERY0.getName(), 0d));
+		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERX1.getName(), 1d));
+		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERX0.getName(), 0d));
+		ret.add(newAttribute(
+				UNREDDLayer.Attributes.RASTERPIXELHEIGHT.getName(), 1d));
+		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERPIXELWIDTH.getName(),
+				1d));
+		ret.add(newAttribute(UNREDDLayer.Attributes.ORIGDATADESTPATH.getName(),
+				"OrigDataDestPath"));
+		ret.add(newAttribute(UNREDDLayer.Attributes.DISSMOSAICPATH.getName(),
+				"DissMosaicPath"));
+		ret.add(newAttribute(UNREDDLayer.Attributes.MOSAICPATH.getName(),
+				"MosaicPath"));
+	
+		return ret;
+	}
+
+	private Attribute newAttribute(String attributeName, String value) {
+		Attribute attribute = new Attribute();
+		attribute.setName(attributeName);
+		attribute.setTextValue(value);
+		attribute.setType(DataType.STRING);
+		return attribute;
+	}
+
+	private Attribute newAttribute(String attributeName, Double value) {
+		Attribute attribute = new Attribute();
+		attribute.setName(attributeName);
+		attribute.setNumberValue(value);
+		attribute.setType(DataType.NUMBER);
+		return attribute;
 	}
 
 	private ClientResponse getLayerOk(String id) {

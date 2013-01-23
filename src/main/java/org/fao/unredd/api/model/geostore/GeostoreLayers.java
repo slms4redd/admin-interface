@@ -8,7 +8,9 @@ import it.geosolutions.geostore.services.dto.search.FieldFilter;
 import it.geosolutions.geostore.services.dto.search.SearchFilter;
 import it.geosolutions.geostore.services.dto.search.SearchOperator;
 import it.geosolutions.geostore.services.rest.GeoStoreClient;
+import it.geosolutions.geostore.services.rest.model.RESTResource;
 import it.geosolutions.unredd.geostore.model.UNREDDCategories;
+import it.geosolutions.unredd.geostore.model.UNREDDLayer;
 
 import java.util.List;
 
@@ -17,21 +19,17 @@ import org.fao.unredd.api.json.AddLayerRequest;
 import org.fao.unredd.api.json.LayerRepresentation;
 import org.fao.unredd.api.model.Layer;
 import org.fao.unredd.api.model.Layers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 
+@Component
 public class GeostoreLayers implements Layers {
 
+	@Autowired
 	private GeoStoreClient geostoreClient;
-
-	public GeostoreLayers(String geostoreRestUrl, String geostoreUsername,
-			String geostorePassword) {
-		geostoreClient = new GeoStoreClient();
-		geostoreClient.setGeostoreRestUrl(geostoreRestUrl);
-		geostoreClient.setUsername(geostoreUsername);
-		geostoreClient.setPassword(geostorePassword);
-	}
 
 	@Override
 	public Iterable<LayerRepresentation> getJSON() {
@@ -49,7 +47,35 @@ public class GeostoreLayers implements Layers {
 
 	@Override
 	public Layer addLayer(AddLayerRequest addLayerRequest) {
-		throw new UnsupportedOperationException();
+
+		UNREDDLayer unreddLayer = new UNREDDLayer();
+
+		unreddLayer.setAttribute(UNREDDLayer.Attributes.LAYERTYPE,
+				addLayerRequest.getType().name());
+		// unreddLayer.setAttribute(UNREDDLayer.Attributes.MOSAICPATH,
+		// mosaicPath);
+		// unreddLayer.setAttribute(UNREDDLayer.Attributes.DISSMOSAICPATH,
+		// dissMosaicPath);
+		// unreddLayer.setAttribute(UNREDDLayer.Attributes.ORIGDATADESTPATH,
+		// origDataDestPath);
+		// unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERPIXELHEIGHT,
+		// rasterPixelHeight);
+		// unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERPIXELWIDTH,
+		// rasterPixelWidth);
+		// unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERX0, rasterX0);
+		// unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERX1, rasterX1);
+		// unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERY0, rasterY0);
+		// unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERY1, rasterY1);
+
+		RESTResource layerRestResource = unreddLayer.createRESTResource();
+		layerRestResource.setName(addLayerRequest.getName());
+
+		// RESTStoredData rsd = new RESTStoredData();
+		// rsd.setData(xml);
+		// layerRestResource.setStore(rsd);
+		long id = geostoreClient.insert(layerRestResource);
+
+		return getLayer(Long.toString(id));
 	}
 
 	@Override

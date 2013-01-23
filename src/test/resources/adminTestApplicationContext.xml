@@ -29,6 +29,9 @@ default-autowire="autodetect">
     <bean id="geostorePassword" class="java.lang.String">
     	<constructor-arg type="String" value="Unr3dd"/>
     </bean>
-    <bean id="layers" class="org.fao.unredd.api.MockFactory" factory-method="mockLayers"/>
+
+	<bean id="layers" class="org.fao.unredd.api.model.geostore.GeostoreLayers" />
+
+    <bean id="geostoreClient" class="org.fao.unredd.api.MockFactory" factory-method="mockGeostoreClient"/>
 
 </beans>
