@@ -12,7 +12,7 @@ import it.geosolutions.geostore.core.model.Resource;
 import it.geosolutions.geostore.core.model.enums.DataType;
 import it.geosolutions.geostore.services.dto.search.SearchFilter;
 import it.geosolutions.geostore.services.rest.GeoStoreClient;
-import it.geosolutions.geostore.services.rest.model.RESTCategory;
+import it.geosolutions.geostore.services.rest.model.RESTResource;
 import it.geosolutions.geostore.services.rest.model.ResourceList;
 import it.geosolutions.unredd.geostore.model.UNREDDLayer;
 
@@ -116,9 +116,7 @@ public class LayersTest extends JerseyTest {
 
 	@Test
 	public void testCreateLayer() throws Exception {
-		when(geostoreClient.insert(any(RESTCategory.class))).thenReturn(12L);
-		mockGeostoreSearchAnswer(mockResourceList(mockResource(12L, "newlayer",
-				LayerType.RASTER)));
+		when(geostoreClient.insert(any(RESTResource.class))).thenReturn(12L);
 
 		ClientResponse response = createLayerOk(new AddLayerRequest("newlayer",
 				LayerType.RASTER));
@@ -192,7 +190,7 @@ public class LayersTest extends JerseyTest {
 				"DissMosaicPath"));
 		ret.add(newAttribute(UNREDDLayer.Attributes.MOSAICPATH.getName(),
 				"MosaicPath"));
-	
+
 		return ret;
 	}
 

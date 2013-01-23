@@ -10,17 +10,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
-import org.apache.commons.codec.binary.Hex;
 import org.fao.unredd.api.json.AddLayerRequest;
-import org.fao.unredd.api.json.LayerRepresentation;
 import org.fao.unredd.api.json.ResponseRoot;
-import org.fao.unredd.api.model.Layer;
 import org.fao.unredd.api.model.Layers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -55,15 +51,11 @@ public class LayerListResource {
 			throw new BadRequestException(errors);
 		}
 
-		Layer layer = layers.addLayer(layerRequest);
+		long id = layers.addLayer(layerRequest);
 		UriBuilder uriBuilder = UriBuilder.fromUri(uriInfo.getRequestUri());
 		uriBuilder.path("{id}");
-		LayerRepresentation jsonLayer = layer.getJSON();
-		char[] chars = Hex.encodeHex(jsonLayer.getETag().getBytes());
-		String etagString = new String(chars);
-		EntityTag etag = new EntityTag(etagString);
-		URI location = uriBuilder.build(jsonLayer.getId());
-		return Response.created(location).tag(etag).entity(jsonLayer)
-				.type(MediaType.APPLICATION_JSON).build();
+		URI location = uriBuilder.build(Long.toString(id));
+		return Response.created(location).type(MediaType.APPLICATION_JSON)
+				.build();
 	}
 }

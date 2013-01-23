@@ -46,7 +46,7 @@ public class GeostoreLayers implements Layers {
 	}
 
 	@Override
-	public Layer addLayer(AddLayerRequest addLayerRequest) {
+	public long addLayer(AddLayerRequest addLayerRequest) {
 
 		UNREDDLayer unreddLayer = new UNREDDLayer();
 
@@ -75,7 +75,7 @@ public class GeostoreLayers implements Layers {
 		// layerRestResource.setStore(rsd);
 		long id = geostoreClient.insert(layerRestResource);
 
-		return getLayer(Long.toString(id));
+		return id;
 	}
 
 	@Override

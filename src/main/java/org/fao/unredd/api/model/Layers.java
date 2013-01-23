@@ -19,7 +19,7 @@ public interface Layers {
 	 * @param addLayerRequest
 	 * @return
 	 */
-	Layer addLayer(AddLayerRequest addLayerRequest);
+	long addLayer(AddLayerRequest addLayerRequest);
 
 	/**
 	 * Get the layer with the specified ID
