@@ -34,19 +34,27 @@ public class LayerListResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public ResponseRoot asJSON() {
-		return new ResponseRoot("layers", layers.getJSON());
+		return ResponseRoot.newLayers(layers.getJSON());
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addLayer(AddLayerRequest layerRequest) {
 		List<String> errors = new ArrayList<String>();
-		if (layerRequest.getName() == null) {
-			errors.add("name cannot be null");
-		}
-		if (layerRequest.getType() == null) {
-			errors.add("type cannot be null");
-		}
+		checkNull(errors, layerRequest.getName(), "name");
+		checkNull(errors, layerRequest.getType(), "type");
+		checkNull(errors, layerRequest.getDestOrigAbsPath(),
+				"Data original path");
+		checkNull(errors, layerRequest.getDissMosaicPath(),
+				"Dissemination mosaic path");
+		checkNull(errors, layerRequest.getStgMosaicPath(),
+				"Staging mosaic path");
+		checkNull(errors, layerRequest.getMaxx(), "max x");
+		checkNull(errors, layerRequest.getMaxy(), "max y");
+		checkNull(errors, layerRequest.getMinx(), "min x");
+		checkNull(errors, layerRequest.getMiny(), "min y");
+		checkNull(errors, layerRequest.getPixelHeight(), "data height");
+		checkNull(errors, layerRequest.getPixelWidth(), "data width");
 		if (errors.size() > 0) {
 			throw new BadRequestException(errors);
 		}
@@ -57,5 +65,11 @@ public class LayerListResource {
 		URI location = uriBuilder.build(Long.toString(id));
 		return Response.created(location).type(MediaType.APPLICATION_JSON)
 				.build();
+	}
+
+	private void checkNull(List<String> errors, Object object, String string) {
+		if (object == null) {
+			errors.add(string + " cannot be null");
+		}
 	}
 }

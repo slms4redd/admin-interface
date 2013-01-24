@@ -1,37 +1,47 @@
 package org.fao.unredd.api;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import it.geosolutions.geostore.core.model.Attribute;
 import it.geosolutions.geostore.core.model.Resource;
 import it.geosolutions.geostore.core.model.enums.DataType;
+import it.geosolutions.geostore.services.dto.ShortAttribute;
 import it.geosolutions.geostore.services.dto.search.SearchFilter;
 import it.geosolutions.geostore.services.rest.GeoStoreClient;
 import it.geosolutions.geostore.services.rest.model.RESTResource;
 import it.geosolutions.geostore.services.rest.model.ResourceList;
 import it.geosolutions.unredd.geostore.model.UNREDDLayer;
+import it.geosolutions.unredd.geostore.model.UNREDDLayer.Attributes;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ws.rs.core.MediaType;
 
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONObject;
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.fao.unredd.api.json.AddLayerRequest;
+import org.fao.unredd.api.json.LayerRepresentation;
+import org.fao.unredd.api.json.ResponseRoot;
 import org.fao.unredd.api.model.LayerType;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 import com.sun.jersey.test.framework.JerseyTest;
 import com.sun.jersey.test.framework.WebAppDescriptor;
@@ -43,8 +53,7 @@ public class LayersTest extends JerseyTest {
 
 	public LayersTest() {
 		super(
-				new WebAppDescriptor.Builder("org.fao.unredd.api.resources",
-						"org.codehaus.jackson.jaxrs")
+				new WebAppDescriptor.Builder()
 						.contextParam("contextConfigLocation",
 								"classpath:/adminTestApplicationContext.xml")
 						.initParam("com.sun.jersey.config.property.packages",
@@ -53,19 +62,45 @@ public class LayersTest extends JerseyTest {
 						.servletClass(SpringServlet.class)
 						.contextListenerClass(ContextLoaderListener.class)
 						.requestListenerClass(RequestContextListener.class)
-						.build());
+						.clientConfig(
+								new DefaultClientConfig(
+										JacksonJsonProvider.class)).build());
 
 		TestInjector.wire(this);
 	}
 
 	@Test
 	public void testCreateLayerNullFail() throws Exception {
-		AddLayerRequest request = new AddLayerRequest(null, null);
+		testNull(new AddLayerRequest(null, LayerType.RASTER, "/", "/",
+				"/foobar", 1, 1, 1d, 2d, 1d, 2d));
+		testNull(new AddLayerRequest("newlayer", null, "/", "/", "/foobar", 1,
+				1, 1d, 2d, 1d, 2d));
+		testNull(new AddLayerRequest("newlayer", LayerType.RASTER, null, "/",
+				"/foobar", 1, 1, 1d, 2d, 1d, 2d));
+		testNull(new AddLayerRequest("newlayer", LayerType.RASTER, "/", null,
+				"/foobar", 1, 1, 1d, 2d, 1d, 2d));
+		testNull(new AddLayerRequest("newlayer", LayerType.RASTER, "/", "/",
+				null, 1, 1, 1d, 2d, 1d, 2d));
+		testNull(new AddLayerRequest("newlayer", LayerType.RASTER, "/", "/",
+				"/foobar", null, 1, 1d, 2d, 1d, 2d));
+		testNull(new AddLayerRequest("newlayer", LayerType.RASTER, "/", "/",
+				"/foobar", 1, null, 1d, 2d, 1d, 2d));
+		testNull(new AddLayerRequest("newlayer", LayerType.RASTER, "/", "/",
+				"/foobar", 1, 1, null, 2d, 1d, 2d));
+		testNull(new AddLayerRequest("newlayer", LayerType.RASTER, "/", "/",
+				"/foobar", 1, 1, 1d, null, 1d, 2d));
+		testNull(new AddLayerRequest("newlayer", LayerType.RASTER, "/", "/",
+				"/foobar", 1, 1, 1d, 2d, null, 2d));
+		testNull(new AddLayerRequest("newlayer", LayerType.RASTER, "/", "/",
+				"/foobar", 1, 1, 1d, 2d, 1d, null));
+	}
+
+	private void testNull(AddLayerRequest request) {
 		ClientResponse response = createLayer(request);
 		assertEquals(ClientResponse.Status.BAD_REQUEST,
 				response.getClientResponseStatus());
-		JSONArray errorList = response.getEntity(JSONArray.class);
-		assertEquals(2, errorList.length());
+		String[] errorList = response.getEntity(String[].class);
+		assertEquals(1, errorList.length);
 	}
 
 	@Test
@@ -75,10 +110,8 @@ public class LayersTest extends JerseyTest {
 
 		ClientResponse response = getLayersOk();
 
-		JSONObject root = response.getEntity(JSONObject.class);
-		String firstAttribute = root.names().getString(0);
-		JSONArray array = root.getJSONArray(firstAttribute);
-		assertEquals(array.length(), 0);
+		ResponseRoot root = response.getEntity(ResponseRoot.class);
+		assertFalse(root.getLayers().iterator().hasNext());
 	}
 
 	@Test
@@ -89,10 +122,12 @@ public class LayersTest extends JerseyTest {
 
 		ClientResponse response = getLayersOk();
 
-		JSONObject root = response.getEntity(JSONObject.class);
-		String firstAttribute = root.names().getString(0);
-		JSONArray array = root.getJSONArray(firstAttribute);
-		assertEquals(array.length(), 1);
+		ResponseRoot root = response.getEntity(ResponseRoot.class);
+		Iterator<LayerRepresentation> layerIterator = root.getLayers()
+				.iterator();
+		assertTrue(layerIterator.hasNext());
+		layerIterator.next();
+		assertFalse(layerIterator.hasNext());
 	}
 
 	@Test
@@ -104,14 +139,20 @@ public class LayersTest extends JerseyTest {
 
 		ClientResponse response = getLayersOk();
 
-		JSONObject root = response.getEntity(JSONObject.class);
-		String firstAttribute = root.names().getString(0);
-		JSONArray array = root.getJSONArray(firstAttribute);
-		assertEquals(array.length(), 2);
-		assertEquals(array.getJSONObject(0).getString("id"), "0");
-		assertEquals(array.getJSONObject(0).getString("name"), "newLayer0");
-		assertEquals(array.getJSONObject(1).getString("id"), "1");
-		assertEquals(array.getJSONObject(1).getString("name"), "newLayer1");
+		ResponseRoot root = response.getEntity(ResponseRoot.class);
+		Iterator<LayerRepresentation> layerIterator = root.getLayers()
+				.iterator();
+		assertTrue(layerIterator.hasNext());
+		LayerRepresentation layer = layerIterator.next();
+		assertEquals("0", layer.getId());
+		assertEquals("newLayer0", layer.getName());
+
+		assertTrue(layerIterator.hasNext());
+		layer = layerIterator.next();
+		assertEquals("1", layer.getId());
+		assertEquals("newLayer1", layer.getName());
+
+		assertFalse(layerIterator.hasNext());
 	}
 
 	@Test
@@ -119,9 +160,52 @@ public class LayersTest extends JerseyTest {
 		when(geostoreClient.insert(any(RESTResource.class))).thenReturn(12L);
 
 		ClientResponse response = createLayerOk(new AddLayerRequest("newlayer",
-				LayerType.RASTER));
+				LayerType.RASTER, "/foo", "/bar", "/foobar", 2, 1, 1d, 3d, 10d,
+				11d));
 		String location = response.getHeaders().getFirst("location");
 		assertTrue(location.endsWith("/layers/12"));
+
+		ArgumentCaptor<RESTResource> resourceCaptor = ArgumentCaptor
+				.forClass(RESTResource.class);
+		verify(geostoreClient).insert(resourceCaptor.capture());
+		RESTResource resource = resourceCaptor.getValue();
+		assertEquals(resource.getName(), "newlayer");
+		assertEquals(getAttribute(resource, UNREDDLayer.Attributes.LAYERTYPE),
+				LayerType.RASTER.toString());
+		assertEquals(getAttribute(resource, UNREDDLayer.Attributes.MOSAICPATH),
+				"/foo");
+		assertEquals(
+				getAttribute(resource, UNREDDLayer.Attributes.DISSMOSAICPATH),
+				"/bar");
+		assertEquals(
+				getAttribute(resource, UNREDDLayer.Attributes.ORIGDATADESTPATH),
+				"/foobar");
+		assertEquals(
+				getAttribute(resource, UNREDDLayer.Attributes.RASTERPIXELHEIGHT),
+				"1");
+		assertEquals(
+				getAttribute(resource, UNREDDLayer.Attributes.RASTERPIXELWIDTH),
+				"2");
+		assertEquals(getAttribute(resource, UNREDDLayer.Attributes.RASTERX0),
+				"1.0");
+		assertEquals(getAttribute(resource, UNREDDLayer.Attributes.RASTERX1),
+				"3.0");
+		assertEquals(getAttribute(resource, UNREDDLayer.Attributes.RASTERY0),
+				"10.0");
+		assertEquals(getAttribute(resource, UNREDDLayer.Attributes.RASTERY1),
+				"11.0");
+	}
+
+	private String getAttribute(RESTResource resource,
+			final Attributes attribute) {
+		List<ShortAttribute> attributes = resource.getAttribute();
+		return Iterables.find(attributes, new Predicate<ShortAttribute>() {
+
+			@Override
+			public boolean apply(ShortAttribute input) {
+				return input.getName().equals(attribute.getName());
+			}
+		}).getValue();
 	}
 
 	@Test
@@ -131,9 +215,11 @@ public class LayersTest extends JerseyTest {
 
 		// Check actual contents by expected path
 		ClientResponse response = getLayerOk("12");
-		JSONObject layerObj = response.getEntity(JSONObject.class);
-		assertEquals(layerObj.getString("name"), "new_layer");
-		assertEquals(layerObj.getString("type"), LayerType.VECTOR.toString());
+
+		LayerRepresentation layer = response
+				.getEntity(LayerRepresentation.class);
+		assertEquals("new_layer", layer.getName());
+		assertEquals(LayerType.VECTOR, layer.getType());
 	}
 
 	@Test
@@ -166,30 +252,33 @@ public class LayersTest extends JerseyTest {
 		Resource resource = mock(Resource.class);
 		when(resource.getId()).thenReturn(id);
 		when(resource.getName()).thenReturn(name);
-		List<Attribute> attributes = createAttributeList(newAttribute(
-				UNREDDLayer.Attributes.LAYERTYPE.getName(),
-				layerType.toString()));
+		List<Attribute> attributes = createAttributeList(layerType, 1, 2, 1, 2,
+				1, 1, "OrigDataDestPath", "DissMosaicPath", "MosaicPath");
 		when(resource.getAttribute()).thenReturn(attributes);
 		return resource;
 	}
 
-	private List<Attribute> createAttributeList(Attribute layerType) {
+	private List<Attribute> createAttributeList(LayerType layerType, double x0,
+			double x1, double y0, double y1, double pixelHeight,
+			double pixelWidth, String origDataDestPath, String dissMosaicPath,
+			String mosaicPath) {
 		List<Attribute> ret = new ArrayList<Attribute>();
-		ret.add(layerType);
-		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERY1.getName(), 1d));
-		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERY0.getName(), 0d));
-		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERX1.getName(), 1d));
-		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERX0.getName(), 0d));
+		ret.add(newAttribute(UNREDDLayer.Attributes.LAYERTYPE.getName(),
+				layerType.toString()));
+		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERY1.getName(), y1));
+		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERY0.getName(), y0));
+		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERX1.getName(), x1));
+		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERX0.getName(), x0));
 		ret.add(newAttribute(
-				UNREDDLayer.Attributes.RASTERPIXELHEIGHT.getName(), 1d));
+				UNREDDLayer.Attributes.RASTERPIXELHEIGHT.getName(), pixelHeight));
 		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERPIXELWIDTH.getName(),
-				1d));
+				pixelWidth));
 		ret.add(newAttribute(UNREDDLayer.Attributes.ORIGDATADESTPATH.getName(),
-				"OrigDataDestPath"));
+				origDataDestPath));
 		ret.add(newAttribute(UNREDDLayer.Attributes.DISSMOSAICPATH.getName(),
-				"DissMosaicPath"));
+				dissMosaicPath));
 		ret.add(newAttribute(UNREDDLayer.Attributes.MOSAICPATH.getName(),
-				"MosaicPath"));
+				mosaicPath));
 
 		return ret;
 	}
@@ -232,25 +321,11 @@ public class LayersTest extends JerseyTest {
 	}
 
 	private ClientResponse createLayer(AddLayerRequest layer) {
-		String jsonString = "{\"name\":" + jsonAttribute(layer.getName())
-				+ ",\"type\":" + jsonAttribute(layer.getType()) + "}";
-		return createLayer(jsonString);
-	}
-
-	private ClientResponse createLayer(String jsonString) {
 		WebResource webResource = resource();
 		ClientResponse response = webResource.path("layers")
-				.type(MediaType.APPLICATION_JSON).entity(jsonString)
+				.type(MediaType.APPLICATION_JSON).entity(layer)
 				.post(ClientResponse.class);
 		return response;
-	}
-
-	private String jsonAttribute(Object attribute) {
-		if (attribute == null) {
-			return "null";
-		} else {
-			return "\"" + attribute + "\"";
-		}
 	}
 
 	private ClientResponse getLayersOk() {

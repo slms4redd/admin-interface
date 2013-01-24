@@ -52,27 +52,28 @@ public class GeostoreLayers implements Layers {
 
 		unreddLayer.setAttribute(UNREDDLayer.Attributes.LAYERTYPE,
 				addLayerRequest.getType().name());
-		// unreddLayer.setAttribute(UNREDDLayer.Attributes.MOSAICPATH,
-		// mosaicPath);
-		// unreddLayer.setAttribute(UNREDDLayer.Attributes.DISSMOSAICPATH,
-		// dissMosaicPath);
-		// unreddLayer.setAttribute(UNREDDLayer.Attributes.ORIGDATADESTPATH,
-		// origDataDestPath);
-		// unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERPIXELHEIGHT,
-		// rasterPixelHeight);
-		// unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERPIXELWIDTH,
-		// rasterPixelWidth);
-		// unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERX0, rasterX0);
-		// unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERX1, rasterX1);
-		// unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERY0, rasterY0);
-		// unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERY1, rasterY1);
+		unreddLayer.setAttribute(UNREDDLayer.Attributes.MOSAICPATH,
+				addLayerRequest.getStgMosaicPath());
+		unreddLayer.setAttribute(UNREDDLayer.Attributes.DISSMOSAICPATH,
+				addLayerRequest.getDissMosaicPath());
+		unreddLayer.setAttribute(UNREDDLayer.Attributes.ORIGDATADESTPATH,
+				addLayerRequest.getDestOrigAbsPath());
+		unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERPIXELHEIGHT,
+				Integer.toString(addLayerRequest.getPixelHeight()));
+		unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERPIXELWIDTH,
+				Integer.toString(addLayerRequest.getPixelWidth()));
+		unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERX0,
+				Double.toString(addLayerRequest.getMinx()));
+		unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERX1,
+				Double.toString(addLayerRequest.getMaxx()));
+		unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERY0,
+				Double.toString(addLayerRequest.getMiny()));
+		unreddLayer.setAttribute(UNREDDLayer.Attributes.RASTERY1,
+				Double.toString(addLayerRequest.getMaxy()));
 
 		RESTResource layerRestResource = unreddLayer.createRESTResource();
 		layerRestResource.setName(addLayerRequest.getName());
 
-		// RESTStoredData rsd = new RESTStoredData();
-		// rsd.setData(xml);
-		// layerRestResource.setStore(rsd);
 		long id = geostoreClient.insert(layerRestResource);
 
 		return id;
