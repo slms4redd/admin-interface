@@ -24,24 +24,4 @@ public class AddLayerRequest {
 	public LayerType getType() {
 		return type;
 	}
-
-	@Override
-	public int hashCode() {
-		return name.hashCode() + type.hashCode();
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof AddLayerRequest) {
-			AddLayerRequest that = (AddLayerRequest) obj;
-			return that.name.equals(this.name) && that.type == this.type;
-		}
-
-		return false;
-	}
-
-	@Override
-	public String toString() {
-		return name + ": " + type;
-	}
 }
