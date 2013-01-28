@@ -38,7 +38,10 @@ public interface Layers {
 	 * 
 	 * @param id
 	 * @param layer
+	 * @throws IllegalArgumentException
+	 *             If there is no layer with the selected ID.
 	 */
-	void updateLayer(String id, AddLayerRequest layer);
+	void updateLayer(String id, AddLayerRequest layer)
+			throws IllegalArgumentException;
 
 }

@@ -204,7 +204,7 @@ public class LayersTest extends JerseyTest {
 		ClientResponse response = modifyLayer("243", new AddLayerRequest(
 				"newlayer", LayerType.RASTER, "/foo", "/bar", "/foobar", 2, 1,
 				1d, 3d, 10d, 11d));
-		assertEquals(ClientResponse.Status.OK,
+		assertEquals(ClientResponse.Status.NO_CONTENT,
 				response.getClientResponseStatus());
 
 		ArgumentCaptor<RESTResource> resourceCaptor = ArgumentCaptor

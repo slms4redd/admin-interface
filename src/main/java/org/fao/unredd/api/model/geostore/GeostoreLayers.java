@@ -103,15 +103,23 @@ public class GeostoreLayers implements Layers {
 	}
 
 	@Override
-	public void updateLayer(String id, AddLayerRequest layer) {
+	public void updateLayer(String id, AddLayerRequest layer)
+			throws IllegalArgumentException {
 		try {
 			geostoreClient.updateResource(Long.parseLong(id),
 					toRESTResource(layer));
 		} catch (UniformInterfaceException e) {
 			/*
-			 * Just propagate the exception to the client
+			 * To follow the contract of the Layers interface we need to throw
+			 * IAE in case of an nonexistent id. Just propagate the exception to
+			 * the client otherwise
 			 */
-			throw new WebApplicationException(e, e.getResponse().getStatus());
+			if (e.getResponse().getStatus() == 404) {
+				throw new IllegalArgumentException("Layer not found: " + id);
+			} else {
+				throw new WebApplicationException(e, e.getResponse()
+						.getStatus());
+			}
 		}
 	}
 

@@ -42,8 +42,12 @@ public class LayerResource {
 		if (errors.size() > 0) {
 			throw new BadRequestException(errors);
 		}
-		layers.updateLayer(id, layerRequest);
+		try {
+			layers.updateLayer(id, layerRequest);
+		} catch (IllegalArgumentException e) {
+			throw new NotFoundException(e.getMessage());
+		}
 
-		return Response.ok().build();
+		return Response.noContent().build();
 	}
 }
