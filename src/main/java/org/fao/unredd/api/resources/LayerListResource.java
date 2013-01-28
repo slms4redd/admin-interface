@@ -1,7 +1,6 @@
 package org.fao.unredd.api.resources;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -40,21 +39,7 @@ public class LayerListResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addLayer(AddLayerRequest layerRequest) {
-		List<String> errors = new ArrayList<String>();
-		checkNull(errors, layerRequest.getName(), "name");
-		checkNull(errors, layerRequest.getType(), "type");
-		checkNull(errors, layerRequest.getDestOrigAbsPath(),
-				"Data original path");
-		checkNull(errors, layerRequest.getDissMosaicPath(),
-				"Dissemination mosaic path");
-		checkNull(errors, layerRequest.getStgMosaicPath(),
-				"Staging mosaic path");
-		checkNull(errors, layerRequest.getMaxx(), "max x");
-		checkNull(errors, layerRequest.getMaxy(), "max y");
-		checkNull(errors, layerRequest.getMinx(), "min x");
-		checkNull(errors, layerRequest.getMiny(), "min y");
-		checkNull(errors, layerRequest.getPixelHeight(), "data height");
-		checkNull(errors, layerRequest.getPixelWidth(), "data width");
+		List<String> errors = layerRequest.validate();
 		if (errors.size() > 0) {
 			throw new BadRequestException(errors);
 		}
@@ -67,9 +52,4 @@ public class LayerListResource {
 				.build();
 	}
 
-	private void checkNull(List<String> errors, Object object, String string) {
-		if (object == null) {
-			errors.add(string + " cannot be null");
-		}
-	}
 }

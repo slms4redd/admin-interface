@@ -32,4 +32,13 @@ public interface Layers {
 	 */
 	public Layer getLayer(String id) throws IllegalArgumentException;
 
+	/**
+	 * Updates the layer with the specified ID setting all the fields to the
+	 * ones contained by the {@link AddLayerRequest} instance
+	 * 
+	 * @param id
+	 * @param layer
+	 */
+	void updateLayer(String id, AddLayerRequest layer);
+
 }

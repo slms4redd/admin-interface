@@ -1,11 +1,17 @@
 package org.fao.unredd.api.resources;
 
+import java.util.List;
+
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
+import org.fao.unredd.api.json.AddLayerRequest;
 import org.fao.unredd.api.json.LayerRepresentation;
 import org.fao.unredd.api.model.Layers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,4 +34,16 @@ public class LayerResource {
 		}
 	}
 
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addLayer(@PathParam("id") String id,
+			AddLayerRequest layerRequest) {
+		List<String> errors = layerRequest.validate();
+		if (errors.size() > 0) {
+			throw new BadRequestException(errors);
+		}
+		layers.updateLayer(id, layerRequest);
+
+		return Response.ok().build();
+	}
 }

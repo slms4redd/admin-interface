@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -40,6 +42,7 @@ import org.springframework.web.context.request.RequestContextListener;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
@@ -196,6 +199,101 @@ public class LayersTest extends JerseyTest {
 				"11.0");
 	}
 
+	@Test
+	public void testModifyLayer() {
+		ClientResponse response = modifyLayer("243", new AddLayerRequest(
+				"newlayer", LayerType.RASTER, "/foo", "/bar", "/foobar", 2, 1,
+				1d, 3d, 10d, 11d));
+		assertEquals(ClientResponse.Status.OK,
+				response.getClientResponseStatus());
+
+		ArgumentCaptor<RESTResource> resourceCaptor = ArgumentCaptor
+				.forClass(RESTResource.class);
+		ArgumentCaptor<Long> idCaptor = ArgumentCaptor.forClass(Long.class);
+		verify(geostoreClient).updateResource(idCaptor.capture(),
+				resourceCaptor.capture());
+		assertEquals(243L, idCaptor.getValue().longValue());
+		RESTResource resource = resourceCaptor.getValue();
+		assertEquals(resource.getName(), "newlayer");
+		assertEquals(getAttribute(resource, UNREDDLayer.Attributes.LAYERTYPE),
+				LayerType.RASTER.toString());
+		assertEquals(getAttribute(resource, UNREDDLayer.Attributes.MOSAICPATH),
+				"/foo");
+		assertEquals(
+				getAttribute(resource, UNREDDLayer.Attributes.DISSMOSAICPATH),
+				"/bar");
+		assertEquals(
+				getAttribute(resource, UNREDDLayer.Attributes.ORIGDATADESTPATH),
+				"/foobar");
+		assertEquals(
+				getAttribute(resource, UNREDDLayer.Attributes.RASTERPIXELHEIGHT),
+				"1");
+		assertEquals(
+				getAttribute(resource, UNREDDLayer.Attributes.RASTERPIXELWIDTH),
+				"2");
+		assertEquals(getAttribute(resource, UNREDDLayer.Attributes.RASTERX0),
+				"1.0");
+		assertEquals(getAttribute(resource, UNREDDLayer.Attributes.RASTERX1),
+				"3.0");
+		assertEquals(getAttribute(resource, UNREDDLayer.Attributes.RASTERY0),
+				"10.0");
+		assertEquals(getAttribute(resource, UNREDDLayer.Attributes.RASTERY1),
+				"11.0");
+	}
+
+	@Test
+	public void testGeostoreClientError() throws Exception {
+		ClientResponse clientResponse = mock(ClientResponse.class);
+		when(clientResponse.getStatus()).thenReturn(404);
+		doThrow(new UniformInterfaceException(clientResponse)).when(
+				geostoreClient).updateResource(anyLong(),
+				any(RESTResource.class));
+		ClientResponse response = modifyLayer("243", new AddLayerRequest(
+				"newlayer", LayerType.RASTER, "/foo", "/bar", "/foobar", 2, 1,
+				1d, 3d, 10d, 11d));
+		assertEquals(404, response.getStatus());
+	}
+
+	@Test
+	public void testModifySettingToNullFail() throws Exception {
+		testModifySettingToNullFail(new AddLayerRequest(null, LayerType.RASTER,
+				"/foo", "/bar", "/foobar", 2, 1, 1d, 3d, 10d, 11d));
+		testModifySettingToNullFail(new AddLayerRequest("newlayer", null,
+				"/foo", "/bar", "/foobar", 2, 1, 1d, 3d, 10d, 11d));
+		testModifySettingToNullFail(new AddLayerRequest("newlayer",
+				LayerType.RASTER, null, "/bar", "/foobar", 2, 1, 1d, 3d, 10d,
+				11d));
+		testModifySettingToNullFail(new AddLayerRequest("newlayer",
+				LayerType.RASTER, "/foo", null, "/foobar", 2, 1, 1d, 3d, 10d,
+				11d));
+		testModifySettingToNullFail(new AddLayerRequest("newlayer",
+				LayerType.RASTER, "/foo", "/bar", null, 2, 1, 1d, 3d, 10d, 11d));
+		testModifySettingToNullFail(new AddLayerRequest("newlayer",
+				LayerType.RASTER, "/foo", "/bar", "/foobar", null, 1, 1d, 3d,
+				10d, 11d));
+		testModifySettingToNullFail(new AddLayerRequest("newlayer",
+				LayerType.RASTER, "/foo", "/bar", "/foobar", 2, null, 1d, 3d,
+				10d, 11d));
+		testModifySettingToNullFail(new AddLayerRequest("newlayer",
+				LayerType.RASTER, "/foo", "/bar", "/foobar", 2, 1, null, 3d,
+				10d, 11d));
+		testModifySettingToNullFail(new AddLayerRequest("newlayer",
+				LayerType.RASTER, "/foo", "/bar", "/foobar", 2, 1, 1d, null,
+				10d, 11d));
+		testModifySettingToNullFail(new AddLayerRequest("newlayer",
+				LayerType.RASTER, "/foo", "/bar", "/foobar", 2, 1, 1d, 3d,
+				null, 11d));
+		testModifySettingToNullFail(new AddLayerRequest("newlayer",
+				LayerType.RASTER, "/foo", "/bar", "/foobar", 2, 1, 1d, 3d, 10d,
+				null));
+	}
+
+	private void testModifySettingToNullFail(AddLayerRequest layerModification) {
+		ClientResponse response = modifyLayer("0", layerModification);
+		assertEquals(ClientResponse.Status.BAD_REQUEST,
+				response.getClientResponseStatus());
+	}
+
 	private String getAttribute(RESTResource resource,
 			final Attributes attribute) {
 		List<ShortAttribute> attributes = resource.getAttribute();
@@ -325,6 +423,15 @@ public class LayersTest extends JerseyTest {
 		ClientResponse response = webResource.path("layers")
 				.type(MediaType.APPLICATION_JSON).entity(layer)
 				.post(ClientResponse.class);
+		return response;
+	}
+
+	private ClientResponse modifyLayer(String id,
+			AddLayerRequest layerModification) {
+		WebResource webResource = resource();
+		ClientResponse response = webResource.path("layers/" + id)
+				.type(MediaType.APPLICATION_JSON).entity(layerModification)
+				.put(ClientResponse.class);
 		return response;
 	}
 

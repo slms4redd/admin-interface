@@ -14,6 +14,8 @@ import it.geosolutions.unredd.geostore.model.UNREDDLayer;
 
 import java.util.List;
 
+import javax.ws.rs.WebApplicationException;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.fao.unredd.api.json.AddLayerRequest;
 import org.fao.unredd.api.json.LayerRepresentation;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
+import com.sun.jersey.api.client.UniformInterfaceException;
 
 @Component
 public class GeostoreLayers implements Layers {
@@ -48,6 +51,14 @@ public class GeostoreLayers implements Layers {
 	@Override
 	public long addLayer(AddLayerRequest addLayerRequest) {
 
+		RESTResource layerRestResource = toRESTResource(addLayerRequest);
+
+		long id = geostoreClient.insert(layerRestResource);
+
+		return id;
+	}
+
+	private RESTResource toRESTResource(AddLayerRequest addLayerRequest) {
 		UNREDDLayer unreddLayer = new UNREDDLayer();
 
 		unreddLayer.setAttribute(UNREDDLayer.Attributes.LAYERTYPE,
@@ -73,10 +84,7 @@ public class GeostoreLayers implements Layers {
 
 		RESTResource layerRestResource = unreddLayer.createRESTResource();
 		layerRestResource.setName(addLayerRequest.getName());
-
-		long id = geostoreClient.insert(layerRestResource);
-
-		return id;
+		return layerRestResource;
 	}
 
 	@Override
@@ -92,6 +100,19 @@ public class GeostoreLayers implements Layers {
 		}
 		Resource layerResource = resourceList.get(0);
 		return new GeostoreLayer(layerResource);
+	}
+
+	@Override
+	public void updateLayer(String id, AddLayerRequest layer) {
+		try {
+			geostoreClient.updateResource(Long.parseLong(id),
+					toRESTResource(layer));
+		} catch (UniformInterfaceException e) {
+			/*
+			 * Just propagate the exception to the client
+			 */
+			throw new WebApplicationException(e, e.getResponse().getStatus());
+		}
 	}
 
 }

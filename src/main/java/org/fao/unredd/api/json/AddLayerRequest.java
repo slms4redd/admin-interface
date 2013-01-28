@@ -1,5 +1,8 @@
 package org.fao.unredd.api.json;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.fao.unredd.api.model.LayerType;
 
 public class AddLayerRequest {
@@ -82,4 +85,31 @@ public class AddLayerRequest {
 		return maxy;
 	}
 
+	/**
+	 * Validates the fields of this instance, returning an array of validation
+	 * error descriptions
+	 * 
+	 * @return
+	 */
+	public List<String> validate() {
+		List<String> errors = new ArrayList<String>();
+		checkNull(errors, getName(), "name");
+		checkNull(errors, getType(), "type");
+		checkNull(errors, getDestOrigAbsPath(), "Data original path");
+		checkNull(errors, getDissMosaicPath(), "Dissemination mosaic path");
+		checkNull(errors, getStgMosaicPath(), "Staging mosaic path");
+		checkNull(errors, getMaxx(), "max x");
+		checkNull(errors, getMaxy(), "max y");
+		checkNull(errors, getMinx(), "min x");
+		checkNull(errors, getMiny(), "min y");
+		checkNull(errors, getPixelHeight(), "data height");
+		checkNull(errors, getPixelWidth(), "data width");
+		return errors;
+	}
+
+	private void checkNull(List<String> errors, Object object, String string) {
+		if (object == null) {
+			errors.add(string + " cannot be null");
+		}
+	}
 }
