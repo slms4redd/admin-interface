@@ -2,7 +2,6 @@ package org.fao.unredd.api.resources;
 
 import java.util.List;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -36,7 +35,6 @@ public class LayerResource {
 	}
 
 	@PUT
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addLayer(@PathParam("id") String id,
 			AddLayerRequest layerRequest) {
 		List<String> errors = layerRequest.validate();
@@ -53,7 +51,6 @@ public class LayerResource {
 	}
 
 	@DELETE
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteLayer(@PathParam("id") String id) {
 		try {
 			layers.deleteLayer(id);
