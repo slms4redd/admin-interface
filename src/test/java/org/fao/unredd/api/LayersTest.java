@@ -3,6 +3,7 @@ package org.fao.unredd.api;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
@@ -242,16 +243,21 @@ public class LayersTest extends JerseyTest {
 	}
 
 	@Test
-	public void testGeostoreClientError() throws Exception {
+	public void testModifyGeostoreClientError() throws Exception {
+		testModifyGeostoreClientError(404);
+		testModifyGeostoreClientError(500);
+	}
+
+	private void testModifyGeostoreClientError(int geostoreErrorCode) {
 		ClientResponse clientResponse = mock(ClientResponse.class);
-		when(clientResponse.getStatus()).thenReturn(404);
+		when(clientResponse.getStatus()).thenReturn(geostoreErrorCode);
 		doThrow(new UniformInterfaceException(clientResponse)).when(
 				geostoreClient).updateResource(anyLong(),
 				any(RESTResource.class));
 		ClientResponse response = modifyLayer("243", new AddLayerRequest(
 				"newlayer", LayerType.RASTER, "/foo", "/bar", "/foobar", 2, 1,
 				1d, 3d, 10d, 11d));
-		assertEquals(404, response.getStatus());
+		assertEquals(geostoreErrorCode, response.getStatus());
 	}
 
 	@Test
@@ -286,6 +292,36 @@ public class LayersTest extends JerseyTest {
 		testModifySettingToNullFail(new AddLayerRequest("newlayer",
 				LayerType.RASTER, "/foo", "/bar", "/foobar", 2, 1, 1d, 3d, 10d,
 				null));
+	}
+
+	@Test
+	public void testDeleteLayer() {
+		String id = "13";
+		ClientResponse response = deleteLayer(id);
+		assertEquals(ClientResponse.Status.NO_CONTENT,
+				response.getClientResponseStatus());
+		try {
+			response.getEntity(String.class);
+			fail();
+		} catch (UniformInterfaceException e) {
+		}
+
+		verify(geostoreClient).deleteResource(13L);
+	}
+
+	@Test
+	public void testDeleteGeostoreClientError() {
+		testDeleteGeostoreClientError(404);
+		testDeleteGeostoreClientError(500);
+	}
+
+	private void testDeleteGeostoreClientError(int value) {
+		ClientResponse clientResponse = mock(ClientResponse.class);
+		when(clientResponse.getStatus()).thenReturn(value);
+		doThrow(new UniformInterfaceException(clientResponse)).when(
+				geostoreClient).deleteResource(anyLong());
+		ClientResponse response = deleteLayer("243");
+		assertEquals(value, response.getStatus());
 	}
 
 	private void testModifySettingToNullFail(AddLayerRequest layerModification) {
@@ -441,6 +477,13 @@ public class LayersTest extends JerseyTest {
 				ClientResponse.class);
 		assertEquals(ClientResponse.Status.OK,
 				response.getClientResponseStatus());
+		return response;
+	}
+
+	private ClientResponse deleteLayer(String id) {
+		WebResource webResource = resource();
+		ClientResponse response = webResource.path("layers/" + id)
+				.type(MediaType.APPLICATION_JSON).delete(ClientResponse.class);
 		return response;
 	}
 }

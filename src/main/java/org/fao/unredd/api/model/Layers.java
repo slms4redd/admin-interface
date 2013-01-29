@@ -44,4 +44,14 @@ public interface Layers {
 	void updateLayer(String id, AddLayerRequest layer)
 			throws IllegalArgumentException;
 
+	/**
+	 * Deletes the layer with the specified ID
+	 * 
+	 * @param id
+	 * 
+	 * @throws IllegalArgumentException
+	 *             If there is no layer with the selected ID.
+	 */
+	void deleteLayer(String id);
+
 }

@@ -3,6 +3,7 @@ package org.fao.unredd.api.resources;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -48,6 +49,17 @@ public class LayerResource {
 			throw new NotFoundException(e.getMessage());
 		}
 
+		return Response.noContent().build();
+	}
+
+	@DELETE
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response deleteLayer(@PathParam("id") String id) {
+		try {
+			layers.deleteLayer(id);
+		} catch (IllegalArgumentException e) {
+			throw new NotFoundException(e.getMessage());
+		}
 		return Response.noContent().build();
 	}
 }

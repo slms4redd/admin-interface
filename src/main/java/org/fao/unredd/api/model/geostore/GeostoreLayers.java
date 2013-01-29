@@ -109,17 +109,40 @@ public class GeostoreLayers implements Layers {
 			geostoreClient.updateResource(Long.parseLong(id),
 					toRESTResource(layer));
 		} catch (UniformInterfaceException e) {
-			/*
-			 * To follow the contract of the Layers interface we need to throw
-			 * IAE in case of an nonexistent id. Just propagate the exception to
-			 * the client otherwise
-			 */
-			if (e.getResponse().getStatus() == 404) {
-				throw new IllegalArgumentException("Layer not found: " + id);
-			} else {
-				throw new WebApplicationException(e, e.getResponse()
-						.getStatus());
-			}
+			manageGeostoreServiceException(id, e);
+		}
+	}
+
+	@Override
+	public void deleteLayer(String id) {
+		try {
+			geostoreClient.deleteResource(Long.parseLong(id));
+		} catch (UniformInterfaceException e) {
+			manageGeostoreServiceException(id, e);
+		}
+	}
+
+	/**
+	 * To follow the contract of the Layers interface we need to throw IAE in
+	 * case of an nonexistent id. Just propagate the exception to the client
+	 * otherwise
+	 * 
+	 * @param id
+	 *            id of the referred layer
+	 * @param e
+	 *            exception got
+	 * @throws IllegalArgumentException
+	 *             If the exception is due to a 404
+	 * @throws WebApplicationException
+	 *             If the exception is not a 404
+	 */
+	private void manageGeostoreServiceException(String id,
+			UniformInterfaceException e) throws IllegalArgumentException,
+			WebApplicationException {
+		if (e.getResponse().getStatus() == 404) {
+			throw new IllegalArgumentException("Layer not found: " + id);
+		} else {
+			throw new WebApplicationException(e, e.getResponse().getStatus());
 		}
 	}
 
