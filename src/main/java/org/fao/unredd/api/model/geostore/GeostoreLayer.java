@@ -1,24 +1,29 @@
 package org.fao.unredd.api.model.geostore;
 
-import it.geosolutions.geostore.core.model.Attribute;
 import it.geosolutions.geostore.core.model.Resource;
+import it.geosolutions.geostore.services.dto.search.AndFilter;
+import it.geosolutions.geostore.services.dto.search.BaseField;
+import it.geosolutions.geostore.services.dto.search.CategoryFilter;
+import it.geosolutions.geostore.services.dto.search.FieldFilter;
+import it.geosolutions.geostore.services.dto.search.SearchOperator;
+import it.geosolutions.geostore.services.rest.GeoStoreClient;
+import it.geosolutions.unredd.geostore.model.UNREDDCategories;
 import it.geosolutions.unredd.geostore.model.UNREDDLayer;
 
-import java.util.NoSuchElementException;
+import java.util.List;
 
 import org.fao.unredd.api.json.LayerRepresentation;
 import org.fao.unredd.api.model.Layer;
 import org.fao.unredd.api.model.LayerType;
+import org.fao.unredd.api.model.LayerUpdates;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
+public class GeostoreLayer extends AbstractGeostoreElement implements Layer {
 
-public class GeostoreLayer implements Layer {
+	private GeoStoreClient geostoreClient;
 
-	private Resource resource;
-
-	public GeostoreLayer(Resource resource) {
-		this.resource = resource;
+	public GeostoreLayer(Resource resource, GeoStoreClient geostoreClient) {
+		super(resource);
+		this.geostoreClient = geostoreClient;
 	}
 
 	@Override
@@ -48,28 +53,16 @@ public class GeostoreLayer implements Layer {
 						.getNumberValue());
 	}
 
-	private Attribute getAttribute(String attributeName) {
-		try {
-			return Iterables.find(resource.getAttribute(), new AttributeFinder(
-					attributeName));
-		} catch (NoSuchElementException e) {
-			/*
-			 * Should never ask for an non existing attribute
-			 */
-			throw new RuntimeException(attributeName);
-		}
-	}
+	@Override
+	public LayerUpdates getLayerUpdates() {
+		AndFilter filter = new AndFilter(
+				new CategoryFilter(UNREDDCategories.LAYERUPDATE.getName(),
+						SearchOperator.EQUAL_TO), new FieldFilter(BaseField.ID,
+						Long.toString(resource.getId()),
+						SearchOperator.EQUAL_TO));
+		List<Resource> resourceList = geostoreClient.searchResources(filter,
+				null, null, true, true).getList();
+		return new GeostoreLayerUpdates(resourceList);
 
-	private class AttributeFinder implements Predicate<Attribute> {
-
-		private String attributeName;
-
-		public AttributeFinder(String attributeName) {
-			this.attributeName = attributeName;
-		}
-
-		public boolean apply(Attribute at) {
-			return at.getName().equals(attributeName);
-		}
 	}
 }

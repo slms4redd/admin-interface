@@ -15,7 +15,7 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 import org.fao.unredd.api.json.AddLayerRequest;
-import org.fao.unredd.api.json.ResponseRoot;
+import org.fao.unredd.api.json.LayersResponseRoot;
 import org.fao.unredd.api.model.Layers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,8 +32,8 @@ public class LayerListResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public ResponseRoot asJSON() {
-		return ResponseRoot.newLayers(layers.getJSON());
+	public LayersResponseRoot asJSON() {
+		return new LayersResponseRoot(layers.getJSON());
 	}
 
 	@POST

@@ -43,7 +43,8 @@ public class GeostoreLayers implements Layers {
 		return Iterables.transform(resources,
 				new Function<Resource, LayerRepresentation>() {
 					public LayerRepresentation apply(Resource resource) {
-						return new GeostoreLayer(resource).getJSON();
+						return new GeostoreLayer(resource, geostoreClient)
+								.getJSON();
 					}
 				});
 	}
@@ -99,7 +100,7 @@ public class GeostoreLayers implements Layers {
 			throw new IllegalArgumentException();
 		}
 		Resource layerResource = resourceList.get(0);
-		return new GeostoreLayer(layerResource);
+		return new GeostoreLayer(layerResource, geostoreClient);
 	}
 
 	@Override
