@@ -73,7 +73,7 @@ public class LayersTest extends AbstractRestTest {
 	@Test
 	public void testGetEmptyLayers() throws Exception {
 		ResourceList resourceList = mockResourceList();
-		mockGeostoreSearchAnswer(resourceList);
+		mockLayerSearchAnswer(resourceList);
 
 		ClientResponse response = getLayersOk();
 
@@ -85,7 +85,7 @@ public class LayersTest extends AbstractRestTest {
 	public void testGetOneLayer() throws Exception {
 		ResourceList resourceList = mockResourceList(mockLayer(1L, "newLayer",
 				LayerType.RASTER));
-		mockGeostoreSearchAnswer(resourceList);
+		mockLayerSearchAnswer(resourceList);
 
 		ClientResponse response = getLayersOk();
 
@@ -102,7 +102,7 @@ public class LayersTest extends AbstractRestTest {
 		ResourceList resourceList = mockResourceList(
 				mockLayer(0L, "newLayer0", LayerType.RASTER),
 				mockLayer(1L, "newLayer1", LayerType.VECTOR));
-		mockGeostoreSearchAnswer(resourceList);
+		mockLayerSearchAnswer(resourceList);
 
 		ClientResponse response = getLayersOk();
 
@@ -307,7 +307,7 @@ public class LayersTest extends AbstractRestTest {
 
 	@Test
 	public void testGetLayer() throws Exception {
-		mockGeostoreSearchAnswer(mockResourceList(mockLayer(12L, "new_layer",
+		mockLayerSearchAnswer(mockResourceList(mockLayer(12L, "new_layer",
 				LayerType.VECTOR)));
 
 		// Check actual contents by expected path
@@ -321,7 +321,7 @@ public class LayersTest extends AbstractRestTest {
 
 	@Test
 	public void testGetUnexistingLayerGives404() throws Exception {
-		mockGeostoreSearchAnswer(mockResourceList());
+		mockLayerSearchAnswer(mockResourceList());
 
 		ClientResponse response = getLayer("an-id-that-does-not-exist");
 		assertEquals(ClientResponse.Status.NOT_FOUND,

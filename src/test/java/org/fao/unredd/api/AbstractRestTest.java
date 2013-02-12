@@ -1,6 +1,5 @@
 package org.fao.unredd.api;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
@@ -8,9 +7,12 @@ import static org.mockito.Mockito.when;
 import it.geosolutions.geostore.core.model.Attribute;
 import it.geosolutions.geostore.core.model.Resource;
 import it.geosolutions.geostore.core.model.enums.DataType;
+import it.geosolutions.geostore.services.dto.search.AndFilter;
+import it.geosolutions.geostore.services.dto.search.CategoryFilter;
 import it.geosolutions.geostore.services.dto.search.SearchFilter;
 import it.geosolutions.geostore.services.rest.GeoStoreClient;
 import it.geosolutions.geostore.services.rest.model.ResourceList;
+import it.geosolutions.unredd.geostore.model.UNREDDCategories;
 import it.geosolutions.unredd.geostore.model.UNREDDLayer;
 
 import java.util.ArrayList;
@@ -18,6 +20,9 @@ import java.util.List;
 
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.fao.unredd.api.model.LayerType;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.mockito.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
@@ -66,11 +71,21 @@ public class AbstractRestTest extends JerseyTest {
 		return attribute;
 	}
 
-	protected void mockGeostoreSearchAnswer(ResourceList resourceList) {
+	protected void mockLayerUpdateSearchAnswer(ResourceList updatesResponse) {
 		when(
-				geostoreClient.searchResources(any(SearchFilter.class),
-						anyInt(), anyInt(), anyBoolean(), anyBoolean()))
-				.thenReturn(resourceList);
+				geostoreClient.searchResources(Matchers
+						.argThat(new LayerCategorySearchMatcher(
+								UNREDDCategories.LAYERUPDATE)), anyInt(),
+						anyInt(), anyBoolean(), anyBoolean())).thenReturn(
+				updatesResponse);
+	}
+
+	protected void mockLayerSearchAnswer(ResourceList layerResponse) {
+		when(
+				geostoreClient.searchResources(Matchers
+						.argThat(new LayerCategorySearchMatcher(
+								UNREDDCategories.LAYER)), anyInt(), anyInt(),
+						anyBoolean(), anyBoolean())).thenReturn(layerResponse);
 	}
 
 	protected ResourceList mockResourceList(Resource... resources) {
@@ -117,4 +132,40 @@ public class AbstractRestTest extends JerseyTest {
 
 		return ret;
 	}
+
+	private final class LayerCategorySearchMatcher extends
+			BaseMatcher<AndFilter> {
+		private UNREDDCategories category;
+
+		public LayerCategorySearchMatcher(UNREDDCategories category) {
+			super();
+			this.category = category;
+		}
+
+		@Override
+		public boolean matches(Object item) {
+			SearchFilter searchFilter = (SearchFilter) item;
+			if (item instanceof AndFilter) {
+				List<SearchFilter> filters = ((AndFilter) item).getFilters();
+				for (SearchFilter filter : filters) {
+					if (matches(filter)) {
+						return true;
+					}
+				}
+			} else if (searchFilter instanceof CategoryFilter) {
+				if (category.getName().equals(
+						((CategoryFilter) searchFilter).getName())) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		@Override
+		public void describeTo(Description description) {
+			description.appendText("layer search");
+		}
+	}
+
 }

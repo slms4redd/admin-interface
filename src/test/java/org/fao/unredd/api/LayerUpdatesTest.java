@@ -3,17 +3,10 @@ package org.fao.unredd.api;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import it.geosolutions.geostore.core.model.Attribute;
 import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.geostore.services.dto.search.AndFilter;
-import it.geosolutions.geostore.services.dto.search.CategoryFilter;
-import it.geosolutions.geostore.services.dto.search.SearchFilter;
-import it.geosolutions.geostore.services.rest.model.ResourceList;
-import it.geosolutions.unredd.geostore.model.UNREDDCategories;
 import it.geosolutions.unredd.geostore.model.UNREDDLayerUpdate;
 
 import java.util.ArrayList;
@@ -22,10 +15,8 @@ import java.util.List;
 
 import org.fao.unredd.api.json.LayerUpdateRepresentation;
 import org.fao.unredd.api.json.LayerUpdatesResponseRoot;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
+import org.fao.unredd.api.model.LayerType;
 import org.junit.Test;
-import org.mockito.Matchers;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -34,12 +25,13 @@ public class LayerUpdatesTest extends AbstractRestTest {
 
 	@Test
 	public void testGetLayerUpdate() {
-		ResourceList resourceList = mockResourceList(
+		mockLayerSearchAnswer(mockResourceList(mockLayer(1, "forest_mask",
+				LayerType.RASTER)));
+		mockLayerUpdateSearchAnswer(mockResourceList(
 				mockLayerUpdate(0L, "layerupdate0", "forest_mask", "2000",
 						null, null, "false"),
 				mockLayerUpdate(1L, "layerupdate1", "forest_mask", "2010",
-						null, null, "true"));
-		mockGeostoreSearchAnswer(resourceList);
+						null, null, "true")));
 
 		ClientResponse response = getLayerUpdatesOk();
 
@@ -62,23 +54,7 @@ public class LayerUpdatesTest extends AbstractRestTest {
 
 	@Test
 	public void testGetLayerUpdatesFromNonExistentLayer() throws Exception {
-		ResourceList layerResponse = mockResourceList();
-		ResourceList updatesResponse = mockResourceList(
-				mockLayerUpdate(0L, "layerupdate0", "forest_mask", "2000",
-						null, null, "false"),
-				mockLayerUpdate(1L, "layerupdate1", "forest_mask", "2010",
-						null, null, "true"));
-		when(
-				geostoreClient.searchResources(Matchers
-						.argThat(new LayerCategorySearchMatcher(
-								UNREDDCategories.LAYER)), anyInt(), anyInt(),
-						anyBoolean(), anyBoolean())).thenReturn(layerResponse);
-		when(
-				geostoreClient.searchResources(Matchers
-						.argThat(new LayerCategorySearchMatcher(
-								UNREDDCategories.LAYERUPDATE)), anyInt(),
-						anyInt(), anyBoolean(), anyBoolean())).thenReturn(
-				updatesResponse);
+		mockLayerSearchAnswer(mockResourceList());
 
 		ClientResponse response = getLayerUpdates();
 		assertEquals(404, response.getStatus());
@@ -121,37 +97,5 @@ public class LayerUpdatesTest extends AbstractRestTest {
 		ClientResponse response = webResource.path("layers/1/layerupdates")
 				.get(ClientResponse.class);
 		return response;
-	}
-
-	private final class LayerCategorySearchMatcher extends
-			BaseMatcher<AndFilter> {
-		private UNREDDCategories category;
-
-		public LayerCategorySearchMatcher(UNREDDCategories category) {
-			super();
-			this.category = category;
-		}
-
-		@Override
-		public boolean matches(Object item) {
-			if (item instanceof AndFilter) {
-				List<SearchFilter> filters = ((AndFilter) item).getFilters();
-				for (SearchFilter searchFilter : filters) {
-					if (searchFilter instanceof CategoryFilter) {
-						if (category.getName().equals(
-								((CategoryFilter) searchFilter).getName())) {
-							return true;
-						}
-					}
-				}
-			}
-
-			return false;
-		}
-
-		@Override
-		public void describeTo(Description description) {
-			description.appendText("layer search");
-		}
 	}
 }
