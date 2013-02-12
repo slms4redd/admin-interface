@@ -7,21 +7,32 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.fao.unredd.api.json.LayerUpdatesResponseRoot;
+import org.fao.unredd.api.model.Layer;
 import org.fao.unredd.api.model.LayerUpdates;
+import org.fao.unredd.api.model.Layers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@Path("/layerupdates")
-public class LayerUpdateListResource {
+@Path("/layers/{layerId}/layerupdates")
+public class LayerLayerUpdateListResource {
 
 	@Autowired
-	private LayerUpdates layerUpdates;
+	private Layers layers;
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public LayerUpdatesResponseRoot asJSON(@PathParam("layerId") String layerId) {
-		return new LayerUpdatesResponseRoot(layerUpdates.getJSON());
+		Layer layer;
+		try {
+			layer = layers.getLayer(layerId);
+		} catch (IllegalArgumentException e) {
+			throw new NotFoundException("No layer with the id: " + layerId);
+		}
+
+		LayerUpdates updates = layer.getLayerUpdates();
+
+		return new LayerUpdatesResponseRoot(updates.getJSON());
 	}
 
 }

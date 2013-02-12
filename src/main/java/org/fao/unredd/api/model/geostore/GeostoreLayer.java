@@ -1,16 +1,8 @@
 package org.fao.unredd.api.model.geostore;
 
 import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.geostore.services.dto.search.AndFilter;
-import it.geosolutions.geostore.services.dto.search.BaseField;
-import it.geosolutions.geostore.services.dto.search.CategoryFilter;
-import it.geosolutions.geostore.services.dto.search.FieldFilter;
-import it.geosolutions.geostore.services.dto.search.SearchOperator;
 import it.geosolutions.geostore.services.rest.GeoStoreClient;
-import it.geosolutions.unredd.geostore.model.UNREDDCategories;
 import it.geosolutions.unredd.geostore.model.UNREDDLayer;
-
-import java.util.List;
 
 import org.fao.unredd.api.json.LayerRepresentation;
 import org.fao.unredd.api.model.Layer;
@@ -55,14 +47,7 @@ public class GeostoreLayer extends AbstractGeostoreElement implements Layer {
 
 	@Override
 	public LayerUpdates getLayerUpdates() {
-		AndFilter filter = new AndFilter(
-				new CategoryFilter(UNREDDCategories.LAYERUPDATE.getName(),
-						SearchOperator.EQUAL_TO), new FieldFilter(BaseField.ID,
-						Long.toString(resource.getId()),
-						SearchOperator.EQUAL_TO));
-		List<Resource> resourceList = geostoreClient.searchResources(filter,
-				null, null, true, true).getList();
-		return new GeostoreLayerUpdates(resourceList);
+		return new GeostoreLayerLayerUpdates(resource.getId(), geostoreClient);
 
 	}
 }

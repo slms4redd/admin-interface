@@ -24,7 +24,7 @@ import com.sun.jersey.api.client.WebResource;
 public class LayerUpdatesTest extends AbstractRestTest {
 
 	@Test
-	public void testGetLayerUpdate() {
+	public void testGetLayerUpdateOfLayer() {
 		mockLayerSearchAnswer(mockResourceList(mockLayer(1, "forest_mask",
 				LayerType.RASTER)));
 		mockLayerUpdateSearchAnswer(mockResourceList(
@@ -60,6 +60,59 @@ public class LayerUpdatesTest extends AbstractRestTest {
 		assertEquals(404, response.getStatus());
 	}
 
+	@Test
+	public void testGetAllLayerUpdatesEmpty() {
+		mockLayerUpdateSearchAnswer(mockResourceList());
+
+		ClientResponse response = getAllLayerUpdates();
+		LayerUpdatesResponseRoot root = response
+				.getEntity(LayerUpdatesResponseRoot.class);
+		assertFalse(root.getLayerUpdates().iterator().hasNext());
+	}
+
+	@Test
+	public void testGetOneLayerUpdate() throws Exception {
+		mockLayerUpdateSearchAnswer(mockResourceList(mockLayerUpdate(1L,
+				"layerupdate1", "forest_mask", "2010", null, null, "true")));
+
+		ClientResponse response = getAllLayerUpdates();
+
+		LayerUpdatesResponseRoot root = response
+				.getEntity(LayerUpdatesResponseRoot.class);
+		Iterator<LayerUpdateRepresentation> layerIterator = root
+				.getLayerUpdates().iterator();
+		assertTrue(layerIterator.hasNext());
+		layerIterator.next();
+		assertFalse(layerIterator.hasNext());
+	}
+
+	@Test
+	public void testGetAllLayerUpdates() throws Exception {
+		mockLayerUpdateSearchAnswer(mockResourceList(
+				mockLayerUpdate(0L, "layerupdate0", "forest_mask", "2000",
+						null, null, "false"),
+				mockLayerUpdate(1L, "layerupdate1", "forest_mask", "2010",
+						null, null, "true")));
+
+		ClientResponse response = getAllLayerUpdates();
+
+		LayerUpdatesResponseRoot root = response
+				.getEntity(LayerUpdatesResponseRoot.class);
+		Iterator<LayerUpdateRepresentation> layerIterator = root
+				.getLayerUpdates().iterator();
+		assertTrue(layerIterator.hasNext());
+		LayerUpdateRepresentation layer = layerIterator.next();
+		assertEquals("0", layer.getId());
+		assertEquals("layerupdate0", layer.getName());
+
+		assertTrue(layerIterator.hasNext());
+		layer = layerIterator.next();
+		assertEquals("1", layer.getId());
+		assertEquals("layerupdate1", layer.getName());
+
+		assertFalse(layerIterator.hasNext());
+	}
+
 	private Resource mockLayerUpdate(long id, String name, String layerName,
 			String year, String month, String day, String published) {
 		Resource resource = mock(Resource.class);
@@ -83,6 +136,15 @@ public class LayerUpdatesTest extends AbstractRestTest {
 		ret.add(newAttribute(UNREDDLayerUpdate.Attributes.PUBLISHED.getName(),
 				published));
 		return ret;
+	}
+
+	private ClientResponse getAllLayerUpdates() {
+		WebResource webResource = resource();
+		ClientResponse response = webResource.path("layerupdates").get(
+				ClientResponse.class);
+		assertEquals(ClientResponse.Status.OK,
+				response.getClientResponseStatus());
+		return response;
 	}
 
 	private ClientResponse getLayerUpdatesOk() {
