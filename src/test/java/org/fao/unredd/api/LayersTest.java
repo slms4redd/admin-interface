@@ -10,15 +10,12 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import it.geosolutions.geostore.core.model.Attribute;
-import it.geosolutions.geostore.core.model.Resource;
 import it.geosolutions.geostore.services.dto.ShortAttribute;
 import it.geosolutions.geostore.services.rest.model.RESTResource;
 import it.geosolutions.geostore.services.rest.model.ResourceList;
 import it.geosolutions.unredd.geostore.model.UNREDDLayer;
 import it.geosolutions.unredd.geostore.model.UNREDDLayer.Attributes;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -86,8 +83,8 @@ public class LayersTest extends AbstractRestTest {
 
 	@Test
 	public void testGetOneLayer() throws Exception {
-		ResourceList resourceList = mockResourceList(mockResource(1L,
-				"newLayer", LayerType.RASTER));
+		ResourceList resourceList = mockResourceList(mockLayer(1L, "newLayer",
+				LayerType.RASTER));
 		mockGeostoreSearchAnswer(resourceList);
 
 		ClientResponse response = getLayersOk();
@@ -103,8 +100,8 @@ public class LayersTest extends AbstractRestTest {
 	@Test
 	public void testGetLayers() throws Exception {
 		ResourceList resourceList = mockResourceList(
-				mockResource(0L, "newLayer0", LayerType.RASTER),
-				mockResource(1L, "newLayer1", LayerType.VECTOR));
+				mockLayer(0L, "newLayer0", LayerType.RASTER),
+				mockLayer(1L, "newLayer1", LayerType.VECTOR));
 		mockGeostoreSearchAnswer(resourceList);
 
 		ClientResponse response = getLayersOk();
@@ -310,8 +307,8 @@ public class LayersTest extends AbstractRestTest {
 
 	@Test
 	public void testGetLayer() throws Exception {
-		mockGeostoreSearchAnswer(mockResourceList(mockResource(12L,
-				"new_layer", LayerType.VECTOR)));
+		mockGeostoreSearchAnswer(mockResourceList(mockLayer(12L, "new_layer",
+				LayerType.VECTOR)));
 
 		// Check actual contents by expected path
 		ClientResponse response = getLayerOk("12");
@@ -329,41 +326,6 @@ public class LayersTest extends AbstractRestTest {
 		ClientResponse response = getLayer("an-id-that-does-not-exist");
 		assertEquals(ClientResponse.Status.NOT_FOUND,
 				response.getClientResponseStatus());
-	}
-
-	private Resource mockResource(long id, String name, LayerType layerType) {
-		Resource resource = mock(Resource.class);
-		when(resource.getId()).thenReturn(id);
-		when(resource.getName()).thenReturn(name);
-		List<Attribute> attributes = createAttributeList(layerType, 1, 2, 1, 2,
-				1, 1, "OrigDataDestPath", "DissMosaicPath", "MosaicPath");
-		when(resource.getAttribute()).thenReturn(attributes);
-		return resource;
-	}
-
-	private List<Attribute> createAttributeList(LayerType layerType, double x0,
-			double x1, double y0, double y1, double pixelHeight,
-			double pixelWidth, String origDataDestPath, String dissMosaicPath,
-			String mosaicPath) {
-		List<Attribute> ret = new ArrayList<Attribute>();
-		ret.add(newAttribute(UNREDDLayer.Attributes.LAYERTYPE.getName(),
-				layerType.toString()));
-		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERY1.getName(), y1));
-		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERY0.getName(), y0));
-		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERX1.getName(), x1));
-		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERX0.getName(), x0));
-		ret.add(newAttribute(
-				UNREDDLayer.Attributes.RASTERPIXELHEIGHT.getName(), pixelHeight));
-		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERPIXELWIDTH.getName(),
-				pixelWidth));
-		ret.add(newAttribute(UNREDDLayer.Attributes.ORIGDATADESTPATH.getName(),
-				origDataDestPath));
-		ret.add(newAttribute(UNREDDLayer.Attributes.DISSMOSAICPATH.getName(),
-				dissMosaicPath));
-		ret.add(newAttribute(UNREDDLayer.Attributes.MOSAICPATH.getName(),
-				mosaicPath));
-
-		return ret;
 	}
 
 	private ClientResponse getLayerOk(String id) {

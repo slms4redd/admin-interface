@@ -11,10 +11,13 @@ import it.geosolutions.geostore.core.model.enums.DataType;
 import it.geosolutions.geostore.services.dto.search.SearchFilter;
 import it.geosolutions.geostore.services.rest.GeoStoreClient;
 import it.geosolutions.geostore.services.rest.model.ResourceList;
+import it.geosolutions.unredd.geostore.model.UNREDDLayer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
+import org.fao.unredd.api.model.LayerType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
@@ -80,4 +83,38 @@ public class AbstractRestTest extends JerseyTest {
 		return resourceList;
 	}
 
+	protected Resource mockLayer(long id, String name, LayerType layerType) {
+		Resource resource = mock(Resource.class);
+		when(resource.getId()).thenReturn(id);
+		when(resource.getName()).thenReturn(name);
+		List<Attribute> attributes = createLayerAttributeList(layerType, 1, 2,
+				1, 2, 1, 1, "OrigDataDestPath", "DissMosaicPath", "MosaicPath");
+		when(resource.getAttribute()).thenReturn(attributes);
+		return resource;
+	}
+
+	private List<Attribute> createLayerAttributeList(LayerType layerType,
+			double x0, double x1, double y0, double y1, double pixelHeight,
+			double pixelWidth, String origDataDestPath, String dissMosaicPath,
+			String mosaicPath) {
+		List<Attribute> ret = new ArrayList<Attribute>();
+		ret.add(newAttribute(UNREDDLayer.Attributes.LAYERTYPE.getName(),
+				layerType.toString()));
+		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERY1.getName(), y1));
+		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERY0.getName(), y0));
+		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERX1.getName(), x1));
+		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERX0.getName(), x0));
+		ret.add(newAttribute(
+				UNREDDLayer.Attributes.RASTERPIXELHEIGHT.getName(), pixelHeight));
+		ret.add(newAttribute(UNREDDLayer.Attributes.RASTERPIXELWIDTH.getName(),
+				pixelWidth));
+		ret.add(newAttribute(UNREDDLayer.Attributes.ORIGDATADESTPATH.getName(),
+				origDataDestPath));
+		ret.add(newAttribute(UNREDDLayer.Attributes.DISSMOSAICPATH.getName(),
+				dissMosaicPath));
+		ret.add(newAttribute(UNREDDLayer.Attributes.MOSAICPATH.getName(),
+				mosaicPath));
+
+		return ret;
+	}
 }

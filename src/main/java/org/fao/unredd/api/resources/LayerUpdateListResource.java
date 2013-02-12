@@ -23,7 +23,12 @@ public class LayerUpdateListResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public LayerUpdatesResponseRoot asJSON(@PathParam("layerId") String layerId) {
-		Layer layer = layers.getLayer(layerId);
+		Layer layer;
+		try {
+			layer = layers.getLayer(layerId);
+		} catch (IllegalArgumentException e) {
+			throw new NotFoundException("No layer with the id: " + layerId);
+		}
 
 		LayerUpdates updates = layer.getLayerUpdates();
 
