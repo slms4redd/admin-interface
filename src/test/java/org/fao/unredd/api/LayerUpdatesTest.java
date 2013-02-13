@@ -24,7 +24,7 @@ import com.sun.jersey.api.client.WebResource;
 public class LayerUpdatesTest extends AbstractRestTest {
 
 	@Test
-	public void testGetLayerUpdateOfLayer() {
+	public void testGetLayerUpdatesOfLayer() {
 		mockLayerSearchAnswer(mockResourceList(mockLayer(1, "forest_mask",
 				LayerType.RASTER)));
 		mockLayerUpdateSearchAnswer(mockResourceList(
@@ -111,6 +111,77 @@ public class LayerUpdatesTest extends AbstractRestTest {
 		assertEquals("layerupdate1", layer.getName());
 
 		assertFalse(layerIterator.hasNext());
+	}
+
+	@Test
+	public void testLayerUpdate() {
+		mockLayerUpdateSearchAnswer(mockResourceList(mockLayerUpdate(1L,
+				"layerupdate1", "forest_mask", "2010", null, null, "true")));
+
+		WebResource webResource = resource();
+		ClientResponse response = webResource.path("layerupdates/1").get(
+				ClientResponse.class);
+		assertEquals(ClientResponse.Status.OK,
+				response.getClientResponseStatus());
+
+		LayerUpdateRepresentation layerUpdate = response
+				.getEntity(LayerUpdateRepresentation.class);
+		assertEquals("layerupdate1", layerUpdate.getName());
+		assertEquals("2010", layerUpdate.getYear());
+	}
+
+	@Test
+	public void testNonexistentLayerUpdate() {
+		mockLayerUpdateSearchAnswer(mockResourceList());
+
+		WebResource webResource = resource();
+		ClientResponse response = webResource.path("layerupdates/1").get(
+				ClientResponse.class);
+		assertEquals(ClientResponse.Status.NOT_FOUND,
+				response.getClientResponseStatus());
+	}
+
+	@Test
+	public void testGetLayerLayerUpdate() {
+		mockLayerSearchAnswer(mockResourceList(mockLayer(1, "forest_mask",
+				LayerType.RASTER)));
+		mockLayerUpdateSearchAnswer(mockResourceList(mockLayerUpdate(0L,
+				"layerupdate0", "forest_mask", "2000", null, null, "false")));
+
+		WebResource webResource = resource();
+		ClientResponse response = webResource.path("layers/1/layerupdates/0")
+				.get(ClientResponse.class);
+		assertEquals(ClientResponse.Status.OK,
+				response.getClientResponseStatus());
+
+		LayerUpdateRepresentation layerUpdate = response
+				.getEntity(LayerUpdateRepresentation.class);
+		assertEquals("layerupdate0", layerUpdate.getName());
+		assertEquals("2000", layerUpdate.getYear());
+	}
+
+	@Test
+	public void testNonexistentLayerLayerUpdate() {
+		mockLayerSearchAnswer(mockResourceList(mockLayer(1, "forest_mask",
+				LayerType.RASTER)));
+		mockLayerUpdateSearchAnswer(mockResourceList());
+
+		WebResource webResource = resource();
+		ClientResponse response = webResource.path("layers/1/layerupdates/0")
+				.get(ClientResponse.class);
+		assertEquals(ClientResponse.Status.NOT_FOUND,
+				response.getClientResponseStatus());
+	}
+
+	@Test
+	public void testNonexistentLayer() {
+		mockLayerSearchAnswer(mockResourceList());
+
+		WebResource webResource = resource();
+		ClientResponse response = webResource.path("layers/1/layerupdates/0")
+				.get(ClientResponse.class);
+		assertEquals(ClientResponse.Status.NOT_FOUND,
+				response.getClientResponseStatus());
 	}
 
 	private Resource mockLayerUpdate(long id, String name, String layerName,

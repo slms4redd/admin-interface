@@ -6,4 +6,6 @@ public interface LayerUpdates {
 
 	Iterable<LayerUpdateRepresentation> getJSON();
 
+	LayerUpdate getLayerUpdate(String updateId);
+
 }

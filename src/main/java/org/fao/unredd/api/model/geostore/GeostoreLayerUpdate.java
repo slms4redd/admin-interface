@@ -4,8 +4,10 @@ import it.geosolutions.geostore.core.model.Resource;
 import it.geosolutions.unredd.geostore.model.UNREDDLayerUpdate;
 
 import org.fao.unredd.api.json.LayerUpdateRepresentation;
+import org.fao.unredd.api.model.LayerUpdate;
 
-public class GeostoreLayerUpdate extends AbstractGeostoreElement {
+public class GeostoreLayerUpdate extends AbstractGeostoreElement implements
+		LayerUpdate {
 
 	public GeostoreLayerUpdate(Resource resource) {
 		super(resource);
