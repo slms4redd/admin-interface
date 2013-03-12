@@ -33,5 +33,15 @@
                 <goal>tomcat:run</goal>
             </goals>
         </action>
+        <action>
+            <actionName>CUSTOM-Debug on NetBeans</actionName>
+            <displayName>Debug on NetBeans</displayName>
+            <goals>
+                <goal>jetty:run</goal>
+            </goals>
+            <properties>
+                <jpda.listen>maven</jpda.listen>
+            </properties>
+        </action>
         
     </actions>
