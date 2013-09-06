@@ -37,7 +37,7 @@ public class ChartScriptReprocess extends HttpServlet {
         String   chartName = client.getResource(id).getName();
         
         LOGGER.info("Saving flow config: " + Util.getGeostoreFlowSaveDir(getServletContext()) + File.separator + "reprocess");
-        Util.saveReprocessFile(getServletContext(), getXml(chartName), Util.getGeostoreFlowSaveDir(getServletContext()) + File.separator + "reprocess");
+        Util.saveReprocessFile(getServletContext(), getXml(chartName), Util.getGeostoreFlowSaveDir(getServletContext()));
         
         response.sendRedirect("ChartScriptList");
     }

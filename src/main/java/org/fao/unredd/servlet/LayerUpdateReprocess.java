@@ -39,7 +39,7 @@ public class LayerUpdateReprocess extends HttpServlet {
         String month     = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.MONTH);
         
         //System.out.println("Saving flow config: " + Util.getGeostoreFlowSaveDir(getServletContext()) + File.separator + "reprocess"); // DEBUG
-        Util.saveReprocessFile(getServletContext(), getXml(layerName, year, month), Util.getGeostoreFlowSaveDir(getServletContext()) + File.separator + "reprocess");
+        Util.saveReprocessFile(getServletContext(), getXml(layerName, year, month), Util.getGeostoreFlowSaveDir(getServletContext()));
         
         //RequestDispatcher rd = request.getRequestDispatcher("LayerUpdateList?layer=" + layerName);
         //rd.forward(request, response);
