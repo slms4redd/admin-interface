@@ -9,11 +9,14 @@ import java.util.List;
 import it.geosolutions.unredd.geostore.model.UNREDDStatsDef;
 import it.geosolutions.geostore.services.rest.GeoStoreClient;
 import it.geosolutions.geostore.services.rest.model.RESTResource;
+
+import org.fao.test.FunctionalTestSuite;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import static org.junit.Assert.*;
@@ -22,6 +25,7 @@ import static org.junit.Assert.*;
  *
  * @author sgiaccio
  */
+@Category(FunctionalTestSuite.class)
 public class StatsDefEditTest {
     private final static Logger LOGGER = LoggerFactory.getLogger(StatsDefEditTest.class);
 

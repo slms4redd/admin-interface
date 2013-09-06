@@ -60,11 +60,19 @@
                     </td>
                 </tr>
                 <tr>
-                    <td title="Relative path where the geotiff has to be copied in">
-                        Destination absolute path
+                    <td title="Absolute path where the geotiff has to be copied in, during ingestion flow">
+                        Staging mosaic path
                     </td>
                     <td>
                         <input type="text" name="<%= UNREDDLayer.Attributes.MOSAICPATH.getName() %>" id="<%= UNREDDLayer.Attributes.MOSAICPATH.getName() %>" value="${layer.mosaicPath}">
+                    </td>
+                </tr>
+                <tr>
+                    <td title="Absolute path where the geotiff has to be copied in, during publish flow">
+                        Dissemination mosaic path
+                    </td>
+                    <td>
+                        <input type="text" name="<%= UNREDDLayer.Attributes.DISSMOSAICPATH.getName() %>" id="<%= UNREDDLayer.Attributes.DISSMOSAICPATH.getName() %>" value="${layer.dissMosaicPath}">
                     </td>
                 </tr>
                 <tr>

@@ -41,6 +41,7 @@ public class ChartDataList extends HttpServlet {
             UNREDDGeostoreManager manager = Util.getGeostoreManager(getServletContext());
             List<Resource> relatedStatsDef = manager.searchChartDataByChartScript(chartScriptName);
             request.setAttribute("chartData", relatedStatsDef);
+            request.setAttribute("geostoreURL", Util.getGeostoreRestURL(getServletContext()));
 
             RequestDispatcher rd = request.getRequestDispatcher("chart-data-list.jsp");
             rd.forward(request, response);

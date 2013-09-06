@@ -40,10 +40,10 @@ public class StatsDataList extends HttpServlet {
             List<Resource> resources;
             if (statsDefName == null || "".equals(statsDefName)) {
                 // if no layer is given in http parameters, find all stats data
-                resources = manager.searchStatsDataByStatsDef2(null);
+                resources = manager.searchStatsDataByStatsDef(null);
             } else {
                 // otherwise find all stats with the given statsDef attribute
-                resources = manager.searchStatsDataByStatsDef2(statsDefName);
+                resources = manager.searchStatsDataByStatsDef(statsDefName);
                 //request.setAttribute("statsDef", statsDefName);
             }
             

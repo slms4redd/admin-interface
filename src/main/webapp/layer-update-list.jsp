@@ -79,7 +79,7 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
                     </td>
                     <td>
                         <% if ("true".equals(unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.PUBLISHED))) { %>
-                            <a href="LayerUpdatePublish?action=republish&layerUpdateId=<%= layerUpdate.getId() %>">[republish]</a>
+                            <a href="LayerUpdatePublish?action=publish&layerUpdateId=<%= layerUpdate.getId() %>">[republish]</a>
                         <% } else { %>
                             -
                         <% } %>

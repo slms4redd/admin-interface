@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans
-xmlns="http://www.springframework.org/schema/beans"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xmlns:p="http://www.springframework.org/schema/p"
-xmlns:aop="http://www.springframework.org/schema/aop"
-xmlns:context="http://www.springframework.org/schema/context"
-xmlns:jee="http://www.springframework.org/schema/jee"
-xmlns:tx="http://www.springframework.org/schema/tx"
-xsi:schemaLocation=" http://www.springframework.org/schema/aop
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation=" http://www.springframework.org/schema/aop
 http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
 http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
@@ -16,41 +12,41 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd
 http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
 http://www.springframework.org/schema/tx
 http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
-default-autowire="autodetect">
-    <import resource="security.xml"/>
+	default-autowire="autodetect">
+	<import resource="security.xml" />
 
-    <bean id="geostoreRestUrl" class="java.lang.String">
-    	<constructor-arg type="String" value="http://localhost:9191/geostore/rest"/>
-    </bean>
-    <bean id="geostoreUsername" class="java.lang.String">
-    	<constructor-arg type="String" value="admin"/>
-    </bean>
-    <bean id="geostorePassword" class="java.lang.String">
-    	<constructor-arg type="String" value="admin"/>
-    </bean>
+	<context:component-scan base-package="org.fao.unredd.api" />
 
-    <bean id="geoStoreClient" class="it.geosolutions.geostore.services.rest.GeoStoreClient">
-        <property name="geostoreRestUrl" ref="geostoreRestUrl"/>
-        <property name="username" ref="geostoreUsername"/>
-        <property name="password" ref="geostorePassword"/>
-    </bean>
-    
-    <!-- didn't find any other way but to repeat values - will do later -->
+	<bean id="geostoreRestUrl" class="java.lang.String">
+		<constructor-arg type="String"
+			value="http://demo1.geo-solutions.it/stg_geostore/rest" />
+	</bean>
+	<bean id="geostoreUsername" class="java.lang.String">
+		<constructor-arg type="String" value="admin" />
+	</bean>
+	<bean id="geostorePassword" class="java.lang.String">
+		<constructor-arg type="String" value="Unr3dd" />
+	</bean>
+
+	<bean id="layers" class="org.fao.unredd.api.model.geostore.GeostoreLayers" />
+
     <bean id="unreddGeostoreManager" class="it.geosolutions.unredd.geostore.UNREDDGeostoreManager">
         <constructor-arg ref="geostoreRestUrl"/>
         <constructor-arg ref="geostoreUsername"/>
         <constructor-arg ref="geostorePassword"/>
     </bean>
-
-    <!--
-    <bean id="flowReporocessFilePath" class="java.lang.String">
-    	<constructor-arg type="String" value="[PATH]"/>
-    </bean>
-    -->
     
-    <bean id="configure" class="org.fao.unredd.Configure">
-        <property name="geobatchFlowSaveDir" value="/Users/sgiaccio/test" />
-        <!-- <property name="geobatchFlowSaveDir" value="/var/geobatch/drc/input" /> -->
-    </bean>
-        
+	<bean id="geostoreClient" class="it.geosolutions.geostore.services.rest.GeoStoreClient">
+		<property name="geostoreRestUrl" ref="geostoreRestUrl" />
+		<property name="username" ref="geostoreUsername" />
+		<property name="password" ref="geostorePassword" />
+	</bean>
+
+	<!-- <bean id="flowReporocessFilePath" class="java.lang.String"> <constructor-arg 
+		type="String" value="[PATH]"/> </bean> -->
+
+	<bean id="configure" class="org.fao.unredd.Configure">
+		<property name="geobatchFlowSaveDir" value="/var/stg_geobatch/input" />
+	</bean>
+
 </beans>

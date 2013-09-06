@@ -44,6 +44,19 @@
         <param-value>admin</param-value>
     </context-param>
     -->
+	<servlet>
+		<servlet-name>Jersey REST Service</servlet-name>
+		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
+		<init-param>
+			<!-- 
+			We need to include jackson here in order to use it to serialize return
+			results to JSON, which is way better
+			-->
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>org.fao.unredd.api.resources;org.codehaus.jackson.jaxrs</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
     <servlet>
         <servlet-name>LayerList</servlet-name>
         <servlet-class>org.fao.unredd.servlet.ResourceList</servlet-class>
@@ -198,6 +211,10 @@
         <servlet-name>ChartDataList</servlet-name>
         <servlet-class>org.fao.unredd.servlet.ChartDataList</servlet-class>
     </servlet>
+	<servlet-mapping>
+		<servlet-name>Jersey REST Service</servlet-name>
+		<url-pattern>/api/*</url-pattern>
+	</servlet-mapping>
     <servlet-mapping>
         <servlet-name>LayerList</servlet-name>
         <url-pattern>/LayerList</url-pattern>
