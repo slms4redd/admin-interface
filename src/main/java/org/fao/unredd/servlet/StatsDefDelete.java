@@ -42,7 +42,7 @@ public class StatsDefDelete extends HttpServlet {
         try {
             chartScripts = manager.searchChartScriptByStatsDef(name);
 
-            if (!chartScripts.isEmpty())
+            if (chartScripts != null && !chartScripts.isEmpty())
             {
                 request.setAttribute("chartScripts", chartScripts);
                 RequestDispatcher rd = request.getRequestDispatcher("chart-scripts-to-be-deleted.jsp");
