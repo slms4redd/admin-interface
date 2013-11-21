@@ -50,11 +50,15 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
                 <td>
                     <ul>
                         <%
-                        for (Resource chartScript : (List<Resource>)request.getAttribute("relatedChartScripts")) { 
+                        List<Resource> chartScripts = (List<Resource>)request.getAttribute("relatedChartScripts");
+                        if(chartScripts != null){
+                           for (Resource chartScript : chartScripts) {
                         %>
                             <a href="ChartScriptShow?id=<%= chartScript.getId() %>"><%= chartScript.getName() %></a>
                             <br>
-                        <% } %>
+                        <% }
+                         }
+                        %>
                     </ul>
                 </td>
             </tr>
