@@ -6,7 +6,6 @@ package org.fao.unredd.servlet;
  */
 
 import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.geostore.services.rest.GeoStoreClient;
 import it.geosolutions.unredd.geostore.model.UNREDDCategories;
 import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
 
@@ -21,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 
 import org.fao.unredd.Util;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -28,6 +28,9 @@ import org.fao.unredd.Util;
  */
 public class ChartScriptShow extends HttpServlet {
 
+    @Autowired
+    private UNREDDPersistenceFacade manager;
+    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -46,8 +49,7 @@ public class ChartScriptShow extends HttpServlet {
             long id = Long.parseLong(sId);
             
             // get the resource
-            GeoStoreClient client = Util.getGeostoreClient(getServletContext());
-            Resource res = client.getResource(id);
+            Resource res = manager.getResource(id, false);
 
             //UNREDDChartScript chartScript = new UNREDDChartScript(res);
             //List<String> lRelatedStatDefs = chartScript.getReverseAttributes(UNREDDChartScript.ReverseAttributes.STATSDEF.getName());
@@ -59,7 +61,6 @@ public class ChartScriptShow extends HttpServlet {
         }
         
         try {
-            UNREDDPersistenceFacade manager = Util.getGeostoreManager(getServletContext());
             List<Resource> statsDefs = manager.getUNREDDResources(UNREDDCategories.STATSDEF);
             request.setAttribute("statsDefList", statsDefs);
             

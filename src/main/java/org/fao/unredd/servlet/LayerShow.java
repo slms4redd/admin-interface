@@ -6,7 +6,6 @@ package org.fao.unredd.servlet;
  */
 
 import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.geostore.services.rest.GeoStoreClient;
 import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
 
 import java.io.IOException;
@@ -23,6 +22,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.fao.unredd.LayerBean;
 import org.fao.unredd.Util;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
@@ -31,6 +31,9 @@ import org.fao.unredd.Util;
  */
 public class LayerShow extends HttpServlet {
 
+    @Autowired
+    private UNREDDPersistenceFacade manager;
+    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -50,21 +53,20 @@ public class LayerShow extends HttpServlet {
         layerBean.setGeostoreUrl(url);
         layerBean.setGeostoreUserId(user);
         layerBean.setGeostorePassword(pwd);
+        
         try {
             layerBean.initWithId(id);
             request.setAttribute("layer", layerBean);
             
             String layerName = layerBean.getName();
             
-            UNREDDPersistenceFacade manager = Util.getGeostoreManager(getServletContext());
             List<Resource> relatedStatsDefs = manager.searchStatsDefByLayer(layerName);
             request.setAttribute("statsDefs", relatedStatsDefs);
             
             List<Resource> relatedLayerUpdates = manager.searchLayerUpdatesByLayerName(layerName);
             request.setAttribute("layerUpdates", relatedLayerUpdates);
             
-            GeoStoreClient client = Util.getGeostoreClient(getServletContext());
-            String data = client.getData(id, MediaType.WILDCARD_TYPE);
+            String data = manager.getData(id, MediaType.WILDCARD_TYPE);
 
             request.setAttribute("storedData", data);
         } catch (Exception ex) {

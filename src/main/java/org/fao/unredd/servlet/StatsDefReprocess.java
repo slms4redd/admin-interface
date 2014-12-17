@@ -5,14 +5,18 @@
 package org.fao.unredd.servlet;
 
 import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.geostore.services.rest.GeoStoreClient;
+import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
+
 import java.io.File;
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.fao.unredd.Util;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -20,6 +24,9 @@ import org.fao.unredd.Util;
  */
 public class StatsDefReprocess extends HttpServlet {
 
+    @Autowired
+    private UNREDDPersistenceFacade manager;
+    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -31,9 +38,7 @@ public class StatsDefReprocess extends HttpServlet {
             throws ServletException, IOException {
         Long   statsDefId = Long.parseLong(request.getParameter("id"));
         
-        GeoStoreClient client = Util.getGeostoreClient(getServletContext());
-
-        Resource unreddStatsDefResource = client.getResource(statsDefId);
+        Resource unreddStatsDefResource = manager.getResource(statsDefId, false);
         String statsDefName = unreddStatsDefResource.getName();
         
         String xml = getXml(statsDefName);

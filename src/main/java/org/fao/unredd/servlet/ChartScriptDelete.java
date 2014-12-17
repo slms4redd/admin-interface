@@ -5,7 +5,6 @@
 package org.fao.unredd.servlet;
 
 import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.geostore.services.rest.GeoStoreClient;
 import it.geosolutions.unredd.geostore.model.UNREDDChartScript;
 import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
 
@@ -20,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 
 import org.fao.unredd.Util;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -27,6 +27,9 @@ import org.fao.unredd.Util;
  */
 public class ChartScriptDelete extends HttpServlet {
 
+    @Autowired
+    private UNREDDPersistenceFacade manager;
+    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -37,19 +40,17 @@ public class ChartScriptDelete extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, UnsupportedEncodingException {
         long id = Long.parseLong(request.getParameter("id"));
-        GeoStoreClient client = Util.getGeostoreClient(getServletContext());
         
-        Resource resource = client.getResource(id);
+        Resource resource = manager.getResource(id, false);
         if (!UNREDDChartScript.CATEGORY_NAME.equals(resource.getCategory().getName()))
             throw new ServletException("Category (resource id = " + id + " is not a " + UNREDDChartScript.CATEGORY_NAME);
         
-        UNREDDPersistenceFacade manager = Util.getGeostoreManager(getServletContext());
-        client.deleteResource(id);
+        manager.deleteResource(id);
         try {
             // delete related ChartData
             List<Resource> layerUpdates = manager.searchChartDataByChartScript(resource.getName());
             for (Resource res : layerUpdates)
-                client.deleteResource(res.getId());
+                manager.deleteResource(res.getId());
         } catch (JAXBException ex) {
             throw new ServletException(ex);
         }

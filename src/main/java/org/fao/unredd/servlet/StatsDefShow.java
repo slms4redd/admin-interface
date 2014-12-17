@@ -6,7 +6,6 @@ package org.fao.unredd.servlet;
  */
 
 import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.geostore.services.rest.GeoStoreClient;
 import it.geosolutions.unredd.geostore.model.UNREDDCategories;
 import it.geosolutions.unredd.geostore.model.UNREDDStatsDef;
 import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
@@ -24,6 +23,7 @@ import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
 
 import org.fao.unredd.Util;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -31,6 +31,9 @@ import org.fao.unredd.Util;
  */
 public class StatsDefShow extends HttpServlet {
 
+    @Autowired
+    private UNREDDPersistenceFacade manager;
+    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -46,17 +49,10 @@ public class StatsDefShow extends HttpServlet {
             String name = request.getParameter("name");
 
             if (name != null && !"".equals(name))
-            {
-                GeoStoreClient client = Util.getGeostoreClient(getServletContext());
-                
-                //long id = Long.parseLong(sId);
-                //Resource res = client.getResource(id);
-                
-                UNREDDPersistenceFacade manager = Util.getGeostoreManager(getServletContext());
-                
+            {   
                 Resource res = manager.searchResourceByName(name, UNREDDCategories.STATSDEF);
                 
-                String data = client.getData(res.getId(), MediaType.WILDCARD_TYPE);
+                String data = manager.getData(res.getId(), MediaType.WILDCARD_TYPE);
 
                 request.setAttribute("resource", res);
 
@@ -81,7 +77,6 @@ public class StatsDefShow extends HttpServlet {
                 request.setAttribute("storedData", "");
             }
 
-            UNREDDPersistenceFacade manager = Util.getGeostoreManager(getServletContext());
             List<Resource> layers = manager.getLayers();
             request.setAttribute("layerList", layers);
 

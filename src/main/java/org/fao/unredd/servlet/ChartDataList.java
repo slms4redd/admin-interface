@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 
 import org.fao.unredd.Util;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -25,6 +26,9 @@ import org.fao.unredd.Util;
  */
 public class ChartDataList extends HttpServlet {
 
+    @Autowired
+    private UNREDDPersistenceFacade manager;
+    
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -41,7 +45,6 @@ public class ChartDataList extends HttpServlet {
         String chartScriptName = request.getParameter("chart_script");
 
         try {
-            UNREDDPersistenceFacade manager = Util.getGeostoreManager(getServletContext());
             List<Resource> relatedStatsDef = manager.searchChartDataByChartScript(chartScriptName);
             request.setAttribute("chartData", relatedStatsDef);
             request.setAttribute("geostoreURL", Util.getGeostoreRestURL(getServletContext()));

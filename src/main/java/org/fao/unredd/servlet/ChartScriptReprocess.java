@@ -4,15 +4,19 @@
  */
 package org.fao.unredd.servlet;
 
-import it.geosolutions.geostore.services.rest.GeoStoreClient;
+import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
+
 import java.io.File;
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.fao.unredd.Util;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -21,6 +25,9 @@ import org.slf4j.LoggerFactory;
 public class ChartScriptReprocess extends HttpServlet {
 
     private final static org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ChartScriptByLayer.class);
+    
+    @Autowired
+    private UNREDDPersistenceFacade manager;
     
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -32,9 +39,7 @@ public class ChartScriptReprocess extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Long id   = Long.parseLong(request.getParameter("id"));
-        
-        GeoStoreClient client = Util.getGeostoreClient(getServletContext());
-        String   chartName = client.getResource(id).getName();
+        String   chartName = manager.getResource(id, false).getName();
         
         LOGGER.info("Saving flow config: " + Util.getGeostoreFlowSaveDir(getServletContext()) + File.separator + "reprocess");
         Util.saveReprocessFile(getServletContext(), getXml(chartName), Util.getGeostoreFlowSaveDir(getServletContext()));

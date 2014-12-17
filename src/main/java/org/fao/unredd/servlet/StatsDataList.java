@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 
 import org.fao.unredd.Util;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -26,6 +27,9 @@ import org.fao.unredd.Util;
  */
 public class StatsDataList extends HttpServlet {
 
+    @Autowired
+    private UNREDDPersistenceFacade manager;
+    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -38,8 +42,6 @@ public class StatsDataList extends HttpServlet {
         String statsDefName = request.getParameter("stats_def");
         
         try {
-            UNREDDPersistenceFacade manager = Util.getGeostoreManager(getServletContext());
-            
             List<Resource> resources;
             if (statsDefName == null || "".equals(statsDefName)) {
                 // if no layer is given in http parameters, find all stats data

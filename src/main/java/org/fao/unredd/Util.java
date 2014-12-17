@@ -99,29 +99,29 @@ public class Util {
         return conf.getGeobatchFlowSaveDir();
     }
     
-    public static GeoStoreClient getGeostoreClient(ServletContext servletContext) {
-        ApplicationContext beanFactory =
-            WebApplicationContextUtils
-                .getRequiredWebApplicationContext(servletContext);
+//    public static GeoStoreClient getGeostoreClient(ServletContext servletContext) {
+//        ApplicationContext beanFactory =
+//            WebApplicationContextUtils
+//                .getRequiredWebApplicationContext(servletContext);
+//
+//        GeoStoreClient client =
+//             (GeoStoreClient)beanFactory
+//                  .getBean("geoStoreClient", GeoStoreClient.class);
+//        
+//        return client;
+//    }
 
-        GeoStoreClient client =
-             (GeoStoreClient)beanFactory
-                  .getBean("geoStoreClient", GeoStoreClient.class);
-        
-        return client;
-    }
-
-    public static UNREDDPersistenceFacade getGeostoreManager(ServletContext servletContext) {
-        ApplicationContext beanFactory =
-            WebApplicationContextUtils
-                .getRequiredWebApplicationContext(servletContext);
-
-        UNREDDGeostoreManager manager =
-             (UNREDDGeostoreManager)beanFactory
-                  .getBean("unreddGeostoreManager", UNREDDGeostoreManager.class);
-        
-        return manager;
-    }
+//    public static UNREDDPersistenceFacade getGeostoreManager(ServletContext servletContext) {
+//        ApplicationContext beanFactory =
+//            WebApplicationContextUtils
+//                .getRequiredWebApplicationContext(servletContext);
+//
+//        UNREDDGeostoreManager manager =
+//             (UNREDDGeostoreManager)beanFactory
+//                  .getBean("unreddGeostoreManager", UNREDDGeostoreManager.class);
+//        
+//        return manager;
+//    }
     
     /*********
      * Returns the list of all layers

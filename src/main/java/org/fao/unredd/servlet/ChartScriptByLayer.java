@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.fao.unredd.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -29,6 +30,9 @@ import org.slf4j.LoggerFactory;
 public class ChartScriptByLayer extends HttpServlet {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ChartScriptByLayer.class);
+    
+    @Autowired
+    private UNREDDPersistenceFacade manager;
     
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -40,8 +44,6 @@ public class ChartScriptByLayer extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
         String layerName = request.getParameter("name");
-        
-        UNREDDPersistenceFacade manager = Util.getGeostoreManager(getServletContext());
         
         Set<Resource> chartScripts = searchChartScriptByLayerName(layerName, manager);
         

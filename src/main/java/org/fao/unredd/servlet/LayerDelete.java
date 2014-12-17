@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 
 import org.fao.unredd.Util;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -26,6 +27,9 @@ import org.fao.unredd.Util;
  */
 public class LayerDelete extends HttpServlet {
 
+    @Autowired
+    private UNREDDPersistenceFacade manager;
+    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -37,7 +41,6 @@ public class LayerDelete extends HttpServlet {
             throws ServletException, IOException, UnsupportedEncodingException {
         String name = request.getParameter("name");
         
-        UNREDDPersistenceFacade manager = Util.getGeostoreManager(getServletContext());
         List<Resource> statsDefs;
         try {
             statsDefs = manager.searchStatsDefByLayer(name);

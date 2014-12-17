@@ -5,7 +5,6 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.services.rest.GeoStoreClient;
 import it.geosolutions.geostore.services.rest.model.RESTResource;
 import it.geosolutions.unredd.geostore.model.UNREDDLayer;
 import it.geosolutions.unredd.geostore.model.UNREDDLayerUpdate;
@@ -21,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 
 import org.fao.unredd.Util;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -28,6 +28,9 @@ import org.fao.unredd.Util;
  */
 public class LayerUpdatePublish extends HttpServlet {
 
+    @Autowired
+    private UNREDDPersistenceFacade manager;
+    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -41,10 +44,7 @@ public class LayerUpdatePublish extends HttpServlet {
         Long   layerUpdateId = Long.parseLong(request.getParameter("layerUpdateId"));
         String action  = request.getParameter("action");
         
-        GeoStoreClient client = Util.getGeostoreClient(getServletContext());
-        UNREDDPersistenceFacade manager = Util.getGeostoreManager(getServletContext());
-
-        UNREDDLayerUpdate unreddLayerUpdate = new UNREDDLayerUpdate(client.getResource(layerUpdateId));
+        UNREDDLayerUpdate unreddLayerUpdate = new UNREDDLayerUpdate(manager.getResource(layerUpdateId, false));
         String layerName = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.LAYER);
         UNREDDLayer unreddLayer = new UNREDDLayer(manager.searchLayer(layerName));
         String format    = unreddLayer.getAttribute(UNREDDLayer.Attributes.LAYERTYPE);
@@ -64,7 +64,7 @@ public class LayerUpdatePublish extends HttpServlet {
         if (publish) { // only publish action is implemented in GeoBatch for now
             xml = getPublishXml(layerName, format, year, month, day);
             Util.saveReprocessFile(getServletContext(), xml, Util.getGeostoreFlowSaveDir(getServletContext()) + File.separator + "publish");
-            client.updateResource(layerUpdateId, resource);
+            manager.updateResource(layerUpdateId, resource);
             
             response.sendRedirect("LayerUpdateList?layer=" + layerName);
         }

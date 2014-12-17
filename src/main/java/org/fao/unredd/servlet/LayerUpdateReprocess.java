@@ -4,21 +4,27 @@
  */
 package org.fao.unredd.servlet;
 
-import it.geosolutions.geostore.services.rest.GeoStoreClient;
 import it.geosolutions.unredd.geostore.model.UNREDDLayerUpdate;
-import java.io.File;
+import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
+
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.fao.unredd.Util;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
  * @author sgiaccio
  */
 public class LayerUpdateReprocess extends HttpServlet {
+    
+    @Autowired
+    private UNREDDPersistenceFacade manager;
     
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -31,9 +37,7 @@ public class LayerUpdateReprocess extends HttpServlet {
             throws ServletException, IOException {
         Long   layerId   = Long.parseLong(request.getParameter("layerUpdateId"));
         
-        GeoStoreClient client = Util.getGeostoreClient(getServletContext());
-        
-        UNREDDLayerUpdate unreddLayerUpdate = new UNREDDLayerUpdate(client.getResource(layerId));
+        UNREDDLayerUpdate unreddLayerUpdate = new UNREDDLayerUpdate(manager.getResource(layerId, false));
         String layerName = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.LAYER);
         String year      = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.YEAR);
         String month     = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.MONTH);

@@ -5,17 +5,21 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.services.rest.GeoStoreClient;
 import it.geosolutions.geostore.services.rest.model.RESTResource;
 import it.geosolutions.geostore.services.rest.model.RESTStoredData;
 import it.geosolutions.unredd.geostore.model.UNREDDLayer;
+import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
+
 import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.fao.unredd.Util;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -23,6 +27,9 @@ import org.fao.unredd.Util;
  */
 public class LayerAdd extends HttpServlet {
 
+    @Autowired
+    private UNREDDPersistenceFacade manager;
+    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -48,12 +55,10 @@ public class LayerAdd extends HttpServlet {
         String rasterY0             = request.getParameter(UNREDDLayer.Attributes.RASTERY0.getName());
         String rasterY1             = request.getParameter(UNREDDLayer.Attributes.RASTERY1.getName());
         String xml                  = request.getParameter("xml");
-        
-        GeoStoreClient client = Util.getGeostoreClient(getServletContext());
 
         UNREDDLayer unreddLayer = new UNREDDLayer();
 
-        unreddLayer.setAttribute(UNREDDLayer.Attributes.LAYERTYPE, layerType); // “raster” | “vector”
+        unreddLayer.setAttribute(UNREDDLayer.Attributes.LAYERTYPE, layerType); // raster | vector
         unreddLayer.setAttribute(UNREDDLayer.Attributes.MOSAICPATH, mosaicPath);
         unreddLayer.setAttribute(UNREDDLayer.Attributes.DISSMOSAICPATH, dissMosaicPath);
         unreddLayer.setAttribute(UNREDDLayer.Attributes.ORIGDATADESTPATH, origDataDestPath); // relative path where the orig/data has to be moved in
@@ -79,7 +84,7 @@ public class LayerAdd extends HttpServlet {
         RESTStoredData rsd = new RESTStoredData();
         rsd.setData(xml);
         layerRestResource.setStore(rsd);
-        long id = client.insert(layerRestResource);
+        long id = manager.insert(layerRestResource);
 
         RequestDispatcher rd = request.getRequestDispatcher("LayerShow?id=" + id);
         rd.forward(request, response);

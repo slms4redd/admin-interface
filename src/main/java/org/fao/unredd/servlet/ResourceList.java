@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 
 import org.fao.unredd.Util;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -27,6 +28,9 @@ import org.fao.unredd.Util;
  */
 public class ResourceList extends HttpServlet {
 
+    @Autowired
+    private UNREDDPersistenceFacade manager;
+    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -37,8 +41,6 @@ public class ResourceList extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            UNREDDPersistenceFacade manager = Util.getGeostoreManager(getServletContext());
-            
             String category   = getServletConfig().getInitParameter("unreddCategory");
             String outputPage = getServletConfig().getInitParameter("outputPage");
             

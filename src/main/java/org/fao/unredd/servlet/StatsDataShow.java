@@ -6,15 +6,19 @@ package org.fao.unredd.servlet;
  */
 
 import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.geostore.services.rest.GeoStoreClient;
+import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
+
 import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
+
 import org.fao.unredd.Util;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -22,6 +26,9 @@ import org.fao.unredd.Util;
  */
 public class StatsDataShow extends HttpServlet {
 
+    @Autowired
+    private UNREDDPersistenceFacade manager;
+    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -34,11 +41,9 @@ public class StatsDataShow extends HttpServlet {
         getServletName();
         
         long id = Long.parseLong(request.getParameter("id"));
-        
-        GeoStoreClient client = Util.getGeostoreClient(getServletContext());
 
-        Resource res = client.getResource(id);
-        String data = client.getData(res.getId(), MediaType.WILDCARD_TYPE);
+        Resource res = manager.getResource(id, false);
+        String data = manager.getData(res.getId(), MediaType.WILDCARD_TYPE);
 
         request.setAttribute("resource", res);
         request.setAttribute("storedData", data);

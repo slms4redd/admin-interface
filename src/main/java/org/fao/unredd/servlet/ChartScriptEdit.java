@@ -5,17 +5,21 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.services.rest.GeoStoreClient;
 import it.geosolutions.geostore.services.rest.model.RESTResource;
 import it.geosolutions.unredd.geostore.model.UNREDDChartScript;
+import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
+
 import java.io.IOException;
 import java.util.List;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.fao.unredd.Util;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -23,6 +27,9 @@ import org.fao.unredd.Util;
  */
 public class ChartScriptEdit extends HttpServlet {
 
+    @Autowired
+    private UNREDDPersistenceFacade manager;
+    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -37,18 +44,6 @@ public class ChartScriptEdit extends HttpServlet {
         String scriptPath  = request.getParameter(UNREDDChartScript.Attributes.SCRIPTPATH.getName());
         String statsDefs[] = request.getParameterValues(UNREDDChartScript.ReverseAttributes.STATSDEF.getName());
         
-        /*
-        ApplicationContext beanFactory =
-            WebApplicationContextUtils
-                .getRequiredWebApplicationContext(getServletContext());
-
-        GeoStoreClient client =
-             (GeoStoreClient)beanFactory
-                  .getBean("geoStoreClient", GeoStoreClient.class);
-        */
-        
-        GeoStoreClient client = Util.getGeostoreClient(getServletContext());
-        
         boolean newRecord = true;
         long id = 0;
         
@@ -61,7 +56,7 @@ public class ChartScriptEdit extends HttpServlet {
         if (newRecord)
             unreddChartScript = new UNREDDChartScript();
         else
-            unreddChartScript = new UNREDDChartScript(client.getResource(id));
+            unreddChartScript = new UNREDDChartScript(manager.getResource(id, false));
 
         
         // remove all previous statdefs
@@ -78,10 +73,10 @@ public class ChartScriptEdit extends HttpServlet {
 
         if (!newRecord) {
             chartScriptRestResource.setCategory(null); // Category needs to be null for updates
-            client.updateResource(id, chartScriptRestResource);
+            manager.updateResource(id, chartScriptRestResource);
         } else {
             chartScriptRestResource.setName(name); // name can't be modified on the web interface
-            id = client.insert(chartScriptRestResource);
+            id = manager.insert(chartScriptRestResource);
         }
         
         RequestDispatcher rd = request.getRequestDispatcher("ChartScriptShow?id=" + id);

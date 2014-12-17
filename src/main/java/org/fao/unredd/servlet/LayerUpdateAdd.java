@@ -5,16 +5,20 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.services.rest.GeoStoreClient;
 import it.geosolutions.geostore.services.rest.model.RESTResource;
 import it.geosolutions.unredd.geostore.model.UNREDDLayerUpdate;
+import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
+
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.fao.unredd.Util;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -22,6 +26,9 @@ import org.fao.unredd.Util;
  */
 public class LayerUpdateAdd extends HttpServlet {
 
+    @Autowired
+    private UNREDDPersistenceFacade manager;
+    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -39,7 +46,6 @@ public class LayerUpdateAdd extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         try {
-            GeoStoreClient client = Util.getGeostoreClient(getServletContext());
 
             UNREDDLayerUpdate unreddLayerUpdate = new UNREDDLayerUpdate();
 
@@ -52,7 +58,7 @@ public class LayerUpdateAdd extends HttpServlet {
             RESTResource chartScriptRestResource = unreddLayerUpdate.createRESTResource();
 
             chartScriptRestResource.setName("forest_mask_" + year);
-            long id = client.insert(chartScriptRestResource);
+            long id = manager.insert(chartScriptRestResource);
 
             out.println("id = " + id);
         } finally {

@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 
 import org.fao.unredd.Util;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -27,6 +28,9 @@ import org.fao.unredd.Util;
  */
 public class LayerUpdateList extends HttpServlet {
 
+    @Autowired
+    private UNREDDPersistenceFacade manager;
+    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -39,8 +43,6 @@ public class LayerUpdateList extends HttpServlet {
         String layerName = request.getParameter("layer");
         
         try {
-            UNREDDPersistenceFacade manager = Util.getGeostoreManager(getServletContext());
-            
             List<Resource> resources;
             if (layerName == null || "".equals(layerName)) {
                 // if no layer is given in http parameters, find all layersupdates

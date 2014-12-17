@@ -5,18 +5,22 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.services.rest.GeoStoreClient;
 import it.geosolutions.geostore.services.rest.model.RESTResource;
 import it.geosolutions.geostore.services.rest.model.RESTStoredData;
 import it.geosolutions.unredd.geostore.model.UNREDDStatsDef;
+import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
+
 import java.io.IOException;
 import java.util.List;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.fao.unredd.Util;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -24,6 +28,9 @@ import org.fao.unredd.Util;
  */
 public class StatsDefEdit extends HttpServlet {
 
+    @Autowired
+    private UNREDDPersistenceFacade manager;
+    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -39,7 +46,6 @@ public class StatsDefEdit extends HttpServlet {
         String[] layers     = request.getParameterValues(UNREDDStatsDef.ReverseAttributes.LAYER.getName());
         String zonalLayer   = request.getParameter(UNREDDStatsDef.Attributes.ZONALLAYER.getName());
         
-        
         boolean newRecord = true;
         long id = 0;
 
@@ -48,13 +54,11 @@ public class StatsDefEdit extends HttpServlet {
             newRecord = false;
         }
 
-        GeoStoreClient client = Util.getGeostoreClient(getServletContext());
-
         UNREDDStatsDef unreddStatsDef;
         if (newRecord)
             unreddStatsDef = new UNREDDStatsDef();
         else
-            unreddStatsDef = new UNREDDStatsDef(client.getResource(id));
+            unreddStatsDef = new UNREDDStatsDef(manager.getResource(id, false));
 
         // remove all previous layers
         List<String> toBeRemoved = unreddStatsDef.getReverseAttributes(UNREDDStatsDef.ReverseAttributes.LAYER.getName());
@@ -75,15 +79,15 @@ public class StatsDefEdit extends HttpServlet {
             // don't set name - name can't be modified on the web interface
             statsDefRestResource.setCategory(null); // Category needs to be null for updates
             
-            client.updateResource(id, statsDefRestResource);
-            client.setData(id, xml);
+            manager.updateResource(id, statsDefRestResource);
+            manager.setData(id, xml);
         } else {
             statsDefRestResource.setName(statsDefName);
 
             RESTStoredData rsd = new RESTStoredData();
             rsd.setData(xml);
             statsDefRestResource.setStore(rsd);
-            id = client.insert(statsDefRestResource);
+            id = manager.insert(statsDefRestResource);
         }
         
         RequestDispatcher rd = request.getRequestDispatcher("StatsDefShow?name=" + statsDefName);
