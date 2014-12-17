@@ -7,11 +7,13 @@ package org.fao.unredd.servlet;
 
 import it.geosolutions.geostore.services.rest.GeoStoreClient;
 import it.geosolutions.geostore.services.rest.model.RESTResource;
-import it.geosolutions.unredd.geostore.UNREDDGeostoreManager;
 import it.geosolutions.unredd.geostore.model.UNREDDLayer;
 import it.geosolutions.unredd.geostore.model.UNREDDLayerUpdate;
+import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
+
 import java.io.File;
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +42,7 @@ public class LayerUpdatePublish extends HttpServlet {
         String action  = request.getParameter("action");
         
         GeoStoreClient client = Util.getGeostoreClient(getServletContext());
-        UNREDDGeostoreManager manager = Util.getGeostoreManager(getServletContext());
+        UNREDDPersistenceFacade manager = Util.getGeostoreManager(getServletContext());
 
         UNREDDLayerUpdate unreddLayerUpdate = new UNREDDLayerUpdate(client.getResource(layerUpdateId));
         String layerName = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.LAYER);

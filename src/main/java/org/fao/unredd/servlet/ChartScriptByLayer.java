@@ -6,15 +6,18 @@ package org.fao.unredd.servlet;
  */
 
 import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.unredd.geostore.UNREDDGeostoreManager;
+import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
+
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.fao.unredd.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +41,7 @@ public class ChartScriptByLayer extends HttpServlet {
             throws ServletException, IOException, Exception {
         String layerName = request.getParameter("name");
         
-        UNREDDGeostoreManager manager = Util.getGeostoreManager(getServletContext());
+        UNREDDPersistenceFacade manager = Util.getGeostoreManager(getServletContext());
         
         Set<Resource> chartScripts = searchChartScriptByLayerName(layerName, manager);
         
@@ -90,7 +93,7 @@ public class ChartScriptByLayer extends HttpServlet {
     }// </editor-fold>
 
 
-    public Set<Resource> searchChartScriptByLayerName(String layername, UNREDDGeostoreManager geostore) throws Exception {
+    public Set<Resource> searchChartScriptByLayerName(String layername, UNREDDPersistenceFacade geostore) throws Exception {
         List<Resource> relatedStatsDef = null;
         try {
             relatedStatsDef = geostore.searchStatsDefByLayer(layername);

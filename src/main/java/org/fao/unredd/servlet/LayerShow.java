@@ -7,17 +7,20 @@ package org.fao.unredd.servlet;
 
 import it.geosolutions.geostore.core.model.Resource;
 import it.geosolutions.geostore.services.rest.GeoStoreClient;
-import it.geosolutions.unredd.geostore.UNREDDGeostoreManager;
+import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
+
 import org.fao.unredd.LayerBean;
 import org.fao.unredd.Util;
 
@@ -53,7 +56,7 @@ public class LayerShow extends HttpServlet {
             
             String layerName = layerBean.getName();
             
-            UNREDDGeostoreManager manager = Util.getGeostoreManager(getServletContext());
+            UNREDDPersistenceFacade manager = Util.getGeostoreManager(getServletContext());
             List<Resource> relatedStatsDefs = manager.searchStatsDefByLayer(layerName);
             request.setAttribute("statsDefs", relatedStatsDefs);
             

@@ -5,15 +5,18 @@ package org.fao.unredd.servlet;
  * the editor.
  */
 import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.unredd.geostore.UNREDDGeostoreManager;
+import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
+
 import java.io.IOException;
 import java.util.List;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
+
 import org.fao.unredd.Util;
 
 /**
@@ -38,7 +41,7 @@ public class ChartDataList extends HttpServlet {
         String chartScriptName = request.getParameter("chart_script");
 
         try {
-            UNREDDGeostoreManager manager = Util.getGeostoreManager(getServletContext());
+            UNREDDPersistenceFacade manager = Util.getGeostoreManager(getServletContext());
             List<Resource> relatedStatsDef = manager.searchChartDataByChartScript(chartScriptName);
             request.setAttribute("chartData", relatedStatsDef);
             request.setAttribute("geostoreURL", Util.getGeostoreRestURL(getServletContext()));

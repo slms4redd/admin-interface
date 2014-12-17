@@ -6,16 +6,19 @@ package org.fao.unredd.servlet;
 
 import it.geosolutions.geostore.core.model.Resource;
 import it.geosolutions.geostore.services.rest.GeoStoreClient;
-import it.geosolutions.unredd.geostore.UNREDDGeostoreManager;
 import it.geosolutions.unredd.geostore.model.UNREDDChartScript;
+import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
+
 import org.fao.unredd.Util;
 
 /**
@@ -40,7 +43,7 @@ public class ChartScriptDelete extends HttpServlet {
         if (!UNREDDChartScript.CATEGORY_NAME.equals(resource.getCategory().getName()))
             throw new ServletException("Category (resource id = " + id + " is not a " + UNREDDChartScript.CATEGORY_NAME);
         
-        UNREDDGeostoreManager manager = new UNREDDGeostoreManager(client);
+        UNREDDPersistenceFacade manager = Util.getGeostoreManager(getServletContext());
         client.deleteResource(id);
         try {
             // delete related ChartData

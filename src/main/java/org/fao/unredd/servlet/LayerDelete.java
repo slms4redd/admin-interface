@@ -5,16 +5,19 @@
 package org.fao.unredd.servlet;
 
 import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.unredd.geostore.UNREDDGeostoreManager;
+import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
+
 import org.fao.unredd.Util;
 
 /**
@@ -34,7 +37,7 @@ public class LayerDelete extends HttpServlet {
             throws ServletException, IOException, UnsupportedEncodingException {
         String name = request.getParameter("name");
         
-        UNREDDGeostoreManager manager = new UNREDDGeostoreManager(Util.getGeostoreClient(getServletContext()));
+        UNREDDPersistenceFacade manager = Util.getGeostoreManager(getServletContext());
         List<Resource> statsDefs;
         try {
             statsDefs = manager.searchStatsDefByLayer(name);

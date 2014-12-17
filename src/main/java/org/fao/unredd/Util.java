@@ -13,14 +13,18 @@ import it.geosolutions.geostore.services.rest.GeoStoreClient;
 import it.geosolutions.geostore.services.rest.model.ShortResourceList;
 import it.geosolutions.unredd.geostore.UNREDDGeostoreManager;
 import it.geosolutions.unredd.geostore.model.UNREDDCategories;
+import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+
 import javax.servlet.ServletContext;
 import javax.xml.bind.JAXBException;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -107,7 +111,7 @@ public class Util {
         return client;
     }
 
-    public static UNREDDGeostoreManager getGeostoreManager(ServletContext servletContext) {
+    public static UNREDDPersistenceFacade getGeostoreManager(ServletContext servletContext) {
         ApplicationContext beanFactory =
             WebApplicationContextUtils
                 .getRequiredWebApplicationContext(servletContext);
