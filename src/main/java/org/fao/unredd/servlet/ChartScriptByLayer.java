@@ -17,8 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -32,7 +31,7 @@ public class ChartScriptByLayer extends AdminGUIAbstractServlet {
      */
     private static final long serialVersionUID = 3127995224796090356L;
     
-    private final static Logger LOGGER = LoggerFactory.getLogger(ChartScriptByLayer.class);
+    private final static Logger LOGGER = Logger.getLogger(AdminGUIAbstractServlet.class); 
     
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -42,58 +41,19 @@ public class ChartScriptByLayer extends AdminGUIAbstractServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
+            throws ServletException, IOException {
         String layerName = request.getParameter("name");
         
-        Set<Resource> chartScripts = searchChartScriptByLayerName(layerName, manager);
+        Set<Resource> chartScripts = null;
+        try {
+            chartScripts = searchChartScriptByLayerName(layerName, manager);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         
         request.setAttribute("chartScripts", chartScripts);
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (Exception ex) {
-            throw new ServletException(ex);
-        }
-    }
-
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (Exception ex) {
-            throw new ServletException(ex);
-        }
-    }
-
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 
     public Set<Resource> searchChartScriptByLayerName(String layername, UNREDDPersistenceFacade geostore) throws Exception {
         List<Resource> relatedStatsDef = null;
@@ -101,7 +61,7 @@ public class ChartScriptByLayer extends AdminGUIAbstractServlet {
             relatedStatsDef = geostore.searchStatsDefByLayer(layername);
         } catch (Exception e) {
             LOGGER.debug("Parameter : [layername=" + layername + "]");
-            throw new Exception("Error while searching for StatsDef", e);
+            throw new IOException("Error while searching for StatsDef", e);
         }
 
         Set<Resource> chartScript = new HashSet<Resource>();
@@ -112,7 +72,7 @@ public class ChartScriptByLayer extends AdminGUIAbstractServlet {
                 chartScript.addAll(localChartScript);
             }
         } catch (Exception e) {
-            throw new Exception("Error while running stats", e);
+            throw new IOException("Error while searching for ChartScript", e);
         }
         
         return chartScript;

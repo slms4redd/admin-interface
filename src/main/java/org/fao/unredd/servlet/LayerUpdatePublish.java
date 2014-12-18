@@ -40,13 +40,18 @@ public class LayerUpdatePublish extends AdminGUIAbstractServlet {
      * @throws JAXBException 
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, JAXBException {
+            throws ServletException, IOException {
         Long   layerUpdateId = Long.parseLong(request.getParameter("layerUpdateId"));
         String action  = request.getParameter("action");
         
         UNREDDLayerUpdate unreddLayerUpdate = new UNREDDLayerUpdate(manager.getResource(layerUpdateId, false));
         String layerName = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.LAYER);
-        UNREDDLayer unreddLayer = new UNREDDLayer(manager.searchLayer(layerName));
+        UNREDDLayer unreddLayer;
+        try {
+            unreddLayer = new UNREDDLayer(manager.searchLayer(layerName));
+        } catch (JAXBException e) {
+            throw new IOException(e.getCause());
+        }
         String format    = unreddLayer.getAttribute(UNREDDLayer.Attributes.LAYERTYPE);
         String year      = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.YEAR);
         String month     = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.MONTH);
@@ -71,50 +76,6 @@ public class LayerUpdatePublish extends AdminGUIAbstractServlet {
                 
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-			processRequest(request, response);
-		} catch (JAXBException e) {
-			throw new IOException(e);
-		}
-    }
-
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-			processRequest(request, response);
-		} catch (JAXBException e) {
-			throw new IOException(e);
-		}
-    }
-
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-    
     private String getPublishXml(String layerName, String format, String year, String month, String day) {
         StringBuilder xml = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n");
         xml.append("<PublishLayer>\n");
@@ -127,17 +88,4 @@ public class LayerUpdatePublish extends AdminGUIAbstractServlet {
         
         return xml.toString();
     }
-    
-    /*
-    private String getUnpublishXml(String layerName, String year, String month) {
-        StringBuilder xml = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r");
-        xml.append("<UnpublishLayer>\r");
-        xml.append("\t<layerName>").append(layerName).append("</layerName>\r");
-        xml.append("\t<month>").append(month).append("</month>\r");
-        xml.append("\t<year>").append(year).append("</year>\r");
-        xml.append("</UnpublishLayer>\r");
-        
-        return xml.toString();
-    }
-    */
 }

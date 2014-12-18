@@ -1,167 +1,141 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.fao</groupId>
-    <artifactId>unredd-admin</artifactId>
-    <version>2.0-SNAPSHOT</version>
-    <packaging>war</packaging>
+	<groupId>org.fao</groupId>
+	<artifactId>unredd-admin</artifactId>
+	<version>2.0-SNAPSHOT</version>
+	<packaging>war</packaging>
 
-    <name>UNREDD Admin</name>
+	<name>UNREDD Admin</name>
 
-    <properties>
-        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
-        
-        <jetty.version>6.1.14</jetty.version>
-        <geostore.version>1.1-SNAPSHOT</geostore.version>
-        <geostore.unredd.model.version>1.1-SNAPSHOT</geostore.unredd.model.version>
-    </properties>
+	<properties>
+		<endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
 
-    <distributionManagement>
-        <repository>
-            <id>nfms4redd</id>
-            <url>ftp://maven.nfms4redd.org/repo</url>
-            <uniqueVersion>false</uniqueVersion>
-        </repository>
-    </distributionManagement>
+		<jetty.version>6.1.14</jetty.version>
+		<geostore.version>1.1-SNAPSHOT</geostore.version>
+		<geostore.unredd.model.version>1.1-SNAPSHOT</geostore.unredd.model.version>
+	</properties>
 
-    <dependencies>
-        <!--
-        <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-            <version>1.4</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-server</artifactId>
-            <version>1.9.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-web-api</artifactId>
-            <version>6.0</version>
-            <scope>provided</scope>
-        </dependency>
-        -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.8.2</version>
-            <scope>test</scope>
-        </dependency>
+	<distributionManagement>
+		<repository>
+			<id>nfms4redd</id>
+			<url>ftp://maven.nfms4redd.org/repo</url>
+			<uniqueVersion>false</uniqueVersion>
+		</repository>
+	</distributionManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey.jersey-test-framework</groupId>
 			<artifactId>jersey-test-framework-grizzly2</artifactId>
 			<version>1.12</version>
 		</dependency>
- 		<dependency>
+		<dependency>
 			<groupId>org.fao</groupId>
 			<artifactId>common-tests</artifactId>
 			<version>1.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>1.9.5</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>1.3.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.collections</groupId>
-            <artifactId>google-collections</artifactId>
-            <version>1.0</version>
-        </dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.collections</groupId>
+			<artifactId>google-collections</artifactId>
+			<version>1.0</version>
+		</dependency>
 
-        <dependency>
-            <groupId>it.geosolutions.geostore</groupId>
-            <artifactId>geostore-rest-client</artifactId>
-            <version>${geostore.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>it.geosolutions.geostore</groupId>
+			<artifactId>geostore-rest-client</artifactId>
+			<version>${geostore.version}</version>
+		</dependency>
 
-        <dependency>
-            <groupId>it.geosolutions.geostore</groupId>
-            <artifactId>geostore-model</artifactId>
-            <version>${geostore.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>it.geosolutions.geostore</groupId>
+			<artifactId>geostore-model</artifactId>
+			<version>${geostore.version}</version>
+		</dependency>
 
-        <dependency>
-            <groupId>it.geosolutions.geostore</groupId>
-            <artifactId>geostore-rest-api</artifactId>
-            <version>${geostore.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>it.geosolutions.geostore</groupId>
+			<artifactId>geostore-rest-api</artifactId>
+			<version>${geostore.version}</version>
+		</dependency>
 
-        <dependency>
-           <groupId>it.geosolutions.unredd</groupId>
-           <artifactId>unredd-geostore-model</artifactId>
-           <version>${geostore.unredd.model.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.6.4</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.6.4</version>
-            <scope>test</scope>
-        </dependency>
-        
-         <dependency>
-           <groupId>javax.servlet</groupId>
-           <artifactId>jstl</artifactId>
-           <version>1.2</version>
-         </dependency>
-         
-         <dependency>
-          <groupId>javax.servlet</groupId>
-          <artifactId>servlet-api</artifactId>
-          <version>2.5</version>
-          <scope>provided</scope>
-        </dependency>
-        
-        <dependency>   
-          <groupId>javax.servlet.jsp</groupId> 
-          <artifactId>jsp-api</artifactId> 
-          <version>2.1</version>
-          <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>it.geosolutions.unredd</groupId>
+			<artifactId>unredd-geostore-model</artifactId>
+			<version>${geostore.unredd.model.version}</version>
+		</dependency>
 
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>1.7.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>      
-            <version>3.0.1.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-openid</artifactId>
-            <version>3.0.1.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-            <version>3.0.1.RELEASE</version>
-        </dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
 
-		<!-- Jersey for restful interface. We are matching the version Geostore
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>3.0.1.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-openid</artifactId>
+			<version>3.0.1.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>3.0.1.RELEASE</version>
+		</dependency>
+
+                <!-- Bindings needed for slf4j -->
+                <dependency>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-log4j12</artifactId>
+                        <version>1.5.11</version>
+                </dependency>
+                
+		<!-- Jersey for restful interface. We are matching the version Geostore 
 			client uses although there is a new one -->
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
@@ -182,7 +156,7 @@
 			<groupId>com.sun.jersey.contribs</groupId>
 			<artifactId>jersey-spring</artifactId>
 			<version>1.12</version>
-			<!-- jersey spring imports 2.x spring dependencies, but works fine with
+			<!-- jersey spring imports 2.x spring dependencies, but works fine with 
 				3.x so let's ignore them -->
 			<exclusions>
 				<exclusion>
@@ -244,22 +218,22 @@
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
-    </dependencies>
+	</dependencies>
 
-    <repositories>
-        <repository>
-            <id>nfms4redd</id>
-            <name>nfms4redd maven repository</name>
-            <url>http://maven.nfms4redd.org/</url>
-        </repository>
+	<repositories>
+		<repository>
+			<id>nfms4redd</id>
+			<name>nfms4redd maven repository</name>
+			<url>http://maven.nfms4redd.org/</url>
+		</repository>
 
-        <repository>
-            <id>geosolutions</id>
-            <name>GeoSolutions public maven repository</name>
-            <url>http://maven.geo-solutions.it/</url>
-        </repository>
-   </repositories>
-    
+		<repository>
+			<id>geosolutions</id>
+			<name>GeoSolutions public maven repository</name>
+			<url>http://maven.geo-solutions.it/</url>
+		</repository>
+	</repositories>
+
 	<profiles>
 		<profile>
 			<!-- "Unitary" tests by default. "Unitary" here means tests that do not 
@@ -295,112 +269,88 @@
 		</profile>
 	</profiles>
 
-    <build>
-        <finalName>unredd-admin</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                    <compilerArguments>
-                        <endorseddirs>${endorsed.dir}</endorseddirs>
-                    </compilerArguments>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.1.1</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <attachClasses>true</attachClasses>
-                </configuration>
-            </plugin>
-            <!--
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <executions>
-                  <execution>
-                    <phase>install</phase>
-                    <goals>
-                        <goal>install-file</goal>
-                    </goals>
-                    <configuration>
-                        <packaging>jar</packaging>
-                        <artifactId>${project.artifactId}</artifactId>
-                        <groupId>${project.groupId}</groupId>
-                        <version>${project.version}</version>
-                        <file>
-                            ${project.build.directory}/${project.artifactId}-${project.version}.jar
-                        </file>
-                    </configuration>
-                  </execution>
-                </executions>
-            </plugin>
-            -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.1</version>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${endorsed.dir}</outputDirectory>
-                            <silent>true</silent>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>javax</groupId>
-                                    <artifactId>javaee-endorsed-api</artifactId>
-                                    <version>6.0</version>
-                                    <type>jar</type>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.mortbay.jetty</groupId>
-<!--                <artifactId>jetty-maven-plugin</artifactId> -->
-                <artifactId>maven-jetty-plugin</artifactId>
-                <version>6.1.20</version>
-                <configuration>
-                    <reload>automatic</reload>
-                    <scanIntervalSeconds>5</scanIntervalSeconds>
-                    <connectors>
+	<build>
+		<finalName>unredd-admin</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<compilerArguments>
+						<endorseddirs>${endorsed.dir}</endorseddirs>
+					</compilerArguments>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1.1</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<attachClasses>true</attachClasses>
+				</configuration>
+			</plugin>
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-compiler-plugin</artifactId> 
+				<version>2.3.2</version> <configuration> <source>1.6</source> <target>1.6</target> 
+				</configuration> </plugin> <plugin> <groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-install-plugin</artifactId> <executions> <execution> <phase>install</phase> 
+				<goals> <goal>install-file</goal> </goals> <configuration> <packaging>jar</packaging> 
+				<artifactId>${project.artifactId}</artifactId> <groupId>${project.groupId}</groupId> 
+				<version>${project.version}</version> <file> ${project.build.directory}/${project.artifactId}-${project.version}.jar 
+				</file> </configuration> </execution> </executions> </plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.1</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${endorsed.dir}</outputDirectory>
+							<silent>true</silent>
+							<artifactItems>
+								<artifactItem>
+									<groupId>javax</groupId>
+									<artifactId>javaee-endorsed-api</artifactId>
+									<version>6.0</version>
+									<type>jar</type>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<!-- <artifactId>jetty-maven-plugin</artifactId> -->
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>6.1.20</version>
+				<configuration>
+					<reload>automatic</reload>
+					<scanIntervalSeconds>5</scanIntervalSeconds>
+					<connectors>
 						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
 							<port>8101</port>
 							<maxIdleTime>60000</maxIdleTime>
 						</connector>
 					</connectors>
-                </configuration>
-            </plugin>
-            
+				</configuration>
+			</plugin>
+
 			<plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>tomcat-maven-plugin</artifactId>
-                <configuration>
-                    <!--<url>http://192.168.1.7:8080/manager</url>-->
-                    <server>tomcat</server>
-                    <path>/UNREDDAdmin</path>
-                </configuration>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>tomcat-maven-plugin</artifactId>
+				<configuration>
+					<!--<url>http://192.168.1.7:8080/manager</url> -->
+					<server>tomcat</server>
+					<path>/UNREDDAdmin</path>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -411,13 +361,13 @@
 				</configuration>
 			</plugin>
 		</plugins>
-        
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ftp</artifactId>
-                <version>2.3</version>
-            </extension>
-        </extensions>
-    </build>
+
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ftp</artifactId>
+				<version>2.3</version>
+			</extension>
+		</extensions>
+	</build>
 </project>
