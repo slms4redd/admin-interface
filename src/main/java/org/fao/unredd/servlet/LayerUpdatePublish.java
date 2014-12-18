@@ -8,29 +8,29 @@ package org.fao.unredd.servlet;
 import it.geosolutions.geostore.services.rest.model.RESTResource;
 import it.geosolutions.unredd.geostore.model.UNREDDLayer;
 import it.geosolutions.unredd.geostore.model.UNREDDLayerUpdate;
-import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
 
 import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 
 import org.fao.unredd.Util;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
  * @author sgiaccio
+ * @author DamianoG (first revision v2.0)
  */
-public class LayerUpdatePublish extends HttpServlet {
-
-    @Autowired
-    private UNREDDPersistenceFacade manager;
+public class LayerUpdatePublish extends AdminGUIAbstractServlet {
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1615840247422612058L;
+
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request

@@ -4,30 +4,29 @@
  */
 package org.fao.unredd.servlet;
 
-import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
-
 import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.fao.unredd.Util;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
  * @author sgiaccio
+ * @author DamianoG (first revision v2.0)
  */
-public class ChartScriptReprocess extends HttpServlet {
+public class ChartScriptReprocess extends AdminGUIAbstractServlet {
 
-    private final static org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ChartScriptByLayer.class);
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 2222444232136989128L;
     
-    @Autowired
-    private UNREDDPersistenceFacade manager;
+    private final static org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ChartScriptByLayer.class);
     
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.

@@ -7,30 +7,28 @@ package org.fao.unredd.servlet;
 
 import it.geosolutions.geostore.core.model.Resource;
 import it.geosolutions.unredd.geostore.model.UNREDDCategories;
-import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
 
 import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 
-import org.fao.unredd.Util;
-import org.springframework.beans.factory.annotation.Autowired;
-
 /**
  *
  * @author sgiaccio
+ * @author DamianoG (first revision v2.0)
  */
-public class ChartScriptShow extends HttpServlet {
-
-    @Autowired
-    private UNREDDPersistenceFacade manager;
+public class ChartScriptShow extends AdminGUIAbstractServlet {
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 4314078190514062201L;
+
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request

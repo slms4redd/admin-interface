@@ -4,7 +4,7 @@
  */
 package org.fao.unredd.servlet;
 
-import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
+import it.geosolutions.geostore.core.model.Resource;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -12,23 +12,22 @@ import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 
-import org.fao.unredd.Util;
-import org.springframework.beans.factory.annotation.Autowired;
-
 /**
  *
  * @author sgiaccio
+ * @author DamianoG (first revision v2.0)
  */
-public class StatsDefDelete extends HttpServlet {
-
-    @Autowired
-    private UNREDDPersistenceFacade manager;
+public class StatsDefDelete extends AdminGUIAbstractServlet {
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5839145704363160562L;
+
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -39,7 +38,7 @@ public class StatsDefDelete extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, UnsupportedEncodingException {
         String name = request.getParameter("statsDefName");
-        List chartScripts;
+        List<Resource> chartScripts = null;
         try {
             chartScripts = manager.searchChartScriptByStatsDef(name);
 

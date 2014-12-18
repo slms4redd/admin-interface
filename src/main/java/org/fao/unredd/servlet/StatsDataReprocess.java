@@ -8,7 +8,6 @@ import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,8 +16,14 @@ import org.fao.unredd.Util;
 /**
  *
  * @author sgiaccio
+ * @author DamianoG (first revision v2.0)
  */
-public class StatsDataReprocess extends HttpServlet {
+public class StatsDataReprocess extends AdminGUIAbstractServlet {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 7143651345919908443L;
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.

@@ -14,25 +14,25 @@ import java.util.List;
 import java.util.Set;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.fao.unredd.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
  * @author sgiaccio
+ * @author DamianoG (first revision v2.0)
  */
-public class ChartScriptByLayer extends HttpServlet {
+public class ChartScriptByLayer extends AdminGUIAbstractServlet {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(ChartScriptByLayer.class);
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3127995224796090356L;
     
-    @Autowired
-    private UNREDDPersistenceFacade manager;
+    private final static Logger LOGGER = LoggerFactory.getLogger(ChartScriptByLayer.class);
     
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
