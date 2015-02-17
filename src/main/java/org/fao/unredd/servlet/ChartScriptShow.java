@@ -5,8 +5,8 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.unredd.geostore.model.UNREDDCategories;
+import it.geosolutions.unredd.services.data.CategoryPOJO;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
 
 import java.io.IOException;
 import java.util.List;
@@ -47,10 +47,10 @@ public class ChartScriptShow extends AdminGUIAbstractServlet {
             long id = Long.parseLong(sId);
             
             // get the resource
-            Resource res = manager.getResource(id, false);
+            ResourcePOJO res = manager.getResource(id, false);
 
-            //UNREDDChartScript chartScript = new UNREDDChartScript(res);
-            //List<String> lRelatedStatDefs = chartScript.getReverseAttributes(UNREDDChartScript.ReverseAttributes.STATSDEF.getName());
+//            ResourceDecorator chartScript = new ResourceDecorator(res);
+//            List<String> lRelatedStatDefs = chartScript.getAttributeValues(ModelDomainNames.CHARTSCRIPT_STATDEF);
             
             request.setAttribute("resource", res);
         } else {
@@ -59,7 +59,7 @@ public class ChartScriptShow extends AdminGUIAbstractServlet {
         }
         
         try {
-            List<Resource> statsDefs = manager.getUNREDDResources(UNREDDCategories.STATSDEF);
+            List<ResourcePOJO> statsDefs = manager.getUNREDDResources(CategoryPOJO.STATSDEF);
             request.setAttribute("statsDefList", statsDefs);
             
             String outputPage = getServletConfig().getInitParameter("outputPage");

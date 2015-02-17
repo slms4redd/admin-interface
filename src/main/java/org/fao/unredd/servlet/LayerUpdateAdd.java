@@ -5,8 +5,9 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.services.rest.model.RESTResource;
-import it.geosolutions.unredd.geostore.model.UNREDDLayerUpdate;
+import it.geosolutions.unredd.services.data.ModelDomainNames;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
+import it.geosolutions.unredd.services.data.utils.ResourceDecorator;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -45,18 +46,15 @@ public class LayerUpdateAdd extends AdminGUIAbstractServlet {
         
         try {
 
-            UNREDDLayerUpdate unreddLayerUpdate = new UNREDDLayerUpdate();
+            ResourcePOJO unreddLayerUpdateRes = new ResourcePOJO();
+            ResourceDecorator unreddLayerUpdate = new ResourceDecorator(unreddLayerUpdateRes);
+            
+            unreddLayerUpdate.addTextAttribute(ModelDomainNames.LAYERUPDATE_LAYER, "forest_mask");
+            unreddLayerUpdate.addTextAttribute(ModelDomainNames.LAYERUPDATE_YEAR, year);
+            unreddLayerUpdate.addTextAttribute(ModelDomainNames.LAYERUPDATE_PUBLISHED, "true");
 
-            unreddLayerUpdate.setAttribute(UNREDDLayerUpdate.Attributes.LAYER, "forest_mask");
-            unreddLayerUpdate.setAttribute(UNREDDLayerUpdate.Attributes.YEAR, year);
-            //unreddLayerUpdate.setAttribute(UNREDDLayerUpdate.Attributes.MONTH, "0");
-            //unreddLayerUpdate.setAttribute(UNREDDLayerUpdate.Attributes.RELATIVEPATH, "[relativepath]");
-            unreddLayerUpdate.setAttribute(UNREDDLayerUpdate.Attributes.PUBLISHED, "true");
-
-            RESTResource chartScriptRestResource = unreddLayerUpdate.createRESTResource();
-
-            chartScriptRestResource.setName("forest_mask_" + year);
-            long id = manager.insert(chartScriptRestResource);
+            unreddLayerUpdate.setName("forest_mask_" + year);
+            long id = manager.insert(unreddLayerUpdateRes);
 
             out.println("id = " + id);
         } finally {

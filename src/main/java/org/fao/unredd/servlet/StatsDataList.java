@@ -5,7 +5,7 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.core.model.Resource;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,7 +40,7 @@ public class StatsDataList extends AdminGUIAbstractServlet {
         String statsDefName = request.getParameter("stats_def");
         
         try {
-            List<Resource> resources;
+            List<ResourcePOJO> resources;
             if (statsDefName == null || "".equals(statsDefName)) {
                 // if no layer is given in http parameters, find all stats data
                 resources = manager.searchStatsDataByStatsDef(null);

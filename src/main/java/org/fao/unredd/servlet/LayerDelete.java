@@ -4,7 +4,7 @@
  */
 package org.fao.unredd.servlet;
 
-import it.geosolutions.geostore.core.model.Resource;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -39,7 +39,7 @@ public class LayerDelete extends AdminGUIAbstractServlet {
             throws ServletException, IOException, UnsupportedEncodingException {
         String name = request.getParameter("name");
         
-        List<Resource> statsDefs;
+        List<ResourcePOJO> statsDefs;
         try {
             statsDefs = manager.searchStatsDefByLayer(name);
 

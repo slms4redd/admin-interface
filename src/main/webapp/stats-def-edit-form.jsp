@@ -1,10 +1,10 @@
-<%@page import="it.geosolutions.unredd.geostore.model.UNREDDStatsData"%>
+<%@page import="it.geosolutions.unredd.services.data.ModelDomainNames"%>
+<%@page import="it.geosolutions.unredd.services.data.utils.ResourceDecorator"%>
+<%@page import="it.geosolutions.unredd.services.data.ResourcePOJO"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="it.geosolutions.geostore.services.rest.model.RESTStoredData"%>
-<%@page import="it.geosolutions.unredd.geostore.model.UNREDDStatsDef"%>
-<%@page import="it.geosolutions.geostore.core.model.Resource"%><%@
-page import="java.util.List"%><%@
-page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
+<%@page import="java.util.List"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -51,14 +51,14 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
         <h1>StatsDef edit</h1>
         
         <%
-        Resource res = (Resource)request.getAttribute("resource"); 
+        ResourcePOJO res = (ResourcePOJO)request.getAttribute("statDef"); 
         List<String> relatedLayers;
         String zonalLayer;
         
         if (res != null) {
-            UNREDDStatsDef statsDef = new UNREDDStatsDef(res);
-            relatedLayers = statsDef.getReverseAttributes(UNREDDStatsDef.ReverseAttributes.LAYER.getName());
-            zonalLayer    = statsDef.getAttribute(UNREDDStatsDef.Attributes.ZONALLAYER);
+            ResourceDecorator statsDef = new ResourceDecorator(res);
+            relatedLayers = statsDef.getAttributeValues(ModelDomainNames.STATS_DEF_LAYER);
+            zonalLayer    = statsDef.getFirstAttributeValue(ModelDomainNames.STATS_DEF_ZONALLAYER);
         } else {
             relatedLayers = new ArrayList();
             zonalLayer    = null;
@@ -73,9 +73,9 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
                     </th>
                     <td>
                         <% if (res == null) { %>
-                            <input type="text" id="name" name="name" value="${resource.name}">
+                            <input type="text" id="name" name="name" value="${statDef.name}">
                         <% } else { %>
-                            ${resource.name}
+                            ${statDef.name}
                         <% } %>
                     </td>
                 </tr>
@@ -84,9 +84,9 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
                         Layers
                     </th>
                     <td>
-                        <select multiple="multiple" id="<%= UNREDDStatsDef.ReverseAttributes.LAYER.getName() %>" name="<%= UNREDDStatsDef.ReverseAttributes.LAYER.getName() %>">
+                        <select multiple="multiple" id="<%= ModelDomainNames.STATS_DEF_LAYER.getName() %>" name="<%= ModelDomainNames.STATS_DEF_LAYER.getName() %>">
                         <%
-                        for (Resource layer : (List<Resource>)request.getAttribute("layerList")) { %>
+                        for (ResourcePOJO layer : (List<ResourcePOJO>)request.getAttribute("layerList")) { %>
                             <option id="<%= layer.getName() %>"
                             <%
                             if (relatedLayers.contains(layer.getName()))
@@ -102,9 +102,9 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
                         Zonal Layer
                     </th>
                     <td>
-                        <select id="<%= UNREDDStatsDef.Attributes.ZONALLAYER.getName() %>" name="<%= UNREDDStatsDef.Attributes.ZONALLAYER.getName() %>">
+                        <select id="<%= ModelDomainNames.STATS_DEF_ZONALLAYER.getName() %>" name="<%= ModelDomainNames.STATS_DEF_ZONALLAYER.getName() %>">
                         <%
-                        for (Resource layer : (List<Resource>)request.getAttribute("layerList")) { %>
+                        for (ResourcePOJO layer : (List<ResourcePOJO>)request.getAttribute("layerList")) { %>
                             <option id="<%= layer.getName() %>"
                             <%
                             if ((layer.getName().equals(zonalLayer)))
@@ -132,8 +132,8 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
                 </tr>
             </table>
             <% if (request.getParameter("name") != null) { %>
-                <input type="hidden" name="id" value="${resource.id}"></input>
-                <input type="hidden" name="name" value="${resource.name}"></input>
+                <input type="hidden" name="id" value="${statDef.id}"></input>
+                <input type="hidden" name="name" value="${statDef.name}"></input>
             <% } %>
         </form>
     </body>

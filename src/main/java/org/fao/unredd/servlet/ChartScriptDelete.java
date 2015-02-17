@@ -4,8 +4,8 @@
  */
 package org.fao.unredd.servlet;
 
-import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.unredd.geostore.model.UNREDDChartScript;
+import it.geosolutions.unredd.services.data.CategoryPOJO;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -39,15 +39,15 @@ public class ChartScriptDelete extends AdminGUIAbstractServlet {
             throws ServletException, IOException, UnsupportedEncodingException {
         long id = Long.parseLong(request.getParameter("id"));
         
-        Resource resource = manager.getResource(id, false);
-        if (!UNREDDChartScript.CATEGORY_NAME.equals(resource.getCategory().getName()))
-            throw new ServletException("Category (resource id = " + id + " is not a " + UNREDDChartScript.CATEGORY_NAME);
+        ResourcePOJO resource = manager.getResource(id, false);
+        if (!CategoryPOJO.CHARTSCRIPT.equals(resource.getCategory()))
+            throw new ServletException("Category (resource id = " + id + " is not a " + CategoryPOJO.CHARTSCRIPT.getName());
         
         manager.deleteResource(id);
         try {
             // delete related ChartData
-            List<Resource> layerUpdates = manager.searchChartDataByChartScript(resource.getName());
-            for (Resource res : layerUpdates)
+            List<ResourcePOJO> layerUpdates = manager.searchChartDataByChartScript(resource.getName());
+            for (ResourcePOJO res : layerUpdates)
                 manager.deleteResource(res.getId());
         } catch (JAXBException ex) {
             throw new ServletException(ex);

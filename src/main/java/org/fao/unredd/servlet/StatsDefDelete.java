@@ -4,7 +4,7 @@
  */
 package org.fao.unredd.servlet;
 
-import it.geosolutions.geostore.core.model.Resource;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -38,7 +38,7 @@ public class StatsDefDelete extends AdminGUIAbstractServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, UnsupportedEncodingException {
         String name = request.getParameter("statsDefName");
-        List<Resource> chartScripts = null;
+        List<ResourcePOJO> chartScripts = null;
         try {
             chartScripts = manager.searchChartScriptByStatsDef(name);
 

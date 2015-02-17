@@ -5,12 +5,13 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.services.rest.model.RESTResource;
-import it.geosolutions.geostore.services.rest.model.RESTStoredData;
-import it.geosolutions.unredd.geostore.model.UNREDDStatsDef;
+import it.geosolutions.unredd.services.data.CategoryPOJO;
+import it.geosolutions.unredd.services.data.ModelDomainNames;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
+import it.geosolutions.unredd.services.data.StoredDataPOJO;
+import it.geosolutions.unredd.services.data.utils.ResourceDecorator;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -41,8 +42,8 @@ public class StatsDefEdit extends AdminGUIAbstractServlet {
         String sId          = request.getParameter("id");
         String statsDefName = request.getParameter("name");
         String xml          = request.getParameter("xml");
-        String[] layers     = request.getParameterValues(UNREDDStatsDef.ReverseAttributes.LAYER.getName());
-        String zonalLayer   = request.getParameter(UNREDDStatsDef.Attributes.ZONALLAYER.getName());
+        String[] layers     = request.getParameterValues(ModelDomainNames.ATTRIBUTES_LAYER.getName());
+        String zonalLayer   = request.getParameter(ModelDomainNames.ATTRIBUTES_ZONALLAYER.getName());
         
         boolean newRecord = true;
         long id = 0;
@@ -52,40 +53,41 @@ public class StatsDefEdit extends AdminGUIAbstractServlet {
             newRecord = false;
         }
 
-        UNREDDStatsDef unreddStatsDef;
-        if (newRecord)
-            unreddStatsDef = new UNREDDStatsDef();
-        else
-            unreddStatsDef = new UNREDDStatsDef(manager.getResource(id, false));
-
-        // remove all previous layers
-        List<String> toBeRemoved = unreddStatsDef.getReverseAttributes(UNREDDStatsDef.ReverseAttributes.LAYER.getName());
-        for (String attrName : toBeRemoved) {
-            unreddStatsDef.removeReverseAttribute(UNREDDStatsDef.ReverseAttributes.LAYER, attrName);
+        ResourcePOJO unreddStatsDefRes;
+        if (newRecord){
+            unreddStatsDefRes = new ResourcePOJO();
         }
+        else{
+            unreddStatsDefRes = manager.getResource(id, false);
+            if(CategoryPOJO.STATSDEF.equals(unreddStatsDefRes.getCategory())){
+                throw new IOException("The requested resource with id '" + id + "' is not a StatDef resource as expected... this should never happen...");
+            }
+        }
+
+        ResourceDecorator unreddStatsDef = new ResourceDecorator(unreddStatsDefRes);
+        unreddStatsDef.deleteAttributes(ModelDomainNames.ATTRIBUTES_LAYER);
         
         // add new layers
-        if (layers != null)
-            unreddStatsDef.addReverseAttribute(UNREDDStatsDef.ReverseAttributes.LAYER, layers);
+        if (layers != null){
+            unreddStatsDef.addTextAttributes(ModelDomainNames.ATTRIBUTES_LAYER, layers);
+        }
         
-        unreddStatsDef.setAttribute(UNREDDStatsDef.Attributes.ZONALLAYER, zonalLayer);
-        
-        RESTResource statsDefRestResource = unreddStatsDef.createRESTResource();
+        unreddStatsDef.addTextAttribute(ModelDomainNames.ATTRIBUTES_LAYER, zonalLayer);
 
         if (!newRecord)
         {
             // don't set name - name can't be modified on the web interface
-            statsDefRestResource.setCategory(null); // Category needs to be null for updates
+            unreddStatsDefRes.setCategory(null); // Category needs to be null for updates
             
-            manager.updateResource(id, statsDefRestResource);
+            manager.updateResource(id, unreddStatsDefRes);
             manager.setData(id, xml);
         } else {
-            statsDefRestResource.setName(statsDefName);
+            unreddStatsDefRes.setName(statsDefName);
 
-            RESTStoredData rsd = new RESTStoredData();
+            StoredDataPOJO rsd = new StoredDataPOJO();
             rsd.setData(xml);
-            statsDefRestResource.setStore(rsd);
-            id = manager.insert(statsDefRestResource);
+            unreddStatsDefRes.setData(rsd);
+            id = manager.insert(unreddStatsDefRes);
         }
         
         RequestDispatcher rd = request.getRequestDispatcher("StatsDefShow?name=" + statsDefName);

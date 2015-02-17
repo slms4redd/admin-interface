@@ -5,8 +5,8 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
+import it.geosolutions.unredd.services.interfaces.UNREDDPersistenceFacade;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -44,7 +44,7 @@ public class ChartScriptByLayer extends AdminGUIAbstractServlet {
             throws ServletException, IOException {
         String layerName = request.getParameter("name");
         
-        Set<Resource> chartScripts = null;
+        Set<ResourcePOJO> chartScripts = null;
         try {
             chartScripts = searchChartScriptByLayerName(layerName, manager);
         } catch (Exception e) {
@@ -55,8 +55,8 @@ public class ChartScriptByLayer extends AdminGUIAbstractServlet {
         request.setAttribute("chartScripts", chartScripts);
     }
 
-    public Set<Resource> searchChartScriptByLayerName(String layername, UNREDDPersistenceFacade geostore) throws Exception {
-        List<Resource> relatedStatsDef = null;
+    public Set<ResourcePOJO> searchChartScriptByLayerName(String layername, UNREDDPersistenceFacade geostore) throws Exception {
+        List<ResourcePOJO> relatedStatsDef = null;
         try {
             relatedStatsDef = geostore.searchStatsDefByLayer(layername);
         } catch (Exception e) {
@@ -64,11 +64,11 @@ public class ChartScriptByLayer extends AdminGUIAbstractServlet {
             throw new IOException("Error while searching for StatsDef", e);
         }
 
-        Set<Resource> chartScript = new HashSet<Resource>();
+        Set<ResourcePOJO> chartScript = new HashSet<ResourcePOJO>();
 
         try {
-            for (Resource statsDef : relatedStatsDef) {
-                List<Resource> localChartScript = geostore.searchChartScriptByStatsDef(statsDef.getName());
+            for (ResourcePOJO statsDef : relatedStatsDef) {
+                List<ResourcePOJO> localChartScript = geostore.searchChartScriptByStatsDef(statsDef.getName());
                 chartScript.addAll(localChartScript);
             }
         } catch (Exception e) {

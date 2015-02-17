@@ -5,8 +5,8 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.unredd.geostore.model.UNREDDCategories;
+import it.geosolutions.unredd.services.data.CategoryPOJO;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
 
 import java.io.IOException;
 import java.util.List;
@@ -41,12 +41,12 @@ public class LayerUpdateList extends AdminGUIAbstractServlet {
         String layerName = request.getParameter("layer");
         
         try {
-            List<Resource> resources;
+            List<ResourcePOJO> resources;
             if (layerName == null || "".equals(layerName)) {
                 // if no layer is given in http parameters, find all layersupdates
-                resources = manager.getUNREDDResources(UNREDDCategories.LAYERUPDATE);
+                resources = manager.getUNREDDResources(CategoryPOJO.LAYERUPDATE);
             } else {
-                // otherwise find all layerswith the given layer name
+                // otherwise find all layers with the given layer name
                 resources = manager.searchLayerUpdatesByLayerName(layerName);
             }
             

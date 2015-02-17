@@ -1,11 +1,6 @@
 package org.fao.unredd.servlet;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-import it.geosolutions.geostore.core.model.Resource;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,8 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
 
-import org.fao.unredd.LayerBean;
-import org.fao.unredd.Util;
+import org.fao.unredd.LayerManager;
 
 
 /**
@@ -44,31 +38,33 @@ public class LayerShow extends AdminGUIAbstractServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         long id = new Integer(request.getParameter("id"));
-        
-        String url  = Util.getGeostoreRestURL(getServletContext());
-        String user = Util.getGeostoreUsername(getServletContext());
-        String pwd  = Util.getGeostorePassword(getServletContext());
 
-        LayerBean layerBean = new LayerBean();
-        layerBean.setGeostoreUrl(url);
-        layerBean.setGeostoreUserId(user);
-        layerBean.setGeostorePassword(pwd);
+        
+        ResourcePOJO res = null;
+//        try {
+            res = manager.getResource(id, false);
+//        } catch (JAXBException e) {
+//            throw new IOException(e.getMessage());
+//        }
+        LayerManager layerBean = new LayerManager(res);
         
         try {
-            layerBean.initWithId(id);
+            
             request.setAttribute("layer", layerBean);
             
             String layerName = layerBean.getName();
             
-            List<Resource> relatedStatsDefs = manager.searchStatsDefByLayer(layerName);
+            List<ResourcePOJO> relatedStatsDefs = manager.searchStatsDefByLayer(layerName);
             request.setAttribute("statsDefs", relatedStatsDefs);
             
-            List<Resource> relatedLayerUpdates = manager.searchLayerUpdatesByLayerName(layerName);
+            List<ResourcePOJO> relatedLayerUpdates = manager.searchLayerUpdatesByLayerName(layerName);
             request.setAttribute("layerUpdates", relatedLayerUpdates);
             
-            String data = manager.getData(id, MediaType.WILDCARD_TYPE);
-
+            String data = manager.getData(id, MediaType.WILDCARD_TYPE.toString());
+            layerBean.setData(data);
+            
             request.setAttribute("storedData", data);
+            
         } catch (Exception ex) {
             Logger.getLogger(LayerShow.class.getName()).log(Level.SEVERE, null, ex);
         }

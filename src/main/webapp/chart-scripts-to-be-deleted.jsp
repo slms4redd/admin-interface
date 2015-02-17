@@ -1,4 +1,4 @@
-<%@page import="it.geosolutions.geostore.core.model.Resource"%>
+<%@page import="it.geosolutions.unredd.services.data.ResourcePOJO"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -12,7 +12,7 @@
         <jsp:include page="header.jsp" /> 
         <h1>The following Chart Scripts must be deleted first:</h1>
         <table>
-            <% for (Resource chartScript : (List<Resource>)request.getAttribute("chartScripts")) { %>
+            <% for (ResourcePOJO chartScript : (List<ResourcePOJO>)request.getAttribute("chartScripts")) { %>
                 <tr><td><%= chartScript.getName() %></td></tr>
             <% } %>
         </table>

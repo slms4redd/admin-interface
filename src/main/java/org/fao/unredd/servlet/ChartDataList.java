@@ -4,7 +4,7 @@ package org.fao.unredd.servlet;
  * To change this template, choose Tools | Templates and open the template in
  * the editor.
  */
-import it.geosolutions.geostore.core.model.Resource;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
 
 import java.io.IOException;
 import java.util.List;
@@ -45,7 +45,7 @@ public class ChartDataList extends AdminGUIAbstractServlet {
         String chartScriptName = request.getParameter("chart_script");
 
         try {
-            List<Resource> relatedStatsDef = manager.searchChartDataByChartScript(chartScriptName);
+            List<ResourcePOJO> relatedStatsDef = manager.searchChartDataByChartScript(chartScriptName);
             request.setAttribute("chartData", relatedStatsDef);
             request.setAttribute("geostoreURL", Util.getGeostoreRestURL(getServletContext()));
 

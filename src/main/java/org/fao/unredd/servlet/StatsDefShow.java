@@ -5,9 +5,10 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.unredd.geostore.model.UNREDDCategories;
-import it.geosolutions.unredd.geostore.model.UNREDDStatsDef;
+import it.geosolutions.unredd.services.data.CategoryPOJO;
+import it.geosolutions.unredd.services.data.ModelDomainNames;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
+import it.geosolutions.unredd.services.data.utils.ResourceDecorator;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,34 +49,38 @@ public class StatsDefShow extends AdminGUIAbstractServlet {
 
             if (name != null && !"".equals(name))
             {   
-                Resource res = manager.searchResourceByName(name, UNREDDCategories.STATSDEF);
+                ResourcePOJO res = manager.searchResourceByName(name, CategoryPOJO.STATSDEF);
+                if(!CategoryPOJO.STATSDEF.equals(res.getCategory())){
+                    throw new IOException("The resource with name: '" + name + "' is not a StatDef resource... This should never happen...");
+                }
                 
-                String data = manager.getData(res.getId(), MediaType.WILDCARD_TYPE);
+                String data = manager.getData(res.getId(), MediaType.WILDCARD_TYPE.getType());
 
                 request.setAttribute("resource", res);
+                
 
                 request.setAttribute("storedData", data);
 
-                UNREDDStatsDef statsDef = new UNREDDStatsDef(res);
-                String zonalLayer = statsDef.getAttribute(UNREDDStatsDef.Attributes.ZONALLAYER);
+                ResourceDecorator statsDef = new ResourceDecorator(res);
+                String zonalLayer = statsDef.getFirstAttributeValue(ModelDomainNames.ATTRIBUTES_ZONALLAYER);
                 request.setAttribute("zonalLayer", zonalLayer);
 
-                List<Resource> relatedLayers = new ArrayList<Resource>();
+                List<ResourcePOJO> relatedLayers = new ArrayList<ResourcePOJO>();
                 
-                List<String> layerNames = statsDef.getReverseAttributes(UNREDDStatsDef.ReverseAttributes.LAYER.getName());
+                List<String> layerNames = statsDef.getAttributeValues(ModelDomainNames.ATTRIBUTES_LAYER);
                 for (String layerName : layerNames) {
                     relatedLayers.add(manager.searchLayer(layerName));
                 }
                 request.setAttribute("relatedLayers", relatedLayers);
 
-                List<Resource> relatedChartScripts = manager.searchChartScriptByStatsDef(res.getName());
+                List<ResourcePOJO> relatedChartScripts = manager.searchChartScriptByStatsDef(res.getName());
                 request.setAttribute("relatedChartScripts", relatedChartScripts);
             } else {
                 request.setAttribute("resource", null);
                 request.setAttribute("storedData", "");
             }
 
-            List<Resource> layers = manager.getLayers();
+            List<ResourcePOJO> layers = manager.getLayers();
             request.setAttribute("layerList", layers);
 
             String outputPage = getServletConfig().getInitParameter("outputPage");

@@ -41,7 +41,12 @@ public class ChartScriptReprocess extends AdminGUIAbstractServlet {
         String   chartName = manager.getResource(id, false).getName();
         
         LOGGER.info("Saving flow config: " + Util.getGeostoreFlowSaveDir(getServletContext()) + File.separator + "reprocess");
-        Util.saveReprocessFile(getServletContext(), getXml(chartName), Util.getGeostoreFlowSaveDir(getServletContext()));
+        
+        try{
+            Util.saveReprocessFile(getServletContext(), getXml(chartName), Util.getGeostoreFlowSaveDir(getServletContext()));
+        } catch (IOException e) {
+            throw new IOException("I/O Error while copying the XML file to in the geobatch watch directory... REVIEW THE APPLICATION 'geobatchFlowSaveDir' DIRECTORY CONFIGURATION");
+        }
         
         response.sendRedirect("ChartScriptList");
     }

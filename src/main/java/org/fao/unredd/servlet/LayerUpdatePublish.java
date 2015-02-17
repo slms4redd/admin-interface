@@ -5,9 +5,10 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.services.rest.model.RESTResource;
-import it.geosolutions.unredd.geostore.model.UNREDDLayer;
-import it.geosolutions.unredd.geostore.model.UNREDDLayerUpdate;
+import it.geosolutions.unredd.services.data.CategoryPOJO;
+import it.geosolutions.unredd.services.data.ModelDomainNames;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
+import it.geosolutions.unredd.services.data.utils.ResourceDecorator;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,32 +45,42 @@ public class LayerUpdatePublish extends AdminGUIAbstractServlet {
         Long   layerUpdateId = Long.parseLong(request.getParameter("layerUpdateId"));
         String action  = request.getParameter("action");
         
-        UNREDDLayerUpdate unreddLayerUpdate = new UNREDDLayerUpdate(manager.getResource(layerUpdateId, false));
-        String layerName = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.LAYER);
-        UNREDDLayer unreddLayer;
+        ResourcePOJO unreddLayerUpdateRes = manager.getResource(layerUpdateId, false);
+        if(!CategoryPOJO.LAYER.equals(unreddLayerUpdateRes.getCategory())){
+            throw new IOException("The requested resource with LayerUpdate id '" + layerUpdateId + "' is not a LayerUpdate resource as expected... this should never happen...");
+        }
+        ResourceDecorator unreddLayerUpdate = new ResourceDecorator(unreddLayerUpdateRes);  
+        
+        String layerName = unreddLayerUpdate.getFirstAttributeValue(ModelDomainNames.LAYERUPDATE_LAYER);
+        
+        ResourcePOJO unreddLayerRes;
         try {
-            unreddLayer = new UNREDDLayer(manager.searchLayer(layerName));
+            unreddLayerRes = manager.searchLayer(layerName);
+            if(!CategoryPOJO.LAYER.equals(unreddLayerRes.getCategory())){
+                throw new IOException("A resource with name = '" + layerName + "' has been found but it is not a Layer resource... this should never happen...");
+            }
         } catch (JAXBException e) {
             throw new IOException(e.getCause());
         }
-        String format    = unreddLayer.getAttribute(UNREDDLayer.Attributes.LAYERTYPE);
-        String year      = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.YEAR);
-        String month     = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.MONTH);
-        String day       = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.DAY);
+        ResourceDecorator unreddLayer = new ResourceDecorator(unreddLayerRes);
+        
+        String format    = unreddLayer.getFirstAttributeValue(ModelDomainNames.LAYER_LAYERTYPE);
+        String year      = unreddLayerUpdate.getFirstAttributeValue(ModelDomainNames.LAYERUPDATE_YEAR);
+        String month     = unreddLayerUpdate.getFirstAttributeValue(ModelDomainNames.LAYERUPDATE_MONTH);
+        String day       = unreddLayerUpdate.getFirstAttributeValue(ModelDomainNames.LAYERUPDATE_DAY);
         
         boolean publish   = "publish".equals(action);
         //boolean unpublish = "republish".equals(action); // unpublish action not yet implemented
         
-        unreddLayerUpdate.setAttribute(UNREDDLayerUpdate.Attributes.PUBLISHED, "" + (publish));
+        unreddLayerUpdate.updateTextAttribute(ModelDomainNames.LAYERUPDATE_PUBLISHED, "" + (publish));
         
-        RESTResource resource = unreddLayerUpdate.createRESTResource();
-        resource.setCategory(null); // Category needs to be null for updates
+        unreddLayerUpdate.setCategory(null); // Category needs to be null for updates
         
         String xml;
         if (publish) { // only publish action is implemented in GeoBatch for now
             xml = getPublishXml(layerName, format, year, month, day);
             Util.saveReprocessFile(getServletContext(), xml, Util.getGeostoreFlowSaveDir(getServletContext()) + File.separator + "publish");
-            manager.updateResource(layerUpdateId, resource);
+            manager.updateResource(layerUpdateId, unreddLayerUpdateRes);
             
             response.sendRedirect("LayerUpdateList?layer=" + layerName);
         }

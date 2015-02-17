@@ -5,11 +5,12 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.services.rest.model.RESTResource;
-import it.geosolutions.unredd.geostore.model.UNREDDChartScript;
+import it.geosolutions.unredd.services.data.CategoryPOJO;
+import it.geosolutions.unredd.services.data.ModelDomainNames;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
+import it.geosolutions.unredd.services.data.utils.ResourceDecorator;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -39,8 +40,8 @@ public class ChartScriptEdit extends AdminGUIAbstractServlet {
             throws ServletException, IOException {
         String sId         = request.getParameter("id");
         String name        = request.getParameter("name");
-        String scriptPath  = request.getParameter(UNREDDChartScript.Attributes.SCRIPTPATH.getName());
-        String statsDefs[] = request.getParameterValues(UNREDDChartScript.ReverseAttributes.STATSDEF.getName());
+        String scriptPath  = request.getParameter(ModelDomainNames.ATTRIBUTES_SCRIPTPATH.getName());
+        String statsDefs[] = request.getParameterValues(ModelDomainNames.ATTRIBUTES_STATSDEF.getName());
         
         boolean newRecord = true;
         long id = 0;
@@ -50,31 +51,31 @@ public class ChartScriptEdit extends AdminGUIAbstractServlet {
             newRecord = false;
         }
         
-        UNREDDChartScript unreddChartScript;
-        if (newRecord)
-            unreddChartScript = new UNREDDChartScript();
-        else
-            unreddChartScript = new UNREDDChartScript(manager.getResource(id, false));
-
+        ResourcePOJO unreddChartScriptRes = null;
+        if (!newRecord){
+            unreddChartScriptRes = manager.getResource(id, false);
+        }
+        else{
+            unreddChartScriptRes = new ResourcePOJO();
+            unreddChartScriptRes.setCategory(CategoryPOJO.CHARTSCRIPT);
+        }
+        ResourceDecorator unreddChartScript = new ResourceDecorator(unreddChartScriptRes); 
         
         // remove all previous statdefs
-        List<String> toBeRemoved = unreddChartScript.getReverseAttributes(UNREDDChartScript.ReverseAttributes.STATSDEF.getName());
-        for (String attrName : toBeRemoved) {
-            unreddChartScript.removeReverseAttribute(UNREDDChartScript.ReverseAttributes.STATSDEF, attrName);
-        }
+        boolean toBeRemoved = unreddChartScript.deleteAttributes(ModelDomainNames.ATTRIBUTES_STATSDEF);
 
         // add new statdefs
-        if (statsDefs != null) unreddChartScript.addReverseAttribute(UNREDDChartScript.ReverseAttributes.STATSDEF, statsDefs);
-            
-        unreddChartScript.setAttribute(UNREDDChartScript.Attributes.SCRIPTPATH, scriptPath);
-        RESTResource chartScriptRestResource = unreddChartScript.createRESTResource();
-
+        if (statsDefs != null){
+            unreddChartScript.addTextAttributes(ModelDomainNames.ATTRIBUTES_STATSDEF, statsDefs);
+        }
+        unreddChartScript.addTextAttribute(ModelDomainNames.ATTRIBUTES_SCRIPTPATH, scriptPath);
+        
         if (!newRecord) {
-            chartScriptRestResource.setCategory(null); // Category needs to be null for updates
-            manager.updateResource(id, chartScriptRestResource);
+            unreddChartScriptRes.setCategory(null); // Category needs to be null for updates
+            manager.updateResource(id, unreddChartScriptRes);
         } else {
-            chartScriptRestResource.setName(name); // name can't be modified on the web interface
-            id = manager.insert(chartScriptRestResource);
+            unreddChartScriptRes.setName(name); // name can't be modified on the web interface
+            id = manager.insert(unreddChartScriptRes);
         }
         
         RequestDispatcher rd = request.getRequestDispatcher("ChartScriptShow?id=" + id);

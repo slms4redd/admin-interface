@@ -5,8 +5,8 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.unredd.geostore.model.UNREDDCategories;
+import it.geosolutions.unredd.services.data.CategoryPOJO;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
 
 import java.io.IOException;
 import java.util.List;
@@ -41,10 +41,10 @@ public class ChartScriptList extends AdminGUIAbstractServlet {
         String statsDefName = request.getParameter("stats_def");
         
         try {
-            List<Resource> resources;
+            List<ResourcePOJO> resources;
             if (statsDefName == null || "".equals(statsDefName)) {
                 // if no statsDef is given in http parameters, find all chart scripts
-                UNREDDCategories categoryObj = UNREDDCategories.CHARTSCRIPT;
+                CategoryPOJO categoryObj = CategoryPOJO.CHARTSCRIPT;
                 resources = manager.getUNREDDResources(categoryObj);
             } else {
                 // otherwise find all stats defs with the given layer attribute

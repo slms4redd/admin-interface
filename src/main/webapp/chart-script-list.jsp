@@ -1,7 +1,7 @@
+<%@page import="it.geosolutions.unredd.services.data.ResourcePOJO"%>
 <%@page import="it.geosolutions.unredd.geostore.model.UNREDDLayer"%>
 <%@page import="it.geosolutions.geostore.services.rest.model.RESTStoredData"%>
 <%@page import="it.geosolutions.unredd.geostore.model.UNREDDStatsDef"%>
-<%@page import="it.geosolutions.geostore.core.model.Resource"%>
 <%@page import="it.geosolutions.unredd.geostore.model.UNREDDResource"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
@@ -45,9 +45,9 @@
                 </th>
             </tr>
             <% 
-                List<Resource> list = (List<Resource>)request.getAttribute("resources");
-                list = (list == null)? new ArrayList<Resource>():list;
-                for (Resource chartScript : list) { %>
+                List<ResourcePOJO> list = (List<ResourcePOJO>)request.getAttribute("resources");
+                list = (list == null)? new ArrayList<ResourcePOJO>():list;
+                for (ResourcePOJO chartScript : list) { %>
                     <tr>
                         <td><%= chartScript.getId() %></td>
                         <td><%= chartScript.getName() %></td>

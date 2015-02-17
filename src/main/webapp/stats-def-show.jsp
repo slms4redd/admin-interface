@@ -1,10 +1,9 @@
+<%@page import="it.geosolutions.unredd.services.data.ResourcePOJO"%>
 <%@page import="org.apache.commons.lang.StringEscapeUtils"%>
-<%@page import="java.util.ArrayList"%><%@
-page import="it.geosolutions.geostore.services.rest.model.RESTStoredData"%><%@
-page import="it.geosolutions.unredd.geostore.model.UNREDDStatsDef"%><%@
-page import="it.geosolutions.geostore.core.model.Resource"%><%@
-page import="java.util.List"%><%@
-page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -16,7 +15,7 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
         <h1>StatsDef</h1>
         
         <%
-        Resource res = (Resource)request.getAttribute("resource");
+        ResourcePOJO res = (ResourcePOJO)request.getAttribute("resource");
         %>
         
         <table class="edit">
@@ -35,7 +34,7 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
                 <td>
                     <ul>
                         <%
-                        for (Resource layer : (List<Resource>)request.getAttribute("relatedLayers")) { 
+                        for (ResourcePOJO layer : (List<ResourcePOJO>)request.getAttribute("relatedLayers")) { 
                         %>
                             <a href="LayerShow?id=<%= layer.getId() %>"><%= layer.getName() %></a>
                             <br>
@@ -50,9 +49,9 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
                 <td>
                     <ul>
                         <%
-                        List<Resource> chartScripts = (List<Resource>)request.getAttribute("relatedChartScripts");
+                        List<ResourcePOJO> chartScripts = (List<ResourcePOJO>)request.getAttribute("relatedChartScripts");
                         if(chartScripts != null){
-                           for (Resource chartScript : chartScripts) {
+                           for (ResourcePOJO chartScript : chartScripts) {
                         %>
                             <a href="ChartScriptShow?id=<%= chartScript.getId() %>"><%= chartScript.getName() %></a>
                             <br>

@@ -4,7 +4,7 @@
  */
 package org.fao.unredd.servlet;
 
-import it.geosolutions.geostore.core.model.Resource;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,11 +38,16 @@ public class StatsDefReprocess extends AdminGUIAbstractServlet {
             throws ServletException, IOException {
         Long   statsDefId = Long.parseLong(request.getParameter("id"));
         
-        Resource unreddStatsDefResource = manager.getResource(statsDefId, false);
+        ResourcePOJO unreddStatsDefResource = manager.getResource(statsDefId, false);
         String statsDefName = unreddStatsDefResource.getName();
         
         String xml = getXml(statsDefName);
-        Util.saveReprocessFile(getServletContext(), xml, Util.getGeostoreFlowSaveDir(getServletContext()) + File.separator + "reprocess");
+        
+        try {
+            Util.saveReprocessFile(getServletContext(), xml, Util.getGeostoreFlowSaveDir(getServletContext()) + File.separator + "reprocess");
+        } catch (IOException e) {
+            throw new IOException("I/O Error while copying the XML file to in the geobatch watch directory... REVIEW THE APPLICATION 'geobatchFlowSaveDir' DIRECTORY CONFIGURATION");
+        }
         
         //RequestDispatcher rd = request.getRequestDispatcher("LayerUpdateList?layer=" + layerName);
         //rd.forward(request, response);

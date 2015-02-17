@@ -19,9 +19,9 @@
  */
 package org.fao.unredd.servlet;
 
-import java.io.IOException;
+import it.geosolutions.unredd.services.interfaces.UNREDDPersistenceFacade;
 
-import it.geosolutions.unredd.services.UNREDDPersistenceFacade;
+import java.io.IOException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -48,7 +48,7 @@ public abstract class AdminGUIAbstractServlet extends HttpServlet{
     
     private final static Logger LOGGER = Logger.getLogger(AdminGUIAbstractServlet.class);
     
-    @Autowired
+    @Autowired()
     protected UNREDDPersistenceFacade manager;
     
     /**

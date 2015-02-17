@@ -5,7 +5,7 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.core.model.Resource;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
 
 import java.io.IOException;
 
@@ -40,8 +40,8 @@ public class StatsDataShow extends AdminGUIAbstractServlet {
         
         long id = Long.parseLong(request.getParameter("id"));
 
-        Resource res = manager.getResource(id, false);
-        String data = manager.getData(res.getId(), MediaType.WILDCARD_TYPE);
+        ResourcePOJO res = manager.getResource(id, false);
+        String data = manager.getData(res.getId(), MediaType.WILDCARD_TYPE.toString());
 
         request.setAttribute("resource", res);
         request.setAttribute("storedData", data);

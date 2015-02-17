@@ -29,11 +29,13 @@ http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
 	<bean id="geostorePassword" class="java.lang.String">
 		<constructor-arg type="String" value="Unr3dd" />
 	</bean>
-
-	<bean id="layers" class="org.fao.unredd.api.model.geostore.GeostoreLayers" />
-
-    <bean id="manager" class="it.geosolutions.unredd.geostore.UNREDDGeostoreManager">
-        <constructor-arg ref="geostoreClient"/>
+	
+    <bean id="manager" class="it.geosolutions.unredd.geostore.adapter.UNREDDGeostoreManagerAdapter" />
+    
+    <bean id="converter" class="it.geosolutions.unredd.geostore.adapter.UNREDDDataConverter" />
+    
+    <bean id="geostoreManager" class="it.geosolutions.unredd.geostore.UNREDDGeostoreManager">
+    	<constructor-arg ref="geostoreClient"/>
     </bean>
     
 	<bean id="geostoreClient" class="it.geosolutions.geostore.services.rest.GeoStoreClient">

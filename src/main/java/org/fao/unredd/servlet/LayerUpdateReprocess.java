@@ -4,7 +4,10 @@
  */
 package org.fao.unredd.servlet;
 
-import it.geosolutions.unredd.geostore.model.UNREDDLayerUpdate;
+import it.geosolutions.unredd.services.data.CategoryPOJO;
+import it.geosolutions.unredd.services.data.ModelDomainNames;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
+import it.geosolutions.unredd.services.data.utils.ResourceDecorator;
 
 import java.io.IOException;
 
@@ -37,10 +40,15 @@ public class LayerUpdateReprocess extends AdminGUIAbstractServlet {
             throws ServletException, IOException {
         Long   layerId   = Long.parseLong(request.getParameter("layerUpdateId"));
         
-        UNREDDLayerUpdate unreddLayerUpdate = new UNREDDLayerUpdate(manager.getResource(layerId, false));
-        String layerName = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.LAYER);
-        String year      = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.YEAR);
-        String month     = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.MONTH);
+        ResourcePOJO unreddLayerUpdateRes = manager.getResource(layerId, false);
+        if(CategoryPOJO.LAYERUPDATE.equals(unreddLayerUpdateRes.getCategory())){
+            throw new IOException("The requested resource with Layer id '" + layerId + "' is not a LayerUpdate resource as expected... this should never happen...");
+        }
+        ResourceDecorator unreddLayerUpdate = new ResourceDecorator(unreddLayerUpdateRes);
+        
+        String layerName = unreddLayerUpdate.getFirstAttributeValue(ModelDomainNames.LAYERUPDATE_LAYER);
+        String year      = unreddLayerUpdate.getFirstAttributeValue(ModelDomainNames.LAYERUPDATE_YEAR);
+        String month     = unreddLayerUpdate.getFirstAttributeValue(ModelDomainNames.LAYERUPDATE_MONTH);
         
         //System.out.println("Saving flow config: " + Util.getGeostoreFlowSaveDir(getServletContext()) + File.separator + "reprocess"); // DEBUG
         Util.saveReprocessFile(getServletContext(), getXml(layerName, year, month), Util.getGeostoreFlowSaveDir(getServletContext()));

@@ -5,8 +5,8 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.unredd.geostore.model.UNREDDCategories;
+import it.geosolutions.unredd.services.data.CategoryPOJO;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
 
 import java.io.IOException;
 import java.util.List;
@@ -43,8 +43,8 @@ public class ResourceList extends AdminGUIAbstractServlet {
             String category = getServletConfig().getInitParameter("unreddCategory");
             String outputPage = getServletConfig().getInitParameter("outputPage");
 
-            UNREDDCategories categoryObj = UNREDDCategories.valueOf(category);
-            List<Resource> resources = manager.getUNREDDResources(categoryObj);
+            CategoryPOJO categoryObj = CategoryPOJO.valueOf(category);
+            List<ResourcePOJO> resources = manager.getUNREDDResources(categoryObj);
             request.setAttribute("resources", resources);
 
             RequestDispatcher rd = request.getRequestDispatcher(outputPage);
