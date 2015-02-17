@@ -68,7 +68,10 @@ public class ChartScriptEdit extends AdminGUIAbstractServlet {
         if (statsDefs != null){
             unreddChartScript.addTextAttributes(ModelDomainNames.ATTRIBUTES_STATSDEF, statsDefs);
         }
-        unreddChartScript.addTextAttribute(ModelDomainNames.ATTRIBUTES_SCRIPTPATH, scriptPath);
+        
+        if(!unreddChartScript.updateTextAttribute(ModelDomainNames.ATTRIBUTES_SCRIPTPATH, scriptPath)){
+            unreddChartScript.addTextAttribute(ModelDomainNames.ATTRIBUTES_SCRIPTPATH, scriptPath);
+        }
         
         if (!newRecord) {
             unreddChartScriptRes.setCategory(null); // Category needs to be null for updates

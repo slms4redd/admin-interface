@@ -49,6 +49,10 @@ public class ChartScriptShow extends AdminGUIAbstractServlet {
             // get the resource
             ResourcePOJO res = manager.getResource(id, false);
 
+            if(!CategoryPOJO.CHARTSCRIPT.equals(res.getCategory())){
+                throw new IOException("The requested resource with id '" + id + "' is not a ChartScript resource as expected... this should never happen...");
+            }
+            
 //            ResourceDecorator chartScript = new ResourceDecorator(res);
 //            List<String> lRelatedStatDefs = chartScript.getAttributeValues(ModelDomainNames.CHARTSCRIPT_STATDEF);
             

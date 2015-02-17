@@ -5,10 +5,13 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
+import it.geosolutions.unredd.services.data.CategoryPOJO;
 import it.geosolutions.unredd.services.data.ResourcePOJO;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -49,8 +52,13 @@ public class StatsDataList extends AdminGUIAbstractServlet {
                 resources = manager.searchStatsDataByStatsDef(statsDefName);
                 //request.setAttribute("statsDef", statsDefName);
             }
-            
             request.setAttribute("resources", resources);
+            
+            //Retrieve stats data and store them in a Map 
+            Map<Long, ResourcePOJO> statsDefMap = new HashMap<Long, ResourcePOJO>();
+            ResourcePOJO statsDef = manager.searchResourceByName(statsDefName, CategoryPOJO.STATSDEF);
+            request.setAttribute("statsDef", statsDef);
+            
             RequestDispatcher rd = request.getRequestDispatcher("stats-data-list.jsp");
             rd.forward(request, response);
         } catch (JAXBException ex) {

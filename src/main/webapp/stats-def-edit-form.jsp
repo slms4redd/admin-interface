@@ -51,7 +51,7 @@
         <h1>StatsDef edit</h1>
         
         <%
-        ResourcePOJO res = (ResourcePOJO)request.getAttribute("statDef"); 
+        ResourcePOJO res = (ResourcePOJO)request.getAttribute("resource"); 
         List<String> relatedLayers;
         String zonalLayer;
         
@@ -73,9 +73,9 @@
                     </th>
                     <td>
                         <% if (res == null) { %>
-                            <input type="text" id="name" name="name" value="${statDef.name}">
+                            <input type="text" id="name" name="name" value="${resource.name}">
                         <% } else { %>
-                            ${statDef.name}
+                            ${resource.name}
                         <% } %>
                     </td>
                 </tr>
@@ -132,8 +132,8 @@
                 </tr>
             </table>
             <% if (request.getParameter("name") != null) { %>
-                <input type="hidden" name="id" value="${statDef.id}"></input>
-                <input type="hidden" name="name" value="${statDef.name}"></input>
+                <input type="hidden" name="id" value="${resource.id}"></input>
+                <input type="hidden" name="name" value="${resource.name}"></input>
             <% } %>
         </form>
     </body>

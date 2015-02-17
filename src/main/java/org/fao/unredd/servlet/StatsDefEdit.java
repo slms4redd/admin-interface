@@ -59,7 +59,7 @@ public class StatsDefEdit extends AdminGUIAbstractServlet {
         }
         else{
             unreddStatsDefRes = manager.getResource(id, false);
-            if(CategoryPOJO.STATSDEF.equals(unreddStatsDefRes.getCategory())){
+            if(!CategoryPOJO.STATSDEF.equals(unreddStatsDefRes.getCategory())){
                 throw new IOException("The requested resource with id '" + id + "' is not a StatDef resource as expected... this should never happen...");
             }
         }
@@ -72,7 +72,10 @@ public class StatsDefEdit extends AdminGUIAbstractServlet {
             unreddStatsDef.addTextAttributes(ModelDomainNames.ATTRIBUTES_LAYER, layers);
         }
         
-        unreddStatsDef.addTextAttribute(ModelDomainNames.ATTRIBUTES_LAYER, zonalLayer);
+        // Update (or add if it wasn't already present) the Zonal Layer
+        if(!unreddStatsDef.updateTextAttribute(ModelDomainNames.ATTRIBUTES_ZONALLAYER, zonalLayer)){
+            unreddStatsDef.addTextAttribute(ModelDomainNames.ATTRIBUTES_ZONALLAYER, zonalLayer);
+        }
 
         if (!newRecord)
         {

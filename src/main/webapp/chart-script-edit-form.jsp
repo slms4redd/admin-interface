@@ -60,7 +60,7 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
                         Script path
                     </th>
                     <td>
-                        <input id="<%= ModelDomainNames.CHARTSCRIPT_SCRIPTPATH.getName() %>" name="<%= ModelDomainNames.CHARTSCRIPT_SCRIPTPATH.getName() %>" type="text" value="<%= res == null ? "" : new ResourceDecorator(res).getAttributeValues(ModelDomainNames.CHARTSCRIPT_SCRIPTPATH)  %>">
+                        <input id="<%= ModelDomainNames.CHARTSCRIPT_SCRIPTPATH.getName() %>" name="<%= ModelDomainNames.CHARTSCRIPT_SCRIPTPATH.getName() %>" type="text" value="<%= res == null ? "" : new ResourceDecorator(res).getAttributeValues(ModelDomainNames.CHARTSCRIPT_SCRIPTPATH).get(0)  %>">
                     </td>
                 </tr>
                 <tr>
