@@ -86,7 +86,7 @@ public class StatsDefEdit extends AdminGUIAbstractServlet {
             manager.setData(id, xml);
         } else {
             unreddStatsDefRes.setName(statsDefName);
-
+            unreddStatsDefRes.setCategory(CategoryPOJO.STATSDEF);
             StoredDataPOJO rsd = new StoredDataPOJO();
             rsd.setData(xml);
             unreddStatsDefRes.setData(rsd);
