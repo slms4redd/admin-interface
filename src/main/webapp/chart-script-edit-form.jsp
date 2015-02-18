@@ -1,9 +1,8 @@
-<%@page import="it.geosolutions.unredd.geostore.model.UNREDDChartScript"%>
+<%@page import="it.geosolutions.unredd.services.data.utils.ResourceDecorator"%>
+<%@page import="it.geosolutions.unredd.services.data.ModelDomainNames"%>
+<%@page import="it.geosolutions.unredd.services.data.ResourcePOJO"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="it.geosolutions.geostore.services.rest.model.RESTStoredData"%>
-<%@page import="it.geosolutions.unredd.geostore.model.UNREDDStatsDef"%>
-<%@page import="it.geosolutions.geostore.core.model.Resource"%><%@
-page import="java.util.List"%><%@
+<%@page import="java.util.List"%><%@
 page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
 <html>
     <head>
@@ -15,7 +14,7 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
         <jsp:include page="header.jsp" />
         <h1>ChartScript edit</h1>
         
-        <% Resource res = (Resource)request.getAttribute("resource"); %>
+        <% ResourcePOJO res = (ResourcePOJO)request.getAttribute("resource"); %>
         
         <form action="ChartScriptEdit" method="POST">
             <table class="edit">
@@ -36,16 +35,16 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
                         StatsDef
                     </th>
                     <td>
-                        <select multiple="multiple" id="<%= UNREDDChartScript.ReverseAttributes.STATSDEF.getName() %>" name="<%= UNREDDChartScript.ReverseAttributes.STATSDEF.getName() %>">
+                        <select multiple="multiple" id="<%= ModelDomainNames.CHARTSCRIPT_STATDEF.getName() %>" name="<%= ModelDomainNames.CHARTSCRIPT_STATDEF.getName() %>">
                         <%
                         List<String> relatedStatDefs;
                         if (res != null) {
-                            UNREDDChartScript statsDef = new UNREDDChartScript(res);
-                            relatedStatDefs = statsDef.getReverseAttributes(UNREDDChartScript.ReverseAttributes.STATSDEF.getName());
+                            ResourceDecorator statsDef = new ResourceDecorator(res);
+                            relatedStatDefs = statsDef.getAttributeValues(ModelDomainNames.CHARTSCRIPT_STATDEF);
                         } else {
                             relatedStatDefs = new ArrayList();
                         }
-                        for (Resource statsDef : (List<Resource>)request.getAttribute("statsDefList")) { %>
+                        for (ResourcePOJO statsDef : (List<ResourcePOJO>)request.getAttribute("statsDefList")) { %>
                             <option id="<%= statsDef.getName() %>"
                             <%
                             if (relatedStatDefs.contains(statsDef.getName()))
@@ -61,7 +60,7 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
                         Script path
                     </th>
                     <td>
-                        <input id="<%= UNREDDChartScript.Attributes.SCRIPTPATH.getName() %>" name="<%= UNREDDChartScript.Attributes.SCRIPTPATH.getName() %>" type="text" value="<%= res == null ? "" : new UNREDDChartScript(res).getAttribute(UNREDDChartScript.Attributes.SCRIPTPATH)  %>">
+                        <input id="<%= ModelDomainNames.CHARTSCRIPT_SCRIPTPATH.getName() %>" name="<%= ModelDomainNames.CHARTSCRIPT_SCRIPTPATH.getName() %>" type="text" value="<%= res == null ? "" : new ResourceDecorator(res).getAttributeValues(ModelDomainNames.CHARTSCRIPT_SCRIPTPATH).get(0)  %>">
                     </td>
                 </tr>
                 <tr>

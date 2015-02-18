@@ -4,7 +4,7 @@
     Author     : sgiaccio
 --%>
 
-<%@page import="org.fao.unredd.LayerBean"%>
+<%@page import="org.fao.unredd.LayerManager"%>
 <%@page import="it.geosolutions.unredd.geostore.model.UNREDDLayer"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -131,7 +131,9 @@
                         <input type="text" name="<%= UNREDDLayer.Attributes.RASTERY1.getName() %>" id="<%= UNREDDLayer.Attributes.RASTERY1.getName() %>" value="${layer.rasterY1}"></input>
                     </td>
                 </tr>
-                <% if ("vector".equals(((LayerBean)request.getAttribute("layer")).getLayerType())) { %>
+                <%
+                    if ("vector".equals(((LayerManager)request.getAttribute("layer")).getLayerType())) {
+                %>
                     <tr>
                         <td title="Name of the numeric feature attribute to set in the raster">
                             Attribute name
@@ -162,7 +164,6 @@
                         Data
                     </th>
                     <td>
-                        <% String data = (String)request.getAttribute("storedData"); %>
                         <textarea id="xml" name="xml">${layer.data}</textarea>
                     </td>
                 </tr>

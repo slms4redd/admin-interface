@@ -1,8 +1,10 @@
+<%@page import="it.geosolutions.unredd.services.data.ModelDomainNames"%>
+<%@page import="it.geosolutions.unredd.services.data.utils.ResourceDecorator"%>
+<%@page import="it.geosolutions.unredd.services.data.ResourcePOJO"%>
 <%@page import="it.geosolutions.unredd.geostore.model.UNREDDChartScript"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="it.geosolutions.unredd.geostore.model.UNREDDStatsDef"%>
-<%@page import="it.geosolutions.geostore.core.model.Resource"%><%@
-page import="java.util.List"%><%@
+<%@page import="java.util.List"%><%@
 page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
 <html>
     <head>
@@ -11,9 +13,10 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
         <title>ChartScript</title>
     </head>
     <body>
+        <jsp:include page="header.jsp" />
         <h1>ChartScript</h1>
         
-        <% Resource res = (Resource)request.getAttribute("resource"); %>
+        <% ResourcePOJO res = (ResourcePOJO)request.getAttribute("resource"); %>
         
         <table class="edit">
             <tr>
@@ -32,8 +35,8 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
                     <%
                     List<String> relatedStatDefs;
                     if (res != null) {
-                        UNREDDChartScript chartScript = new UNREDDChartScript(res);
-                        relatedStatDefs = chartScript.getReverseAttributes(UNREDDChartScript.ReverseAttributes.STATSDEF.getName());
+                        ResourceDecorator chartScript = new ResourceDecorator(res);
+                        relatedStatDefs = chartScript.getAttributeValues(ModelDomainNames.CHARTSCRIPT_STATDEF);
                     } else {
                         relatedStatDefs = new ArrayList();
                     }
@@ -47,7 +50,7 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
                     Script path
                 </th>
                 <td>
-                    <%= res == null ? "" : new UNREDDChartScript(res).getAttribute(UNREDDChartScript.Attributes.SCRIPTPATH)  %>
+                    <%= res == null ? "" : new ResourceDecorator(res).getFirstAttributeValue(ModelDomainNames.CHARTSCRIPT_SCRIPTPATH)  %>
                 </td>
             </tr>
         </table>

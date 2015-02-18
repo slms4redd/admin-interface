@@ -4,22 +4,31 @@
  */
 package org.fao.unredd.servlet;
 
-import it.geosolutions.geostore.services.rest.GeoStoreClient;
-import it.geosolutions.unredd.geostore.model.UNREDDLayerUpdate;
-import java.io.File;
+import it.geosolutions.unredd.services.data.CategoryPOJO;
+import it.geosolutions.unredd.services.data.ModelDomainNames;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
+import it.geosolutions.unredd.services.data.utils.ResourceDecorator;
+
 import java.io.IOException;
+
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.fao.unredd.Util;
 
 /**
  *
  * @author sgiaccio
+ * @author DamianoG (first revision v2.0)
  */
-public class LayerUpdateReprocess extends HttpServlet {
-    
+public class LayerUpdateReprocess extends AdminGUIAbstractServlet {
+     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 8526394477976603977L;
+
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -31,12 +40,15 @@ public class LayerUpdateReprocess extends HttpServlet {
             throws ServletException, IOException {
         Long   layerId   = Long.parseLong(request.getParameter("layerUpdateId"));
         
-        GeoStoreClient client = Util.getGeostoreClient(getServletContext());
+        ResourcePOJO unreddLayerUpdateRes = manager.getResource(layerId, false);
+        if(CategoryPOJO.LAYERUPDATE.equals(unreddLayerUpdateRes.getCategory())){
+            throw new IOException("The requested resource with Layer id '" + layerId + "' is not a LayerUpdate resource as expected... this should never happen...");
+        }
+        ResourceDecorator unreddLayerUpdate = new ResourceDecorator(unreddLayerUpdateRes);
         
-        UNREDDLayerUpdate unreddLayerUpdate = new UNREDDLayerUpdate(client.getResource(layerId));
-        String layerName = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.LAYER);
-        String year      = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.YEAR);
-        String month     = unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.MONTH);
+        String layerName = unreddLayerUpdate.getFirstAttributeValue(ModelDomainNames.LAYERUPDATE_LAYER);
+        String year      = unreddLayerUpdate.getFirstAttributeValue(ModelDomainNames.LAYERUPDATE_YEAR);
+        String month     = unreddLayerUpdate.getFirstAttributeValue(ModelDomainNames.LAYERUPDATE_MONTH);
         
         //System.out.println("Saving flow config: " + Util.getGeostoreFlowSaveDir(getServletContext()) + File.separator + "reprocess"); // DEBUG
         Util.saveReprocessFile(getServletContext(), getXml(layerName, year, month), Util.getGeostoreFlowSaveDir(getServletContext()));
@@ -56,40 +68,4 @@ public class LayerUpdateReprocess extends HttpServlet {
         
         return xml.toString();
     }
-    
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 }

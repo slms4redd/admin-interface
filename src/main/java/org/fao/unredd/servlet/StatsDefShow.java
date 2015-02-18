@@ -5,28 +5,33 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.geostore.services.rest.GeoStoreClient;
-import it.geosolutions.unredd.geostore.UNREDDGeostoreManager;
-import it.geosolutions.unredd.geostore.model.UNREDDCategories;
-import it.geosolutions.unredd.geostore.model.UNREDDStatsDef;
+import it.geosolutions.unredd.services.data.CategoryPOJO;
+import it.geosolutions.unredd.services.data.ModelDomainNames;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
+import it.geosolutions.unredd.services.data.utils.ResourceDecorator;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
-import org.fao.unredd.Util;
 
 /**
  *
  * @author sgiaccio
+ * @author DamianoG (first revision v2.0)
  */
-public class StatsDefShow extends HttpServlet {
+public class StatsDefShow extends AdminGUIAbstractServlet {
+    
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -1656006682372151931L;
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -43,43 +48,39 @@ public class StatsDefShow extends HttpServlet {
             String name = request.getParameter("name");
 
             if (name != null && !"".equals(name))
-            {
-                GeoStoreClient client = Util.getGeostoreClient(getServletContext());
+            {   
+                ResourcePOJO res = manager.searchResourceByName(name, CategoryPOJO.STATSDEF);
+                if(!CategoryPOJO.STATSDEF.equals(res.getCategory())){
+                    throw new IOException("The resource with name: '" + name + "' is not a StatDef resource... This should never happen...");
+                }
                 
-                //long id = Long.parseLong(sId);
-                //Resource res = client.getResource(id);
-                
-                UNREDDGeostoreManager manager = new UNREDDGeostoreManager(client);
-                
-                Resource res = manager.searchResourceByName(name, UNREDDCategories.STATSDEF);
-                
-                String data = client.getData(res.getId(), MediaType.WILDCARD_TYPE);
+                String data = manager.getData(res.getId(), MediaType.WILDCARD_TYPE.getType());
 
                 request.setAttribute("resource", res);
+                
 
                 request.setAttribute("storedData", data);
 
-                UNREDDStatsDef statsDef = new UNREDDStatsDef(res);
-                String zonalLayer = statsDef.getAttribute(UNREDDStatsDef.Attributes.ZONALLAYER);
+                ResourceDecorator statsDef = new ResourceDecorator(res);
+                String zonalLayer = statsDef.getFirstAttributeValue(ModelDomainNames.ATTRIBUTES_ZONALLAYER);
                 request.setAttribute("zonalLayer", zonalLayer);
 
-                List<Resource> relatedLayers = new ArrayList<Resource>();
+                List<ResourcePOJO> relatedLayers = new ArrayList<ResourcePOJO>();
                 
-                List<String> layerNames = statsDef.getReverseAttributes(UNREDDStatsDef.ReverseAttributes.LAYER.getName());
+                List<String> layerNames = statsDef.getAttributeValues(ModelDomainNames.ATTRIBUTES_LAYER);
                 for (String layerName : layerNames) {
                     relatedLayers.add(manager.searchLayer(layerName));
                 }
                 request.setAttribute("relatedLayers", relatedLayers);
 
-                List<Resource> relatedChartScripts = manager.searchChartScriptByStatsDef(res.getName());
+                List<ResourcePOJO> relatedChartScripts = manager.searchChartScriptByStatsDef(res.getName());
                 request.setAttribute("relatedChartScripts", relatedChartScripts);
             } else {
                 request.setAttribute("resource", null);
                 request.setAttribute("storedData", "");
             }
 
-            UNREDDGeostoreManager manager = Util.getGeostoreManager(getServletContext());
-            List<Resource> layers = manager.getLayers();
+            List<ResourcePOJO> layers = manager.getLayers();
             request.setAttribute("layerList", layers);
 
             String outputPage = getServletConfig().getInitParameter("outputPage");
@@ -90,40 +91,4 @@ public class StatsDefShow extends HttpServlet {
             throw new ServletException(ex);
         }
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 }

@@ -1,14 +1,11 @@
-<%@page import="it.geosolutions.unredd.geostore.UNREDDGeostoreManager"%>
+<%@page import="it.geosolutions.unredd.services.data.ModelDomainNames"%>
+<%@page import="it.geosolutions.unredd.services.data.utils.ResourceDecorator"%>
+<%@page import="it.geosolutions.unredd.services.data.ResourcePOJO"%>
 <%@page import="org.fao.unredd.Util"%>
 <%@page import="java.util.Map"%>
-<%@page import="it.geosolutions.unredd.geostore.model.UNREDDStatsData"%>
-<%@page import="it.geosolutions.unredd.geostore.model.UNREDDLayer"%>
-<%@page import="it.geosolutions.geostore.services.rest.model.RESTStoredData"%>
-<%@page import="it.geosolutions.unredd.geostore.model.UNREDDStatsDef"%>
-<%@page import="it.geosolutions.geostore.core.model.Resource"%><%@
-page import="it.geosolutions.unredd.geostore.model.UNREDDResource"%><%@
-page import="java.util.List"%><%@
-page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
+<%@page import="java.util.List"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -45,24 +42,20 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
                 -->
             </tr>
             <% 
-                List<Resource> resources = (List<Resource>)request.getAttribute("resources");
-                for (Resource resource : resources) { %>
+                List<ResourcePOJO> resources = (List<ResourcePOJO>)request.getAttribute("resources");
+            	ResourcePOJO statsDefMap = (ResourcePOJO)request.getAttribute("statsDef");
+                for (ResourcePOJO resource : resources) { 
+                %>
                     <tr>
-                        <% UNREDDStatsData unreddStatsData = new UNREDDStatsData(resource); %>
-                        <td><%= resource.getId() %></td>
-                        <td><%= resource.getName() %></td>
-                        <!-- <td><%= unreddStatsData.getAttribute(UNREDDStatsData.Attributes.STATSDEF) %></td> -->
+                        <% ResourceDecorator unreddStatsData = new ResourceDecorator(resource); %>
+                        <td><%= unreddStatsData.getId() %></td>
+                        <td><%= unreddStatsData.getName() %></td>
+                         
+                        <td><a href="StatsDefShow?name=<%= statsDefMap.getName() %>"><%= statsDefMap.getName() %></a></td>
                         
-                        <%
-                            UNREDDGeostoreManager manager = Util.getGeostoreManager(getServletContext());
-                            String statsDefName = unreddStatsData.getAttribute(UNREDDStatsData.Attributes.STATSDEF);
-                            Resource statsDefResource = manager.searchResourceByName(statsDefName);
-                        %>
-                        <td><a href="StatsDefShow?name=<%= statsDefResource.getName() %>"><%= statsDefResource.getName() %></a></td>
-                        
-                        <td><%= unreddStatsData.getAttribute(UNREDDStatsData.Attributes.YEAR) %></td>
-                        <td><%= unreddStatsData.getAttribute(UNREDDStatsData.Attributes.MONTH) == null ? "-" : unreddStatsData.getAttribute(UNREDDStatsData.Attributes.MONTH) %></td>
-                        <td><a href="StatsDataShow?id=<%= resource.getId() %>">[show data]</a></td>
+                        <td><%= unreddStatsData.getFirstAttributeValue(ModelDomainNames.STATS_DEF_YEAR) %></td>
+                        <td><%= unreddStatsData.getFirstAttributeValue(ModelDomainNames.STATS_DEF_MONTH) == null ? "-" : unreddStatsData.getFirstAttributeValue(ModelDomainNames.STATS_DEF_MONTH) %></td>
+                        <td><a href="StatsDataShow?id=<%= unreddStatsData.getId() %>">[show data]</a></td>
                         <!--<td><a href="StatsDataReprocess?id=<%= resource.getId() %>">[reprocess]</a></td>-->
                     </tr>
                 <% } %>

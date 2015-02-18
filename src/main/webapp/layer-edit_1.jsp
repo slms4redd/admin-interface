@@ -14,7 +14,7 @@
     </head>
     <body>
         <jsp:include page="header.jsp" />
-        <jsp:useBean id="layer" class="org.fao.unredd.LayerBean" scope="request">
+        <jsp:useBean id="layer" class="org.fao.unredd.LayerManager" scope="request">
             <%-- this body is executed only if the bean is created --%>
 
             <%-- intialize bean properties --%>

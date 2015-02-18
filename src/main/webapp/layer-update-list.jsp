@@ -1,11 +1,13 @@
+<%@page import="it.geosolutions.unredd.services.data.ModelDomainNames"%>
+<%@page import="it.geosolutions.unredd.services.data.utils.ResourceDecorator"%>
+<%@page import="it.geosolutions.unredd.services.data.ResourcePOJO"%>
 <%@page import="it.geosolutions.unredd.geostore.model.UNREDDLayerUpdate"%>
 <%@page import="it.geosolutions.unredd.geostore.model.UNREDDLayer"%>
 <%@page import="it.geosolutions.geostore.services.rest.model.RESTStoredData"%>
 <%@page import="it.geosolutions.unredd.geostore.model.UNREDDStatsDef"%>
-<%@page import="it.geosolutions.geostore.core.model.Resource"%><%@
-page import="it.geosolutions.unredd.geostore.model.UNREDDResource"%><%@
-page import="java.util.List"%><%@
-page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
+<%@page import="it.geosolutions.unredd.geostore.model.UNREDDResource"%>
+<%@page import="java.util.List"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -53,17 +55,18 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
                 </th>
                 -->
             </tr>
-            <% for (Resource layerUpdate : (List<Resource>)request.getAttribute("resources")) { %>
+            <% for (ResourcePOJO layerUpdate : (List<ResourcePOJO>)request.getAttribute("resources")) { %>
                 <tr>
-                    <% UNREDDLayerUpdate unreddLayerUpdate = new UNREDDLayerUpdate(layerUpdate); %>
+                    <% ResourceDecorator unreddLayerUpdate = new ResourceDecorator(layerUpdate); %>
                     <td><%= layerUpdate.getId() %></td>
                     <td><%= layerUpdate.getName() %></td>
-                    <td><%= unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.LAYER) %></td>
-                    <td><%= unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.YEAR) %></td>
-                    <td><%= unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.MONTH) == null ? "&mdash;" : unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.MONTH) %></td>
-                    <td><%= unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.DAY) == null ? "&mdash;" : unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.DAY) %></td>
+                    <td><%= unreddLayerUpdate.getFirstAttributeValue(ModelDomainNames.ATTRIBUTES_LAYER) %></td>
+                    <td><%= unreddLayerUpdate.getFirstAttributeValue(ModelDomainNames.LAYERUPDATE_YEAR) %></td>
+                    <td><%= unreddLayerUpdate.getFirstAttributeValue(ModelDomainNames.LAYERUPDATE_MONTH) == null ? "&mdash;" : unreddLayerUpdate.getFirstAttributeValue(ModelDomainNames.LAYERUPDATE_MONTH) %></td>
+                    <td><%= unreddLayerUpdate.getFirstAttributeValue(ModelDomainNames.LAYERUPDATE_DAY) == null ? "&mdash;" : unreddLayerUpdate.getFirstAttributeValue(ModelDomainNames.LAYERUPDATE_MONTH) %></td>
                     <td>
-                        <% if ("true".equals(unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.PUBLISHED))) { %>
+                        <% boolean published = "true".equals(unreddLayerUpdate.getFirstAttributeValue(ModelDomainNames.LAYERUPDATE_PUBLISHED));
+                           if (published) { %>
                             <span style="color:green">yes</span>
                         <% } else { %>
                             <span style="color:red">no</span>
@@ -71,14 +74,14 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
                     </td>
                     <td>
                         
-                        <% if (!"true".equals(unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.PUBLISHED))) { %>
+                        <% if (!published) { %>
                             <a href="LayerUpdatePublish?action=publish&layerUpdateId=<%= layerUpdate.getId() %>">[publish]</a>
                         <% } else { %>
                             published
                         <% } %>
                     </td>
                     <td>
-                        <% if ("true".equals(unreddLayerUpdate.getAttribute(UNREDDLayerUpdate.Attributes.PUBLISHED))) { %>
+                        <% if (published) { %>
                             <a href="LayerUpdatePublish?action=publish&layerUpdateId=<%= layerUpdate.getId() %>">[republish]</a>
                         <% } else { %>
                             -

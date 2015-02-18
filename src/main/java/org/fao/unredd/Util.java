@@ -4,23 +4,13 @@
  */
 package org.fao.unredd;
 
-import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.geostore.services.dto.ShortResource;
-import it.geosolutions.geostore.services.dto.search.CategoryFilter;
-import it.geosolutions.geostore.services.dto.search.SearchFilter;
-import it.geosolutions.geostore.services.dto.search.SearchOperator;
-import it.geosolutions.geostore.services.rest.GeoStoreClient;
-import it.geosolutions.geostore.services.rest.model.ShortResourceList;
-import it.geosolutions.unredd.geostore.UNREDDGeostoreManager;
-import it.geosolutions.unredd.geostore.model.UNREDDCategories;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
+
 import javax.servlet.ServletContext;
-import javax.xml.bind.JAXBException;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -95,57 +85,57 @@ public class Util {
         return conf.getGeobatchFlowSaveDir();
     }
     
-    public static GeoStoreClient getGeostoreClient(ServletContext servletContext) {
-        ApplicationContext beanFactory =
-            WebApplicationContextUtils
-                .getRequiredWebApplicationContext(servletContext);
+//    public static GeoStoreClient getGeostoreClient(ServletContext servletContext) {
+//        ApplicationContext beanFactory =
+//            WebApplicationContextUtils
+//                .getRequiredWebApplicationContext(servletContext);
+//
+//        GeoStoreClient client =
+//             (GeoStoreClient)beanFactory
+//                  .getBean("geoStoreClient", GeoStoreClient.class);
+//        
+//        return client;
+//    }
 
-        GeoStoreClient client =
-             (GeoStoreClient)beanFactory
-                  .getBean("geoStoreClient", GeoStoreClient.class);
-        
-        return client;
-    }
-
-    public static UNREDDGeostoreManager getGeostoreManager(ServletContext servletContext) {
-        ApplicationContext beanFactory =
-            WebApplicationContextUtils
-                .getRequiredWebApplicationContext(servletContext);
-
-        UNREDDGeostoreManager manager =
-             (UNREDDGeostoreManager)beanFactory
-                  .getBean("unreddGeostoreManager", UNREDDGeostoreManager.class);
-        
-        return manager;
-    }
+//    public static UNREDDPersistenceFacade getGeostoreManager(ServletContext servletContext) {
+//        ApplicationContext beanFactory =
+//            WebApplicationContextUtils
+//                .getRequiredWebApplicationContext(servletContext);
+//
+//        UNREDDGeostoreManager manager =
+//             (UNREDDGeostoreManager)beanFactory
+//                  .getBean("unreddGeostoreManager", UNREDDGeostoreManager.class);
+//        
+//        return manager;
+//    }
     
-    /*********
-     * Returns the list of all layers
-     * @return
-     */
-    public ArrayList<Resource> getStatsDefs() throws UnsupportedEncodingException, JAXBException {
-        SearchFilter filter = new CategoryFilter(UNREDDCategories.STATSDEF.getName(), SearchOperator.EQUAL_TO);
-        //ShortResourceList list = client.searchResources(filter);
-
-        //return getResourceList(list);
-        return null;
-    }
-    
-    /*********
-     * Converts a ShortResourceList to a list of Resource objects
-     * @return
-     */
-    private ArrayList getResourceList(ShortResourceList list) {
-        ArrayList resources = new ArrayList();
-        if (list.getList() != null && !list.getList().isEmpty()) {
-            for (ShortResource shortResource : list.getList()) {
-                //Resource resource = client.getResource(shortResource.getId());
-                //resources.add(resource);
-            }
-        } else {
-            System.out.println("No resource found");
-        }
-        
-        return resources;
-    }
+//    /*********
+//     * Returns the list of all layers
+//     * @return
+//     */
+//    public ArrayList<Resource> getStatsDefs() throws UnsupportedEncodingException, JAXBException {
+//        SearchFilter filter = new CategoryFilter(UNREDDCategories.STATSDEF.getName(), SearchOperator.EQUAL_TO);
+//        //ShortResourceList list = client.searchResources(filter);
+//
+//        //return getResourceList(list);
+//        return null;
+//    }
+//    
+//    /*********
+//     * Converts a ShortResourceList to a list of Resource objects
+//     * @return
+//     */
+//    private ArrayList getResourceList(ShortResourceList list) {
+//        ArrayList resources = new ArrayList();
+//        if (list.getList() != null && !list.getList().isEmpty()) {
+//            for (ShortResource shortResource : list.getList()) {
+//                //Resource resource = client.getResource(shortResource.getId());
+//                //resources.add(resource);
+//            }
+//        } else {
+//            System.out.println("No resource found");
+//        }
+//        
+//        return resources;
+//    }
 }

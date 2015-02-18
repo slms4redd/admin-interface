@@ -5,24 +5,30 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.services.rest.GeoStoreClient;
-import it.geosolutions.geostore.services.rest.model.RESTResource;
-import it.geosolutions.geostore.services.rest.model.RESTStoredData;
-import it.geosolutions.unredd.geostore.model.UNREDDStatsDef;
+import it.geosolutions.unredd.services.data.CategoryPOJO;
+import it.geosolutions.unredd.services.data.ModelDomainNames;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
+import it.geosolutions.unredd.services.data.StoredDataPOJO;
+import it.geosolutions.unredd.services.data.utils.ResourceDecorator;
+
 import java.io.IOException;
-import java.util.List;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.fao.unredd.Util;
 
 /**
  *
  * @author sgiaccio
+ * @author DamianoG (first revision v2.0)
  */
-public class StatsDefEdit extends HttpServlet {
+public class StatsDefEdit extends AdminGUIAbstractServlet {
+    
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2329581346690519868L;
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -36,9 +42,8 @@ public class StatsDefEdit extends HttpServlet {
         String sId          = request.getParameter("id");
         String statsDefName = request.getParameter("name");
         String xml          = request.getParameter("xml");
-        String[] layers     = request.getParameterValues(UNREDDStatsDef.ReverseAttributes.LAYER.getName());
-        String zonalLayer   = request.getParameter(UNREDDStatsDef.Attributes.ZONALLAYER.getName());
-        
+        String[] layers     = request.getParameterValues(ModelDomainNames.ATTRIBUTES_LAYER.getName());
+        String zonalLayer   = request.getParameter(ModelDomainNames.ATTRIBUTES_ZONALLAYER.getName());
         
         boolean newRecord = true;
         long id = 0;
@@ -48,81 +53,47 @@ public class StatsDefEdit extends HttpServlet {
             newRecord = false;
         }
 
-        GeoStoreClient client = Util.getGeostoreClient(getServletContext());
-
-        UNREDDStatsDef unreddStatsDef;
-        if (newRecord)
-            unreddStatsDef = new UNREDDStatsDef();
-        else
-            unreddStatsDef = new UNREDDStatsDef(client.getResource(id));
-
-        // remove all previous layers
-        List<String> toBeRemoved = unreddStatsDef.getReverseAttributes(UNREDDStatsDef.ReverseAttributes.LAYER.getName());
-        for (String attrName : toBeRemoved) {
-            unreddStatsDef.removeReverseAttribute(UNREDDStatsDef.ReverseAttributes.LAYER, attrName);
+        ResourcePOJO unreddStatsDefRes;
+        if (newRecord){
+            unreddStatsDefRes = new ResourcePOJO();
         }
+        else{
+            unreddStatsDefRes = manager.getResource(id, false);
+            if(!CategoryPOJO.STATSDEF.equals(unreddStatsDefRes.getCategory())){
+                throw new IOException("The requested resource with id '" + id + "' is not a StatDef resource as expected... this should never happen...");
+            }
+        }
+
+        ResourceDecorator unreddStatsDef = new ResourceDecorator(unreddStatsDefRes);
+        unreddStatsDef.deleteAttributes(ModelDomainNames.ATTRIBUTES_LAYER);
         
         // add new layers
-        if (layers != null)
-            unreddStatsDef.addReverseAttribute(UNREDDStatsDef.ReverseAttributes.LAYER, layers);
+        if (layers != null){
+            unreddStatsDef.addTextAttributes(ModelDomainNames.ATTRIBUTES_LAYER, layers);
+        }
         
-        unreddStatsDef.setAttribute(UNREDDStatsDef.Attributes.ZONALLAYER, zonalLayer);
-        
-        RESTResource statsDefRestResource = unreddStatsDef.createRESTResource();
+        // Update (or add if it wasn't already present) the Zonal Layer
+        if(!unreddStatsDef.updateTextAttribute(ModelDomainNames.ATTRIBUTES_ZONALLAYER, zonalLayer)){
+            unreddStatsDef.addTextAttribute(ModelDomainNames.ATTRIBUTES_ZONALLAYER, zonalLayer);
+        }
 
         if (!newRecord)
         {
             // don't set name - name can't be modified on the web interface
-            statsDefRestResource.setCategory(null); // Category needs to be null for updates
+            unreddStatsDefRes.setCategory(null); // Category needs to be null for updates
             
-            client.updateResource(id, statsDefRestResource);
-            client.setData(id, xml);
+            manager.updateResource(id, unreddStatsDefRes);
+            manager.setData(id, xml);
         } else {
-            statsDefRestResource.setName(statsDefName);
-
-            RESTStoredData rsd = new RESTStoredData();
+            unreddStatsDefRes.setName(statsDefName);
+            unreddStatsDefRes.setCategory(CategoryPOJO.STATSDEF);
+            StoredDataPOJO rsd = new StoredDataPOJO();
             rsd.setData(xml);
-            statsDefRestResource.setStore(rsd);
-            id = client.insert(statsDefRestResource);
+            unreddStatsDefRes.setData(rsd);
+            id = manager.insert(unreddStatsDefRes);
         }
         
         RequestDispatcher rd = request.getRequestDispatcher("StatsDefShow?name=" + statsDefName);
         rd.forward(request, response);
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 }

@@ -5,27 +5,33 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.unredd.geostore.UNREDDGeostoreManager;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
+import it.geosolutions.unredd.services.interfaces.UNREDDPersistenceFacade;
+
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.fao.unredd.Util;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author sgiaccio
+ * @author DamianoG (first revision v2.0)
  */
-public class ChartScriptByLayer extends HttpServlet {
+public class ChartScriptByLayer extends AdminGUIAbstractServlet {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(ChartScriptByLayer.class);
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3127995224796090356L;
+    
+    private final static Logger LOGGER = Logger.getLogger(AdminGUIAbstractServlet.class); 
     
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -35,79 +41,38 @@ public class ChartScriptByLayer extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
+            throws ServletException, IOException {
         String layerName = request.getParameter("name");
         
-        UNREDDGeostoreManager manager = Util.getGeostoreManager(getServletContext());
-        
-        Set<Resource> chartScripts = searchChartScriptByLayerName(layerName, manager);
+        Set<ResourcePOJO> chartScripts = null;
+        try {
+            chartScripts = searchChartScriptByLayerName(layerName, manager);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         
         request.setAttribute("chartScripts", chartScripts);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (Exception ex) {
-            throw new ServletException(ex);
-        }
-    }
-
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (Exception ex) {
-            throw new ServletException(ex);
-        }
-    }
-
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
-
-    public Set<Resource> searchChartScriptByLayerName(String layername, UNREDDGeostoreManager geostore) throws Exception {
-        List<Resource> relatedStatsDef = null;
+    public Set<ResourcePOJO> searchChartScriptByLayerName(String layername, UNREDDPersistenceFacade geostore) throws Exception {
+        List<ResourcePOJO> relatedStatsDef = null;
         try {
             relatedStatsDef = geostore.searchStatsDefByLayer(layername);
         } catch (Exception e) {
             LOGGER.debug("Parameter : [layername=" + layername + "]");
-            throw new Exception("Error while searching for StatsDef", e);
+            throw new IOException("Error while searching for StatsDef", e);
         }
 
-        Set<Resource> chartScript = new HashSet<Resource>();
+        Set<ResourcePOJO> chartScript = new HashSet<ResourcePOJO>();
 
         try {
-            for (Resource statsDef : relatedStatsDef) {
-                List<Resource> localChartScript = geostore.searchChartScriptByStatsDef(statsDef.getName());
+            for (ResourcePOJO statsDef : relatedStatsDef) {
+                List<ResourcePOJO> localChartScript = geostore.searchChartScriptByStatsDef(statsDef.getName());
                 chartScript.addAll(localChartScript);
             }
         } catch (Exception e) {
-            throw new Exception("Error while running stats", e);
+            throw new IOException("Error while searching for ChartScript", e);
         }
         
         return chartScript;

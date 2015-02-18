@@ -1,9 +1,8 @@
-<%@page import="java.util.ArrayList"%><%@
-page import="it.geosolutions.geostore.services.rest.model.RESTStoredData"%><%@
-page import="it.geosolutions.unredd.geostore.model.UNREDDStatsDef"%><%@
-page import="it.geosolutions.geostore.core.model.Resource"%><%@
-page import="java.util.List"%><%@
-page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
+<%@page import="it.geosolutions.unredd.services.data.ResourcePOJO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -14,7 +13,7 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
         <jsp:include page="header.jsp" />
         <h1>Stats Data</h1>
         
-        <% Resource res = (Resource)request.getAttribute("resource"); %>
+        <% ResourcePOJO res = (ResourcePOJO)request.getAttribute("resource"); %>
         
         <table class="edit">
             <tr>

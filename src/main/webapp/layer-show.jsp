@@ -4,12 +4,11 @@
     Author     : sgiaccio
 --%>
 
+<%@page import="it.geosolutions.unredd.services.data.ResourcePOJO"%>
 <%@page import="org.apache.commons.lang.StringEscapeUtils"%>
-<%@page import="it.geosolutions.geostore.core.model.Resource"%>
 <%@page import="java.util.List"%>
 <%@page import="org.fao.unredd.servlet.StatsDefDelete"%>
-<%@page import="org.fao.unredd.LayerBean"%>
-<%@page import="it.geosolutions.unredd.geostore.model.UNREDDLayer"%>
+<%@page import="org.fao.unredd.LayerManager"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -104,7 +103,9 @@
                     ${layer.rasterY1}
                 </td>
             </tr>
-            <% if ("vector".equals(((LayerBean)request.getAttribute("layer")).getLayerType())) { %>
+            <%
+                if ("vector".equals(((LayerManager)request.getAttribute("layer")).getLayerType())) {
+            %>
                 <tr>
                     <td title="Name of the numeric feature attribute to set in the raster">
                         Attribute name
@@ -136,8 +137,8 @@
                 </td>
                 <td>
                     <%
-                        List<Resource> layerUpdates = (List<Resource>)request.getAttribute("layerUpdates");
-                        for (Resource res : layerUpdates) {
+                        List<ResourcePOJO> layerUpdates = (List<ResourcePOJO>)request.getAttribute("layerUpdates");
+                        for (ResourcePOJO res : layerUpdates) {
                     %>
                             <%= res.getName() %>
                             <br>
@@ -152,8 +153,8 @@
                 </td>
                 <td>
                     <%
-                        List<Resource> statsDefs = (List<Resource>)request.getAttribute("statsDefs");
-                        for (Resource res : statsDefs) {
+                        List<ResourcePOJO> statsDefs = (List<ResourcePOJO>)request.getAttribute("statsDefs");
+                        for (ResourcePOJO res : statsDefs) {
                     %>
                             <a href="StatsDefShow?name=<%= res.getName() %>"><%= res.getName() %></a>
                             <br>
@@ -167,7 +168,7 @@
                     Data
                 </td>
                 <td>
-                    <pre><%= StringEscapeUtils.escapeHtml((String)request.getAttribute("storedData")) %><pre>
+                    <pre><%= StringEscapeUtils.escapeHtml((String)request.getAttribute("storedData")) %></pre>
                 </td>
             </tr>
         </table>

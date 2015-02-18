@@ -5,24 +5,29 @@ package org.fao.unredd.servlet;
  * and open the template in the editor.
  */
 
-import it.geosolutions.geostore.core.model.Resource;
-import it.geosolutions.unredd.geostore.UNREDDGeostoreManager;
-import it.geosolutions.unredd.geostore.model.UNREDDCategories;
+import it.geosolutions.unredd.services.data.CategoryPOJO;
+import it.geosolutions.unredd.services.data.ResourcePOJO;
+
 import java.io.IOException;
 import java.util.List;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
-import org.fao.unredd.Util;
 
 /**
  *
  * @author sgiaccio
+ * @author DamianoG (first revision v2.0)
  */
-public class StatsDefList extends HttpServlet {
+public class StatsDefList extends AdminGUIAbstractServlet {
+    
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7064107254526692213L;
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -36,12 +41,10 @@ public class StatsDefList extends HttpServlet {
         String layer = request.getParameter("layer");
         
         try {
-            UNREDDGeostoreManager manager = Util.getGeostoreManager(getServletContext());
-            
-            List<Resource> resources;
+            List<ResourcePOJO> resources;
             if (layer == null || "".equals(layer)) {
                 // if no layer is given in http parameters, find all stats defs
-                UNREDDCategories categoryObj = UNREDDCategories.STATSDEF;
+                CategoryPOJO categoryObj = CategoryPOJO.STATSDEF;
                 resources = manager.getUNREDDResources(categoryObj);
             } else {
                 // otherwise find all stats defs with the given layer attribute
@@ -55,40 +58,4 @@ public class StatsDefList extends HttpServlet {
             throw new ServletException(ex);
         }
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 }

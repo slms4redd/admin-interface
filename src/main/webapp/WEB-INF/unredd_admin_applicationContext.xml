@@ -15,7 +15,9 @@ http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
 	default-autowire="autodetect">
 	<import resource="security.xml" />
 
-	<context:component-scan base-package="org.fao.unredd.api" />
+	<context:component-scan base-package="org.fao.unredd" />
+	<context:component-scan base-package="it.geosolutions.unredd" />
+	<context:annotation-config />
 
 	<bean id="geostoreRestUrl" class="java.lang.String">
 		<constructor-arg type="String"
@@ -27,13 +29,13 @@ http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
 	<bean id="geostorePassword" class="java.lang.String">
 		<constructor-arg type="String" value="Unr3dd" />
 	</bean>
-
-	<bean id="layers" class="org.fao.unredd.api.model.geostore.GeostoreLayers" />
-
-    <bean id="unreddGeostoreManager" class="it.geosolutions.unredd.geostore.UNREDDGeostoreManager">
-        <constructor-arg ref="geostoreRestUrl"/>
-        <constructor-arg ref="geostoreUsername"/>
-        <constructor-arg ref="geostorePassword"/>
+	
+    <bean id="manager" class="it.geosolutions.unredd.geostore.adapter.UNREDDGeostoreManagerAdapter" />
+    
+    <bean id="converter" class="it.geosolutions.unredd.geostore.adapter.UNREDDDataConverter" />
+    
+    <bean id="geostoreManager" class="it.geosolutions.unredd.geostore.UNREDDGeostoreManager">
+    	<constructor-arg ref="geostoreClient"/>
     </bean>
     
 	<bean id="geostoreClient" class="it.geosolutions.geostore.services.rest.GeoStoreClient">

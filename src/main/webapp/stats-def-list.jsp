@@ -1,10 +1,6 @@
-<%@page import="it.geosolutions.unredd.geostore.model.UNREDDLayer"%>
-<%@page import="it.geosolutions.geostore.services.rest.model.RESTStoredData"%>
-<%@page import="it.geosolutions.unredd.geostore.model.UNREDDStatsDef"%>
-<%@page import="it.geosolutions.geostore.core.model.Resource"%><%@
-page import="it.geosolutions.unredd.geostore.model.UNREDDResource"%><%@
-page import="java.util.List"%><%@
-page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
+<%@page import="it.geosolutions.unredd.services.data.ResourcePOJO"%>
+<%@page import="java.util.List"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -47,7 +43,7 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
                 </th>
             </tr>
             <% 
-                for (Resource statsDef : (List<Resource>)request.getAttribute("resources")) { %>
+                for (ResourcePOJO statsDef : (List<ResourcePOJO>)request.getAttribute("resources")) { %>
                     <tr>
                         <td><%= statsDef.getId() %></td>
                         <td><%= statsDef.getName() %></td>

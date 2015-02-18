@@ -1,10 +1,9 @@
-<%@page import="it.geosolutions.unredd.geostore.model.UNREDDLayer"%>
-<%@page import="it.geosolutions.geostore.services.rest.model.RESTStoredData"%>
-<%@page import="it.geosolutions.unredd.geostore.model.UNREDDStatsDef"%>
-<%@page import="it.geosolutions.geostore.core.model.Resource"%><%@
-page import="it.geosolutions.unredd.geostore.model.UNREDDResource"%><%@
-page import="java.util.List"%><%@
-page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
+<%@page import="it.geosolutions.unredd.services.data.ModelDomainNames"%>
+<%@page import="it.geosolutions.unredd.services.data.utils.ResourceDecorator"%>
+<%@page import="it.geosolutions.unredd.services.data.ResourcePOJO"%>
+<%@page import="java.util.List"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -44,11 +43,13 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
                 </th>
             </tr>
             <% 
-                for (Resource layer : (List<Resource>)request.getAttribute("resources")) { %>
+                for (ResourcePOJO layer : (List<ResourcePOJO>)request.getAttribute("resources")) { 
+                	ResourceDecorator rd = new ResourceDecorator(layer);
+            %>
                     <tr>
                         <td><%= layer.getId() %></td>
                         <td><%= layer.getName() %></td>
-                        <td><%= new UNREDDLayer(layer).getAttribute(UNREDDLayer.Attributes.LAYERTYPE) %></td>
+                        <td><%= rd.getFirstAttributeValue(ModelDomainNames.LAYER_LAYERTYPE) %></td>
                         <td><a href="LayerShow?id=<%= layer.getId() %>">[show]</a></td>
                         <td>
                             <% // if (new UNREDDLayer(layer).getAttribute(UNREDDLayer.Attributes.RASTERATTRIBNAME) != null) { /* DEBUG */ %>
