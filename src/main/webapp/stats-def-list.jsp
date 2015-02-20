@@ -1,19 +1,15 @@
 <%@page import="it.geosolutions.unredd.services.data.ResourcePOJO"%>
 <%@page import="java.util.List"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="admin-style.css" rel="stylesheet" type="text/css" />
-        <title>Stat Defs</title>
-        <script type="text/javascript">
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<c:set var="bodyContent">
+    	<script type="text/javascript">
             var confirmDelete = function(name) {
                 return confirm("Are you sure you want to delete " + name + "?");
             }
         </script>
-    </head>
-    <body>
-        <jsp:include page="header.jsp" />
         <h1>Stat Defs<% if (request.getParameter("layer") != null) out.print(" - " + request.getParameter("layer")); %> </h1> 
         <table class="edit">
             <tr>
@@ -60,5 +56,8 @@
             <a href="StatsDefEditForm">Add stat def</a>
             <br><br><a href="StatsDefList">Show all</a>
         </div>
-    </body>
-</html>
+</c:set>
+
+<t:mainlayout>
+	${bodyContent}
+</t:mainlayout>

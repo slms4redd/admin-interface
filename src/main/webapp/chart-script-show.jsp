@@ -4,16 +4,12 @@
 <%@page import="it.geosolutions.unredd.geostore.model.UNREDDChartScript"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="it.geosolutions.unredd.geostore.model.UNREDDStatsDef"%>
-<%@page import="java.util.List"%><%@
-page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="admin-style.css" rel="stylesheet" type="text/css" />
-        <title>ChartScript</title>
-    </head>
-    <body>
-        <jsp:include page="header.jsp" />
+<%@page import="java.util.List"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<c:set var="bodyContent">
         <h1>ChartScript</h1>
         
         <% ResourcePOJO res = (ResourcePOJO)request.getAttribute("resource"); %>
@@ -57,5 +53,8 @@ page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
         <div id="tools">
             <a href="ChartScriptEditForm?id=<%= res.getId() %>">[edit]</a>
         </div>
-    </body>
-</html>
+</c:set>
+
+<t:mainlayout>
+	${bodyContent}
+</t:mainlayout>        

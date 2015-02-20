@@ -3,15 +3,10 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="admin-style.css" rel="stylesheet" type="text/css" />
-        <title>StatsDef</title>
-    </head>
-    <body>
-        <jsp:include page="header.jsp" />
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<c:set var="bodyContent">
         <h1>StatsDef</h1>
         
         <%
@@ -84,5 +79,8 @@
         <div id="tools">
             <a href="StatsDefEditForm?name=<%= res.getName() %>">[edit]</a>
         </div>
-    </body>
-</html>
+</c:set>
+
+<t:mainlayout>
+	${bodyContent}
+</t:mainlayout>

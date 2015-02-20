@@ -1,25 +1,13 @@
-<%-- 
-    Document   : layer-edit
-    Created on : Dec 30, 2011, 3:29:40 PM
-    Author     : sgiaccio
---%>
-
 <%@page import="it.geosolutions.unredd.services.data.ResourcePOJO"%>
 <%@page import="org.apache.commons.lang.StringEscapeUtils"%>
 <%@page import="java.util.List"%>
 <%@page import="org.fao.unredd.servlet.StatsDefDelete"%>
 <%@page import="org.fao.unredd.LayerManager"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="admin-style.css" rel="stylesheet" type="text/css" />
-        <title>Layers</title>
-    </head>
-    <body>
-        <jsp:include page="header.jsp" />
+<c:set var="bodyContent">
         <h1>Layer</h1>
         <h2>${layer.name}</h2>
         <table class="edit">
@@ -175,5 +163,8 @@
         <div id="tools">
             <a href="LayerEditForm?id=${layer.id}">[edit]</a>
         </div>
-    </body>
-</html>
+</c:set>
+
+<t:mainlayout>
+	${bodyContent}
+</t:mainlayout>

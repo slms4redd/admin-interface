@@ -1,19 +1,8 @@
-<%-- 
-    Document   : layer-edit
-    Created on : Dec 30, 2011, 3:29:40 PM
-    Author     : sgiaccio
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <jsp:include page="header.jsp" />
+<c:set var="bodyContent">
         <jsp:useBean id="layer" class="org.fao.unredd.LayerManager" scope="request">
             <%-- this body is executed only if the bean is created --%>
 
@@ -125,5 +114,8 @@
             <input type="hidden" name="<%= UNREDDLayer.Attributes.LAYERTYPE.getName() %>" value="<jsp:getProperty name="layer" property="layerType" />">
             <input type="hidden" name="id" value="92">
         </form>
-    </body>
-</html>
+</c:set>
+
+<t:mainlayout>
+	${bodyContent}
+</t:mainlayout>
