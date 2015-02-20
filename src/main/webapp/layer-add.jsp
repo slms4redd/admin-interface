@@ -1,21 +1,12 @@
-<%-- 
-    Document   : layer-edit
-    Created on : Dec 30, 2011, 3:29:40 PM
-    Author     : sgiaccio
---%>
-
 <%@page import="it.geosolutions.unredd.geostore.model.UNREDDLayer"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="admin-style.css" rel="stylesheet" type="text/css" />
-        <title>Add Layer</title>
-        <script src="scripts/codemirror/codemirror.js"></script>
-        <link rel="stylesheet" href="scripts/codemirror/codemirror.css">
-        <script src="scripts/codemirror/mode/xml/xml.js"></script>
+<c:set var="bodyContent">
+        
+        
+        <!-- DamianoG 20/02/2015 Why we need this here???? -->
         <script>
             function startXmlEditor() {
                 var textarea = document.getElementById("xml");
@@ -33,19 +24,6 @@
             );
         }
         </script>
-        <style type="text/css">
-            .CodeMirror {
-              width: 700px;
-              border: 1px solid grey;
-            }
-            
-            .CodeMirror-scroll {
-                height: 600px;
-            }
-        </style>
-    </head>
-    <body onLoad="startXmlEditor()">
-        <jsp:include page="header.jsp" />
         <%
             String layerType;
             if ("vector".equalsIgnoreCase(request.getParameter("type"))) {
@@ -188,5 +166,8 @@
             </table>
             <input type="hidden" name="<%= UNREDDLayer.Attributes.LAYERTYPE.getName() %>" value="<%= layerType %>">
         </form>
-    </body>
-</html>
+</c:set>
+
+<t:mainlayout>
+	${bodyContent}
+</t:mainlayout>

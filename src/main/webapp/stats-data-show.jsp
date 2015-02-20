@@ -2,15 +2,11 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="admin-style.css" rel="stylesheet" type="text/css" />
-        <title>Stats Data</title>
-    </head>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<c:set var="bodyContent">
     <body>
-        <jsp:include page="header.jsp" />
         <h1>Stats Data</h1>
         
         <% ResourcePOJO res = (ResourcePOJO)request.getAttribute("resource"); %>
@@ -45,5 +41,8 @@
                 </td>
             </tr>
         </table>
-    </body>
-</html>
+</c:set>
+
+<t:mainlayout>
+	${bodyContent}
+</t:mainlayout>
