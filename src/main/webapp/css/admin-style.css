@@ -33,10 +33,18 @@ h1{
 	text-align: center;
 }
 
-#navbar{
+#menubar{
 	position:relative;
 	width: 100%;
-	height: 40px;
+	/*height: 100px;*/
+}
+
+/*Bootstrap navbar compnent hack: decrease margin bottoms property*/
+.navbar {
+    margin-bottom: 5px;
+}
+.breadcrumb{
+    margin-bottom: 5px;	
 }
 
 #content{
