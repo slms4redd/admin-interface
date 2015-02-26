@@ -1,0 +1,16 @@
+{
+  "id": "forestClassification",
+  "label": "FACET Forest Classification",
+  "baseUrl": "/diss_geoserver/gwc/service/wms",
+  "wmsTime": "2000,2005",
+  "wmsName": "unredd:facet_forest_classification",
+  "imageFormat": "image/png8",
+  "visible": true,
+  "queryable": false,
+  "legend": "facet_forest_classification.png",
+  "sourceLink": "http://osfac.net/facet.html",
+  "sourceLabel": "FACET",
+  "wmsParameters": {
+    "version": "1"
+  }
+}
