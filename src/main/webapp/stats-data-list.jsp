@@ -51,7 +51,7 @@
                         
                         <td><%= unreddStatsData.getFirstAttributeValue(ModelDomainNames.STATS_DEF_YEAR) %></td>
                         <td><%= unreddStatsData.getFirstAttributeValue(ModelDomainNames.STATS_DEF_MONTH) == null ? "-" : unreddStatsData.getFirstAttributeValue(ModelDomainNames.STATS_DEF_MONTH) %></td>
-                        <td><a href="StatsDataShow?id=<%= unreddStatsData.getId() %>">[show data]</a></td>
+                        <td><a class="btn btn-primary btn-sm" role="button" href="StatsDataShow?id=<%= unreddStatsData.getId() %>">show data</a></td>
                         <!--<td><a href="StatsDataReprocess?id=<%= resource.getId() %>">[reprocess]</a></td>-->
                     </tr>
                 <% } %>

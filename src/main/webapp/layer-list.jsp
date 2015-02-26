@@ -32,30 +32,29 @@
 			<td><%=layer.getId()%></td>
 			<td><%=layer.getName()%></td>
 			<td><%=rd.getFirstAttributeValue(ModelDomainNames.LAYER_LAYERTYPE)%></td>
-			<td><a href="LayerShow?id=<%=layer.getId()%>">[show]</a></td>
+			<td><a class="btn btn-primary btn-sm" role="button" href="LayerShow?id=<%=layer.getId()%>">show</a></td>
 			<td>
 				<%
 				    // if (new UNREDDLayer(layer).getAttribute(UNREDDLayer.Attributes.RASTERATTRIBNAME) != null) { /* DEBUG */
 				%>
 				<%
 				    //if (true) { /* DEBUG */
-				%> <a
-				href="LayerUpdateList?layer=<%=layer.getName()%>">[layer
-					updates]</a> <%
+				%> <a class="btn btn-primary btn-sm" role="button"
+				href="LayerUpdateList?layer=<%=layer.getName()%>">layer updates</a> <%
      //}
  %>
 			</td>
-			<td><a href="LayerEditForm?id=<%=layer.getId()%>">[edit]</a></td>
-			<td><a onclick="return confirmDelete('<%=layer.getName()%>')"
-				href="LayerDelete?name=<%=layer.getName()%>">[delete]</a></td>
+			<td><a class="btn btn-primary btn-sm" role="button" href="LayerEditForm?id=<%=layer.getId()%>">edit</a></td>
+			<td><a class="btn btn-danger btn-sm" role="button" onclick="return confirmDelete('<%=layer.getName()%>')"
+				href="LayerDelete?name=<%=layer.getName()%>">delete</a></td>
 		</tr>
 		<%
 		    }
 		%>
 	</table>
 	<div id="tools">
-		Add layer: <a href="layer-add.jsp?type=vector">[vector]</a> <a
-			href="layer-add.jsp?type=raster">[raster]</a>
+		Add layer: <a class="btn btn-default btn-sm" role="button" href="layer-add.jsp?type=vector">vector</a> <a
+			class="btn btn-default btn-sm" role="button" href="layer-add.jsp?type=raster">raster</a>
 	</div>
 </c:set>
 

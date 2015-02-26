@@ -121,7 +121,7 @@
             <% } %>
             <tr>
                 <td title="No-data value for the raster">
-                    <a href="LayerUpdateList?layer=${layer.name}">Layer Updates</a>
+                    <a class="btn btn-primary btn-sm" role="button" href="LayerUpdateList?layer=${layer.name}">Layer Updates</a>
                 </td>
                 <td>
                     <%
@@ -137,7 +137,7 @@
             </tr>
             <tr>
                 <td title="No-data value for the raster">
-                    <a href="StatsDefList?layer=${layer.name}">Stats Defs</a>
+                    <a class="btn btn-primary btn-sm" role="button" href="StatsDefList?layer=${layer.name}">Stats Defs</a>
                 </td>
                 <td>
                     <%
@@ -161,7 +161,7 @@
             </tr>
         </table>
         <div id="tools">
-            <a href="LayerEditForm?id=${layer.id}">[edit]</a>
+            <a class="btn btn-primary btn-sm" role="button" href="LayerEditForm?id=${layer.id}">edit</a>
         </div>
 </c:set>
 

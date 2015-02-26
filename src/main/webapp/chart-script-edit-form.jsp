@@ -61,8 +61,8 @@
                 </tr>
                 <tr>
                     <td class="button_row" colspan="2">
-                        <input type="button" onClick="window.location='ChartScriptList'" value="Cancel">
-                        <input type="submit">
+                        <input class="btn btn-danger btn-sm" role="button" type="button" onClick="window.location='ChartScriptList'" value="Cancel">
+                        <input class="btn btn-success btn-sm" role="button" type="submit">
                     </td>
                 </tr>
             </table>

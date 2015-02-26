@@ -146,8 +146,8 @@
                 </tr>
                 <tr>
                     <td class="button_row" colspan="2">
-                        <input type="button" onClick="window.location='LayerList'" value="Cancel">
-                        <input type="submit">
+                        <input type="button" class="btn btn-danger btn-sm" onClick="window.location='LayerList'" value="Cancel">
+                        <input type="submit" class="btn btn-success btn-sm">
                     </td>
                 </tr>
             </table>

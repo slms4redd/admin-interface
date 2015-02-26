@@ -43,18 +43,18 @@
                     <tr>
                         <td><%= statsDef.getId() %></td>
                         <td><%= statsDef.getName() %></td>
-                        <td><a href="StatsDefShow?name=<%= statsDef.getName() %>">[show]</a></td>
-                        <td><a href="StatsDataList?stats_def=<%= statsDef.getName() %>">[stats data list]</a></td>
-                        <td><a href="ChartScriptList?stats_def=<%= statsDef.getName() %>">[chart script list]</a></td>
-                        <td><a href="StatsDefEditForm?name=<%= statsDef.getName() %>">[edit]</a></td>
-                        <td><a href="StatsDefReprocess?id=<%= statsDef.getId() %>">[reprocess]</a></td>
-                        <td><a onclick="return confirmDelete('<%= statsDef.getName() %>')" href="StatsDefDelete?statsDefName=<%= statsDef.getName() %>">[delete]</a></td>
+                        <td><a class="btn btn-primary btn-sm" role="button" href="StatsDefShow?name=<%= statsDef.getName() %>">show</a></td>
+                        <td><a class="btn btn-primary btn-sm" role="button" href="StatsDataList?stats_def=<%= statsDef.getName() %>">stats data list</a></td>
+                        <td><a class="btn btn-primary btn-sm" role="button" href="ChartScriptList?stats_def=<%= statsDef.getName() %>">chart script list</a></td>
+                        <td><a class="btn btn-primary btn-sm" role="button" href="StatsDefEditForm?name=<%= statsDef.getName() %>">edit</a></td>
+                        <td><a class="btn btn-success btn-sm" role="button" href="StatsDefReprocess?id=<%= statsDef.getId() %>">reprocess</a></td>
+                        <td><a class="btn btn-danger btn-sm" role="button" onclick="return confirmDelete('<%= statsDef.getName() %>')" href="StatsDefDelete?statsDefName=<%= statsDef.getName() %>">delete</a></td>
                     </tr>
                 <% } %>
         </table>
         <div id="tools">
-            <a href="StatsDefEditForm">Add stat def</a>
-            <br><br><a href="StatsDefList">Show all</a>
+            <a class="btn btn-default btn-sm" role="button" href="StatsDefEditForm">Add stat def</a>
+            <a class="btn btn-default btn-sm" role="button" href="StatsDefList">Show all</a>
         </div>
 </c:set>
 
