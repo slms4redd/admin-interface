@@ -20,7 +20,7 @@ import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.bio.SocketConnector;
 import org.mortbay.jetty.webapp.WebAppContext;
-import org.mortbay.thread.BoundedThreadPool;
+import org.mortbay.thread.QueuedThreadPool;
 
 /**
  * Jetty starter, will run Portal inside the Jetty web container.<br>
@@ -37,7 +37,7 @@ public class StartAdmin {
 
         try {
             jettyServer = new Server();
-            BoundedThreadPool tp = new BoundedThreadPool();
+            QueuedThreadPool tp = new QueuedThreadPool();
             tp.setMaxThreads(50);
 
             SocketConnector conn = new SocketConnector();

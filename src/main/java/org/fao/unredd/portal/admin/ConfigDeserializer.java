@@ -24,7 +24,6 @@ public class ConfigDeserializer implements JsonDeserializer<Config> {
         Gson gson = new Gson();
 
         // Read the whole JSON into memory via GSON_DOM
-        JsonParser parser = new JsonParser();
         JsonArray layersJson = json.getAsJsonObject().getAsJsonArray("layers");
 
         // map the Layer class via GSON_BIND
