@@ -71,26 +71,26 @@
                     <td>
                         
                         <% if (!published) { %>
-                            <a href="LayerUpdatePublish?action=publish&layerUpdateId=<%= layerUpdate.getId() %>">[publish]</a>
+                            <a class="btn btn-primary btn-sm" role="button" href="LayerUpdatePublish?action=publish&layerUpdateId=<%= layerUpdate.getId() %>">publish</a>
                         <% } else { %>
                             published
                         <% } %>
                     </td>
                     <td>
                         <% if (published) { %>
-                            <a href="LayerUpdatePublish?action=publish&layerUpdateId=<%= layerUpdate.getId() %>">[republish]</a>
+                            <a class="btn btn-primary btn-sm" role="button" href="LayerUpdatePublish?action=publish&layerUpdateId=<%= layerUpdate.getId() %>">republish</a>
                         <% } else { %>
                             -
                         <% } %>
                     </td>
-                    <td><a href="LayerUpdateReprocess?layerUpdateId=<%= layerUpdate.getId() %>">[reprocess]</a></td>
+                    <td><a class="btn btn-primary btn-sm" role="button" href="LayerUpdateReprocess?layerUpdateId=<%= layerUpdate.getId() %>">reprocess</a></td>
                     <!--
                         <td><a href="LayerUpdateShow?id=<%= layerUpdate.getId() %>">[show]</a></td>
                     -->
                 </tr>
             <% } %>
             <tr>
-                <td colspan="9" style="background-color:#fff"><a href="LayerList">&lt; Layers</tr></a>
+                <td colspan="9" style="background-color:#fff"><a class="btn btn-primary btn-sm" role="button" href="LayerList">&lt; Layers</tr></a>
             </tr>
         </table>
 </c:set>

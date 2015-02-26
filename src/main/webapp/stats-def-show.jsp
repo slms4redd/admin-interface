@@ -48,7 +48,7 @@
                         if(chartScripts != null){
                            for (ResourcePOJO chartScript : chartScripts) {
                         %>
-                            <a href="ChartScriptShow?id=<%= chartScript.getId() %>"><%= chartScript.getName() %></a>
+                            <a class="btn btn-primary btn-sm" role="button"  href="ChartScriptShow?id=<%= chartScript.getId() %>"><%= chartScript.getName() %></a>
                             <br>
                         <% }
                          }
@@ -77,7 +77,7 @@
             </tr>
         </table>
         <div id="tools">
-            <a href="StatsDefEditForm?name=<%= res.getName() %>">[edit]</a>
+            <a class="btn btn-primary btn-sm" role="button"  href="StatsDefEditForm?name=<%= res.getName() %>">edit</a>
         </div>
 </c:set>
 

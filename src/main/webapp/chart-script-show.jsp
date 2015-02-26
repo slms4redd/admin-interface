@@ -51,7 +51,7 @@
             </tr>
         </table>
         <div id="tools">
-            <a href="ChartScriptEditForm?id=<%= res.getId() %>">[edit]</a>
+            <a class="btn btn-default btn-sm" role="button" href="ChartScriptEditForm?id=<%= res.getId() %>">edit</a>
         </div>
 </c:set>
 

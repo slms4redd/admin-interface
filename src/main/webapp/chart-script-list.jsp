@@ -47,16 +47,16 @@
                     <tr>
                         <td><%= chartScript.getId() %></td>
                         <td><%= chartScript.getName() %></td>
-                        <td><a href="ChartScriptShow?id=<%= chartScript.getId() %>">[show]</a></td>
-                        <td><a href="ChartDataList?chart_script=<%= chartScript.getName() %>">[chart data]</a></td>
-                        <td><a href="ChartScriptEditForm?id=<%= chartScript.getId() %>">[edit]</a></td>
-                        <td><a href="ChartScriptReprocess?id=<%= chartScript.getId() %>">[run]</a></td>
-                        <td><a onclick="return confirmDelete('<%= chartScript.getName() %>')" href="ChartScriptDelete?id=<%= chartScript.getId() %>">[delete]</a></td>
+                        <td><a class="btn btn-primary btn-sm" role="button" href="ChartScriptShow?id=<%= chartScript.getId() %>">show</a></td>
+                        <td><a class="btn btn-primary btn-sm" role="button" href="ChartDataList?chart_script=<%= chartScript.getName() %>">chart data</a></td>
+                        <td><a class="btn btn-primary btn-sm" role="button" href="ChartScriptEditForm?id=<%= chartScript.getId() %>">edit</a></td>
+                        <td><a class="btn btn-success btn-sm" role="button" href="ChartScriptReprocess?id=<%= chartScript.getId() %>">run</a></td>
+                        <td><a class="btn btn-danger btn-sm" role="button" role="button" onclick="return confirmDelete('<%= chartScript.getName() %>')" href="ChartScriptDelete?id=<%= chartScript.getId() %>">delete</a></td>
                     </tr>
                 <% } %>
         </table>
         <div id="tools">
-            <a href="ChartScriptEditForm">Add Chart Script</a>
+            <a class="btn btn-default btn-sm" role="button" href="ChartScriptEditForm">Add Chart Script</a>
         </div>
 </c:set>
 
