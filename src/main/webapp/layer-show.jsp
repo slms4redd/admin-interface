@@ -8,157 +8,158 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <c:set var="bodyContent">
-        <h1>Layer</h1>
-        <h2>${layer.name}</h2>
-        <table class="edit">
-            <tr>
-                <th>
-                    Layer type
-                </td>
-                <th>
-                    ${layer.layerType}
-                </td>
-            </tr>
-            <tr>
-                <td title="Absolute path where the geotiff has to be copied in, during ingestion flow">
-                    Staging mosaic path
-                </td>
-                <td>
-                    ${layer.mosaicPath}
-                </td>
-            </tr>
-            <tr>
-                <td title="Absolute path where the geotiff has to be copied in, during publish flow">
-                    Dissemination mosaic path
-                </td>
-                <td>
-                    ${layer.dissMosaicPath}
-                </td>
-            </tr>
-            <tr>
-                <td title="Relative path where the orig/ data has to be moved in">
-                    Destination original data absolute path
-                </td>
-                <td>
-                    ${layer.origDataDestPath}
-                </td>
-            </tr>
-            <tr>
-                <td title="Raster width in pixels">
-                    Pixel width
-                </td>
-                <td>
-                    ${layer.rasterPixelWidth}
-                </td>
-            </tr>
-            <tr>
-                <td title="Raster height in pixels">
-                    Pixel height
-                </td>
-                <td>
-                    ${layer.rasterPixelHeight}
-                </td>
-            </tr>
-            <tr>
-                <td title="Min x bound">
-                    Min x
-                </td>
-                <td>
-                    ${layer.rasterX0}
-                </td>
-            </tr>
-            <tr>
-                <td title="Max x bound">
-                    Max x
-                </td>
-                <td>
-                    ${layer.rasterX1}
-                </td>
-            </tr>
-            <tr>
-                <td title="Min y bound">
-                    Min y
-                </td>
-                <td>
-                    ${layer.rasterY0}
-                </td>
-            </tr>
-            <tr>
-                <td title="Max y bound">
-                    Max y
-                </td>
-                <td>
-                    ${layer.rasterY1}
-                </td>
-            </tr>
-            <%
-                if ("vector".equals(((LayerManager)request.getAttribute("layer")).getLayerType())) {
-            %>
-                <tr>
-                    <td title="Name of the numeric feature attribute to set in the raster">
-                        Attribute name
-                    </td>
-                    <td>
-                        ${layer.rasterAttribName}
-                    </td>
-                </tr>
-                <tr>
-                    <td title="Optional CQL filter used to filter the features to be reported on the raster">
-                        CQL filter
-                    </td>
-                    <td>
-                        ${layer.rasterCqlFiletr}
-                    </td>
-                </tr>
-                <tr>
-                    <td title="No-data value for the raster">
-                        No-data value
-                    </td>
-                    <td>
-                        ${layer.rasterNoData}
-                    </td>
-                </tr>
-            <% } %>
-            <tr>
-                <td title="No-data value for the raster">
-                    <a class="btn btn-primary btn-sm" role="button" href="LayerUpdateList?layer=${layer.name}">Layer Updates</a>
-                </td>
-                <td>
-                    <%
-                        List<ResourcePOJO> layerUpdates = (List<ResourcePOJO>)request.getAttribute("layerUpdates");
-                        for (ResourcePOJO res : layerUpdates) {
-                    %>
-                            <%= res.getName() %>
-                            <br>
-                    <%
-                        }
-                    %>
-                </td>
-            </tr>
-            <tr>
-                <td title="No-data value for the raster">
-                    <a class="btn btn-primary btn-sm" role="button" href="StatsDefList?layer=${layer.name}">Stats Defs</a>
-                </td>
-                <td>
-                    <%
-                        List<ResourcePOJO> statsDefs = (List<ResourcePOJO>)request.getAttribute("statsDefs");
-                        for (ResourcePOJO res : statsDefs) {
-                    %>
-                            <a href="StatsDefShow?name=<%= res.getName() %>"><%= res.getName() %></a>
-                            <br>
-                    <%
-                        }
-                    %>
-                </td>
-            </tr>
-            <tr>
-                <td title="Name of the numeric feature attribute to set in the raster">
-                    Data
-                </td>
-                <td>
-                    <pre><%= StringEscapeUtils.escapeHtml((String)request.getAttribute("storedData")) %></pre>
-                </td>
-            </tr>
+        <h1><small>Layer name</small> ${layer.name}</h1>
+        <table  class="table table-hover table-striped vertical-table table-condensed table-condensed">
+        	<tbody>
+	            <tr>
+	                <th>
+	                    Layer type
+	                </th>
+	                <td>
+	                    ${layer.layerType}
+	                </td>
+	            </tr>
+	            <tr>
+	                <th title="Absolute path where the geotiff has to be copied in, during ingestion flow">
+	                    Staging mosaic path
+	                </th>
+	                <td>
+	                    ${layer.mosaicPath}
+	                </td>
+	            </tr>
+	            <tr>
+	                <th title="Absolute path where the geotiff has to be copied in, during publish flow">
+	                    Dissemination mosaic path
+	                </th>
+	                <td>
+	                    ${layer.dissMosaicPath}
+	                </td>
+	            </tr>
+	            <tr>
+	                <th title="Relative path where the orig/ data has to be moved in">
+	                    Destination original data absolute path
+	                </th>
+	                <td>
+	                    ${layer.origDataDestPath}
+	                </td>
+	            </tr>
+	            <tr>
+	                <th title="Raster width in pixels">
+	                    Pixel width
+	                </th>
+	                <td>
+	                    ${layer.rasterPixelWidth}
+	                </td>
+	            </tr>
+	            <tr>
+	                <th title="Raster height in pixels">
+	                    Pixel height
+	                </th>
+	                <td>
+	                    ${layer.rasterPixelHeight}
+	                </td>
+	            </tr>
+	            <tr>
+	                <th title="Min x bound">
+	                    Min x
+	                </th>
+	                <td>
+	                    ${layer.rasterX0}
+	                </td>
+	            </tr>
+	            <tr>
+	                <th title="Max x bound">
+	                    Max x
+	                </th>
+	                <td>
+	                    ${layer.rasterX1}
+	                </td>
+	            </tr>
+	            <tr>
+	                <th title="Min y bound">
+	                    Min y
+	                </th>
+	                <td>
+	                    ${layer.rasterY0}
+	                </td>
+	            </tr>
+	            <tr>
+	                <th title="Max y bound">
+	                    Max y
+	                </th>
+	                <td>
+	                    ${layer.rasterY1}
+	                </td>
+	            </tr>
+	            <%
+	                if ("vector".equals(((LayerManager)request.getAttribute("layer")).getLayerType())) {
+	            %>
+	                <tr>
+	                    <th title="Name of the numeric feature attribute to set in the raster">
+	                        Attribute name
+	                    </th>
+	                    <td>
+	                        ${layer.rasterAttribName}
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <th title="Optional CQL filter used to filter the features to be reported on the raster">
+	                        CQL filter
+	                    </th>
+	                    <td>
+	                        ${layer.rasterCqlFiletr}
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <th title="No-data value for the raster">
+	                        No-data value
+	                    </th>
+	                    <td>
+	                        ${layer.rasterNoData}
+	                    </td>
+	                </tr>
+	            <% } %>
+	            <tr>
+	                <th title="No-data value for the raster">
+	                    Layer Updates <a class="btn btn-primary btn-xs" role="button" href="LayerUpdateList?layer=${layer.name}">open</a>
+	                </th>
+	                <td>
+	                    <%
+	                        List<ResourcePOJO> layerUpdates = (List<ResourcePOJO>)request.getAttribute("layerUpdates");
+	                        for (ResourcePOJO res : layerUpdates) {
+	                    %>
+	                            <%= res.getName() %>
+	                            <br>
+	                    <%
+	                        }
+	                    %>
+	                </td>
+	            </tr>
+	            <tr>
+	                <th title="No-data value for the raster">
+	                    Stats Defs <a class="btn btn-primary btn-xs" role="button" href="StatsDefList?layer=${layer.name}">open</a>
+	                </th>
+	                <td>
+	                    <%
+	                        List<ResourcePOJO> statsDefs = (List<ResourcePOJO>)request.getAttribute("statsDefs");
+	                        for (ResourcePOJO res : statsDefs) {
+	                    %>
+	                            <a href="StatsDefShow?name=<%= res.getName() %>"><%= res.getName() %></a>
+	                            <br>
+	                    <%
+	                        }
+	                    %>
+	                </td>
+	            </tr>
+	            <tr>
+	                <th title="Name of the numeric feature attribute to set in the raster">
+	                    Data
+	                </th>
+	                <td>
+	                    <pre><%= StringEscapeUtils.escapeHtml((String)request.getAttribute("storedData")) %></pre>
+	                </td>
+	            </tr>
+            </tbody>
         </table>
         <div id="tools">
             <a class="btn btn-primary btn-sm" role="button" href="LayerEditForm?id=${layer.id}">edit</a>
