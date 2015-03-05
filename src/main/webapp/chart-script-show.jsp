@@ -14,44 +14,46 @@
         
         <% ResourcePOJO res = (ResourcePOJO)request.getAttribute("resource"); %>
         
-        <table class="edit">
-            <tr>
-                <th>
-                    Name
-                </th>
-                <td>
-                    <%= res.getName() %>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    StatsDef
-                </th>
-                <td>
-                    <%
-                    List<String> relatedStatDefs;
-                    if (res != null) {
-                        ResourceDecorator chartScript = new ResourceDecorator(res);
-                        relatedStatDefs = chartScript.getAttributeValues(ModelDomainNames.CHARTSCRIPT_STATDEF);
-                    } else {
-                        relatedStatDefs = new ArrayList();
-                    }
-                    for (String statsDef : relatedStatDefs) { %>
-                        <a href="StatsDefShow?name=<%= statsDef %>"><%= statsDef %></a><br>
-                    <% } %>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    Script path
-                </th>
-                <td>
-                    <%= res == null ? "" : new ResourceDecorator(res).getFirstAttributeValue(ModelDomainNames.CHARTSCRIPT_SCRIPTPATH)  %>
-                </td>
-            </tr>
+        <table class="table table-hover table-striped vertical-table table-condensed">
+            <tbody>
+	            <tr>
+	                <th>
+	                    Name
+	                </th>
+	                <td>
+	                    <%= res.getName() %>
+	                </td>
+	            </tr>
+	            <tr>
+	                <th>
+	                    StatsDef
+	                </th>
+	                <td>
+	                    <%
+	                    List<String> relatedStatDefs;
+	                    if (res != null) {
+	                        ResourceDecorator chartScript = new ResourceDecorator(res);
+	                        relatedStatDefs = chartScript.getAttributeValues(ModelDomainNames.CHARTSCRIPT_STATDEF);
+	                    } else {
+	                        relatedStatDefs = new ArrayList();
+	                    }
+	                    for (String statsDef : relatedStatDefs) { %>
+	                        <a href="StatsDefShow?name=<%= statsDef %>"><%= statsDef %></a><br>
+	                    <% } %>
+	                </td>
+	            </tr>
+	            <tr>
+	                <th>
+	                    Script path
+	                </th>
+	                <td>
+	                    <%= res == null ? "" : new ResourceDecorator(res).getFirstAttributeValue(ModelDomainNames.CHARTSCRIPT_SCRIPTPATH)  %>
+	                </td>
+	            </tr>
+            </tbody>
         </table>
         <div id="tools">
-            <a class="btn btn-default btn-sm" role="button" href="ChartScriptEditForm?id=<%= res.getId() %>">edit</a>
+            <a class="btn btn-primary btn-sm" role="button" href="ChartScriptEditForm?id=<%= res.getId() %>">edit</a>
         </div>
 </c:set>
 

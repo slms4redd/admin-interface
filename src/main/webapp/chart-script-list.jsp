@@ -16,47 +16,36 @@
             }
         </script>
         <h1>Chart Scripts</h1>
-        <table class="edit">
-            <tr>
-                <th>
-                    id
-                </th>
-                <th>
-                    name
-                </th>
-                <th>
-                    show
-                </th>
-                <th>
-                    chart data
-                </th>
-                <th>
-                    edit
-                </th>
-                <th>
-                    run
-                </th>
-                <th>
-                    delete
-                </th>
-            </tr>
-            <% 
-                List<ResourcePOJO> list = (List<ResourcePOJO>)request.getAttribute("resources");
-                list = (list == null)? new ArrayList<ResourcePOJO>():list;
-                for (ResourcePOJO chartScript : list) { %>
-                    <tr>
-                        <td><%= chartScript.getId() %></td>
-                        <td><%= chartScript.getName() %></td>
-                        <td><a class="btn btn-primary btn-sm" role="button" href="ChartScriptShow?id=<%= chartScript.getId() %>">show</a></td>
-                        <td><a class="btn btn-primary btn-sm" role="button" href="ChartDataList?chart_script=<%= chartScript.getName() %>">chart data</a></td>
-                        <td><a class="btn btn-primary btn-sm" role="button" href="ChartScriptEditForm?id=<%= chartScript.getId() %>">edit</a></td>
-                        <td><a class="btn btn-success btn-sm" role="button" href="ChartScriptReprocess?id=<%= chartScript.getId() %>">run</a></td>
-                        <td><a class="btn btn-danger btn-sm" role="button" role="button" onclick="return confirmDelete('<%= chartScript.getName() %>')" href="ChartScriptDelete?id=<%= chartScript.getId() %>">delete</a></td>
-                    </tr>
-                <% } %>
+        <table class="table table-hover table-striped">
+	        <thead>
+	            <tr>
+	                <th>
+	                    id
+	                </th>
+	                <th colspan="6">
+	                    name
+	                </th>
+	            </tr>
+            </thead>
+            <tbody>
+	            <% 
+	                List<ResourcePOJO> list = (List<ResourcePOJO>)request.getAttribute("resources");
+	                list = (list == null)? new ArrayList<ResourcePOJO>():list;
+	                for (ResourcePOJO chartScript : list) { %>
+	                    <tr>
+	                        <td><%= chartScript.getId() %></td>
+	                        <td><%= chartScript.getName() %></td>
+	                        <td><a class="btn btn-primary btn-xs" role="button" href="ChartScriptShow?id=<%= chartScript.getId() %>">show</a></td>
+	                        <td><a class="btn btn-primary btn-xs" role="button" href="ChartDataList?chart_script=<%= chartScript.getName() %>">chart data</a></td>
+	                        <td><a class="btn btn-primary btn-xs" role="button" href="ChartScriptEditForm?id=<%= chartScript.getId() %>">edit</a></td>
+	                        <td><a class="btn btn-success btn-xs" role="button" href="ChartScriptReprocess?id=<%= chartScript.getId() %>">run</a></td>
+	                        <td><a class="btn btn-danger btn-xs" role="button" role="button" onclick="return confirmDelete('<%= chartScript.getName() %>')" href="ChartScriptDelete?id=<%= chartScript.getId() %>">delete</a></td>
+	                    </tr>
+	                <% } %>
+               </tbody>
         </table>
         <div id="tools">
-            <a class="btn btn-default btn-sm" role="button" href="ChartScriptEditForm">Add Chart Script</a>
+            <a class="btn btn-primary btn-sm" role="button" href="ChartScriptEditForm">Add Chart Script</a>
         </div>
 </c:set>
 

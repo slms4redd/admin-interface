@@ -48,71 +48,69 @@
         %>
         
         <form action="StatsDefEdit" method="POST">
-            <table class="edit">
-                <tr>
-                    <th>
-                        Name
-                    </th>
-                    <td>
-                        <% if (res == null) { %>
-                            <input type="text" id="name" name="name" value="${resource.name}">
-                        <% } else { %>
-                            ${resource.name}
-                        <% } %>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        Layers
-                    </th>
-                    <td>
-                        <select multiple="multiple" id="<%= ModelDomainNames.STATS_DEF_LAYER.getName() %>" name="<%= ModelDomainNames.STATS_DEF_LAYER.getName() %>">
-                        <%
-                        for (ResourcePOJO layer : (List<ResourcePOJO>)request.getAttribute("layerList")) { %>
-                            <option id="<%= layer.getName() %>"
-                            <%
-                            if (relatedLayers.contains(layer.getName()))
-                                out.write(" selected=\"selected\"");
-                            %>
-                            ><%= layer.getName() %></option>
-                        <% } %>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        Zonal Layer
-                    </th>
-                    <td>
-                        <select id="<%= ModelDomainNames.STATS_DEF_ZONALLAYER.getName() %>" name="<%= ModelDomainNames.STATS_DEF_ZONALLAYER.getName() %>">
-                        <%
-                        for (ResourcePOJO layer : (List<ResourcePOJO>)request.getAttribute("layerList")) { %>
-                            <option id="<%= layer.getName() %>"
-                            <%
-                            if ((layer.getName().equals(zonalLayer)))
-                                out.write(" selected=\"selected\"");
-                            %>
-                            ><%= layer.getName() %></option>
-                        <% } %>
-                        </select>
-                    </td>
-                </tr>
-                <tr style="background-color:#fff">
-                    <th>
-                        XML
-                    </th>
-                    <td>
-                        <% String data = (String)request.getAttribute("storedData"); %>
-                        <textarea id="xml" name="xml"><%= data == null ? "" : data %></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="button_row" colspan="2">
-                        <input class="btn btn-danger btn-sm" role="button" type="button" onClick="window.location='StatsDefList'" value="Cancel">
-                        <input class="btn btn-success btn-sm" role="button" type="submit">
-                    </td>
-                </tr>
+            <table class="table table-hover table-striped vertical-table table-condensed">
+            	<tbody>
+	                <tr>
+	                    <th>
+	                        Name
+	                    </th>
+	                    <td>
+	                        <% if (res == null) { %>
+	                            <input type="text" id="name" name="name" value="${resource.name}">
+	                        <% } else { %>
+	                            ${resource.name}
+	                        <% } %>
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <th>
+	                        Layers
+	                    </th>
+	                    <td>
+	                        <select multiple="multiple" id="<%= ModelDomainNames.STATS_DEF_LAYER.getName() %>" name="<%= ModelDomainNames.STATS_DEF_LAYER.getName() %>">
+	                        <%
+	                        for (ResourcePOJO layer : (List<ResourcePOJO>)request.getAttribute("layerList")) { %>
+	                            <option id="<%= layer.getName() %>"
+	                            <%
+	                            if (relatedLayers.contains(layer.getName()))
+	                                out.write(" selected=\"selected\"");
+	                            %>
+	                            ><%= layer.getName() %></option>
+	                        <% } %>
+	                        </select>
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <th>
+	                        Zonal Layer
+	                    </th>
+	                    <td>
+	                        <select id="<%= ModelDomainNames.STATS_DEF_ZONALLAYER.getName() %>" name="<%= ModelDomainNames.STATS_DEF_ZONALLAYER.getName() %>">
+	                        <%
+	                        for (ResourcePOJO layer : (List<ResourcePOJO>)request.getAttribute("layerList")) { %>
+	                            <option id="<%= layer.getName() %>"
+	                            <%
+	                            if ((layer.getName().equals(zonalLayer)))
+	                                out.write(" selected=\"selected\"");
+	                            %>
+	                            ><%= layer.getName() %></option>
+	                        <% } %>
+	                        </select>
+	                    </td>
+	                </tr>
+	                <tr style="background-color:#fff">
+	                    <th>
+	                        XML
+	                    </th>
+	                    <td>
+	                        <% String data = (String)request.getAttribute("storedData"); %>
+	                        <textarea id="xml" name="xml"><%= data == null ? "" : data %></textarea>
+	                    </td>
+	                </tr>
+                </tbody>
             </table>
+            <input class="btn btn-danger btn-sm" role="button" type="button" onClick="window.location='StatsDefList'" value="Cancel">
+            <input class="btn btn-success btn-sm" role="button" type="submit">
             <% if (request.getParameter("name") != null) { %>
                 <input type="hidden" name="id" value="${resource.id}"></input>
                 <input type="hidden" name="name" value="${resource.name}"></input>
