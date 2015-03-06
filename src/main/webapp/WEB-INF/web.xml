@@ -144,6 +144,15 @@
         </init-param>
     </servlet>
     <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>org.fao.unredd.servlet.LoginServlet</servlet-class>
+        <init-param>
+            <description>Output JSP</description>
+            <param-name>outputPage</param-name>
+            <param-value>login.jsp</param-value>
+        </init-param>
+    </servlet>
+    <servlet>
         <servlet-name>ChartScriptEdit</servlet-name>
         <servlet-class>org.fao.unredd.servlet.ChartScriptEdit</servlet-class>
     </servlet>
@@ -199,6 +208,11 @@
         <servlet-name>ChartDataList</servlet-name>
         <servlet-class>org.fao.unredd.servlet.ChartDataList</servlet-class>
     </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LayerList</servlet-name>
         <url-pattern>/LayerList</url-pattern>
@@ -304,6 +318,6 @@
         <url-pattern>/ChartDataList</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
-        <welcome-file>LayerList</welcome-file>
+    	<welcome-file>LayerList</welcome-file>
     </welcome-file-list>
 </web-app>
