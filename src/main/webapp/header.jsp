@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <%-- Determine the page name --%>
 <c:set var="fullPageName"
@@ -41,50 +42,54 @@ ISSUE2: Improve breadcrumb adding links to it
 		<c:set var="subSection" value="" />
 	</c:otherwise>
 </c:choose>
-<div id="navbar">
-	<nav class="navbar navbar-default">
-
-		<!-- Mobile menu (hidden in desktop application) -->
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse"
-				data-target=".navbar-collapse">
-				<span class="sr-only">Toggle navigation</span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span>
-			</button>
-		</div>
-
-		<div class="collapse navbar-collapse">
-			<ul class="nav navbar-nav">
-
-				<li <c:if test="${isLayer}">
-					class="active"
-				</c:if>><a
-					href="LayerList">Layers</a></li>
-
-				<li <c:if test="${isStats}">
-					class="active"
-				</c:if>><a
-					href="StatsDefList">Stats defs</a></li>
-
-				<li <c:if test="${isChart}">
-					class="active"
-				</c:if>><a
-					href="ChartScriptList">Chart scripts</a></li>
-			</ul>
-		</div>
-	</nav>
-</div>
-<div id="breadcrumb">
-	<ol class="breadcrumb">
-		<li><a href="LayerList">Home</a></li>
-		<c:if test="${fn:length(mainSection) != 0}">
-			<li><span>${mainSection}</span></li>
-		</c:if>
-		<c:if test="${fn:length(subSection) != 0}">
-			<li><span>${subSection}</span></li>
-		</c:if>
-	</ol>
-</div>
-
+<sec:authorize access="isAuthenticated()">
+	<div id="navbar">
+		<nav class="navbar navbar-default">
+	
+			<!-- Mobile menu (hidden in desktop application) -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+			</div>
+	
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+	
+					<li <c:if test="${isLayer}">
+						class="active"
+					</c:if>><a
+						href="LayerList">Layers</a></li>
+	
+					<li <c:if test="${isStats}">
+						class="active"
+					</c:if>><a
+						href="StatsDefList">Stats defs</a></li>
+	
+					<li <c:if test="${isChart}">
+						class="active"
+					</c:if>><a
+						href="ChartScriptList">Chart scripts</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="<c:url value="j_spring_security_logout" />">logout</a></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+	<div id="breadcrumb">
+		<ol class="breadcrumb">
+			<li><a href="LayerList">Home</a></li>
+			<c:if test="${fn:length(mainSection) != 0}">
+				<li><span>${mainSection}</span></li>
+			</c:if>
+			<c:if test="${fn:length(subSection) != 0}">
+				<li><span>${subSection}</span></li>
+			</c:if>
+		</ol>
+	</div>
+</sec:authorize>
 
