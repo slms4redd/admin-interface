@@ -25,129 +25,100 @@
         </script>
     	
         <h1><small>Edit layer</small> ${layer.name}</h1>
-        <form action="LayerEdit" method="POST">
-            <table class="table table-hover table-striped vertical-table table-condensed">
-	            <tbody>
-	                <tr>
-	                    <th>
-	                        Layer type
-	                    </th>
-	                    <td>
-	                        ${layer.layerType}
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th title="Absolute path where the geotiff has to be copied in, during ingestion flow">
-	                        Staging mosaic path
-	                    </th>
-	                    <td>
-	                        <input type="text" name="<%= UNREDDLayer.Attributes.MOSAICPATH.getName() %>" id="<%= UNREDDLayer.Attributes.MOSAICPATH.getName() %>" value="${layer.mosaicPath}">
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th title="Absolute path where the geotiff has to be copied in, during publish flow">
-	                        Dissemination mosaic path
-	                    </th>
-	                    <td>
-	                        <input type="text" name="<%= UNREDDLayer.Attributes.DISSMOSAICPATH.getName() %>" id="<%= UNREDDLayer.Attributes.DISSMOSAICPATH.getName() %>" value="${layer.dissMosaicPath}">
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th title="Absolute path where the orig/ data has to be moved in">
-	                        Destination original data absolute path
-	                    </th>
-	                    <td>
-	                        <input type="text" name="<%= UNREDDLayer.Attributes.ORIGDATADESTPATH.getName() %>" id="<%= UNREDDLayer.Attributes.ORIGDATADESTPATH.getName() %>" value="${layer.origDataDestPath}"></input>
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th title="Raster width in pixels">
-	                        Pixel width
-	                    </th>
-	                    <td>
-	                        <input type="text" name="<%= UNREDDLayer.Attributes.RASTERPIXELWIDTH.getName() %>" id="<%= UNREDDLayer.Attributes.RASTERPIXELWIDTH.getName() %>" value="${layer.rasterPixelWidth}"></input>
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th title="Raster height in pixels">
-	                        Pixel height
-	                    </th>
-	                    <td>
-	                        <input type="text" name="<%= UNREDDLayer.Attributes.RASTERPIXELHEIGHT.getName() %>" id="<%= UNREDDLayer.Attributes.RASTERPIXELHEIGHT.getName() %>" value="${layer.rasterPixelHeight}"></input>
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th title="Min x bound">
-	                        Min x
-	                    </th>
-	                    <td>
-	                        <input type="text" name="<%= UNREDDLayer.Attributes.RASTERX0.getName() %>" id="<%= UNREDDLayer.Attributes.RASTERX0.getName() %>" value="${layer.rasterX0}"></input>
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th title="Max x bound">
-	                        Max x
-	                    </th>
-	                    <td>
-	                        <input type="text" name="<%= UNREDDLayer.Attributes.RASTERX1.getName() %>" id="<%= UNREDDLayer.Attributes.RASTERX1.getName() %>" value="${layer.rasterX1}"></input>
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th title="Min y bound">
-	                        Min y
-	                    </th>
-	                   <td>
-	                        <input type="text" name="<%= UNREDDLayer.Attributes.RASTERY0.getName() %>" id="<%= UNREDDLayer.Attributes.RASTERY0.getName() %>" value="${layer.rasterY0}"></input>
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th title="Max y bound">
-	                        Max y
-	                    </th>
-	                    <td>
-	                        <input type="text" name="<%= UNREDDLayer.Attributes.RASTERY1.getName() %>" id="<%= UNREDDLayer.Attributes.RASTERY1.getName() %>" value="${layer.rasterY1}"></input>
-	                    </td>
-	                </tr>
-	                <%
-	                    if ("vector".equals(((LayerManager)request.getAttribute("layer")).getLayerType())) {
-	                %>
-	                    <tr>
-	                        <th title="Name of the numeric feature attribute to set in the raster">
-	                            Attribute name
-	                        </th>
-	                        <td>
-	                            <input type="text" name="<%= UNREDDLayer.Attributes.RASTERATTRIBNAME.getName() %>" id="<%= UNREDDLayer.Attributes.RASTERATTRIBNAME.getName() %>" value="${layer.rasterAttribName}"></input>
-	                        </td>
-	                    </tr>
-	                    <tr>
-	                        <th title="Optional CQL filter used to filter the features to be reported on the raster">
-	                            CQL filter
-	                        </th>
-	                        <td>
-	                            <input type="text" name="<%= UNREDDLayer.Attributes.RASTERCQLFILTER.getName() %>" id="<%= UNREDDLayer.Attributes.RASTERCQLFILTER.getName() %>" value="${layer.rasterCqlFiletr}"></input>
-	                        </td>
-	                    </tr>
-	                    <tr>
-	                        <th title="No-data value for the raster">
-	                            No-data value
-	                        </th>
-	                        <td>
-	                            <input type="text" name="<%= UNREDDLayer.Attributes.RASTERNODATA.getName() %>" id="<%= UNREDDLayer.Attributes.RASTERNODATA.getName() %>" value="${layer.rasterNoData}"></input>
-	                        </td>
-	                    </tr>
-	                <% } %>
-	                <tr style="background-color:#fff">
-	                    <th>
-	                        Data
-	                    </th>
-	                    <td>
-	                        <textarea id="xml" name="xml">${layer.data}</textarea>
-	                    </td>
-	                </tr>
-                </tbody>
-            </table>
-            <input type="button" class="btn btn-danger btn-sm" onClick="window.location='LayerList'" value="Cancel">
-            <input type="submit" class="btn btn-success btn-sm">
+        <form action="LayerEdit" method="POST" class="form-horizontal">
+            		
+       		<div class="form-group">
+       			<label class="col-sm-2 control-label" for="layerType" title="">Layer type</label>
+       			<div class="col-sm-10">
+       				<input type="text" class="form-control" name="layerType" id="layerType" placeholder="${layer.layerType}" readonly="readonly" />
+      				</div>
+       		</div>	
+            <div class="form-group">
+				<label class="col-sm-2 control-label"  for="<%= UNREDDLayer.Attributes.MOSAICPATH.getName() %>"  title="Absolute path where the geotiff has to be copied in, during ingestion flow">Staging mosaic path</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" name="<%= UNREDDLayer.Attributes.MOSAICPATH.getName() %>" id="<%= UNREDDLayer.Attributes.MOSAICPATH.getName() %>" placeholder="" value="${layer.mosaicPath}" />
+				</div>	
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label"  for="<%= UNREDDLayer.Attributes.DISSMOSAICPATH.getName() %>" title="Absolute path where the geotiff has to be copied in, during publish flow">Dissemination mosaic path</label> 
+				<div class="col-sm-10">
+					<input type="text" class="form-control" name="<%= UNREDDLayer.Attributes.DISSMOSAICPATH.getName() %>" id="<%= UNREDDLayer.Attributes.DISSMOSAICPATH.getName() %>" placeholder="" value="${layer.dissMosaicPath}" />
+				</div>	
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label"  for="<%= UNREDDLayer.Attributes.ORIGDATADESTPATH.getName() %>" title="Absolute path where the orig/ data has to be moved in">Destination original data absolute path</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" name="<%= UNREDDLayer.Attributes.ORIGDATADESTPATH.getName() %>" id="<%= UNREDDLayer.Attributes.ORIGDATADESTPATH.getName() %>" placeholder="" value="${layer.origDataDestPath}" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label"  for="<%= UNREDDLayer.Attributes.RASTERPIXELWIDTH.getName() %>" title="Raster width in pixels">Pixel width</label> 
+				<div class="col-sm-10">	
+					<input type="number" step="any" name="<%= UNREDDLayer.Attributes.RASTERPIXELWIDTH.getName() %>" class="form-control" id="<%= UNREDDLayer.Attributes.RASTERPIXELWIDTH.getName() %>" placeholder="" value="${layer.rasterPixelWidth}" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label"  for="<%= UNREDDLayer.Attributes.RASTERPIXELHEIGHT.getName() %>" title="Raster height in pixels">Pixel height</label>
+				<div class="col-sm-10">
+					<input type="number" step="any" name="<%= UNREDDLayer.Attributes.RASTERPIXELHEIGHT.getName() %>" class="form-control" id="<%= UNREDDLayer.Attributes.RASTERPIXELHEIGHT.getName() %>" placeholder="" value="${layer.rasterPixelHeight}" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label"  for="<%= UNREDDLayer.Attributes.RASTERX0.getName() %>" title="Min x bound">Min x</label> 
+				<div class="col-sm-10">
+					<input type="number" step="any" name="<%= UNREDDLayer.Attributes.RASTERX0.getName() %>" class="form-control" id="<%= UNREDDLayer.Attributes.RASTERX0.getName() %>" placeholder="" value="${layer.rasterX0}" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label"  for="<%= UNREDDLayer.Attributes.RASTERX1.getName() %>" title="Max x bound">Max x</label>
+				<div class="col-sm-10">
+					<input type="number" step="any" name="<%= UNREDDLayer.Attributes.RASTERX1.getName() %>" class="form-control" id="<%= UNREDDLayer.Attributes.RASTERX1.getName() %>" placeholder="" value="${layer.rasterX1}" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label"  for="<%= UNREDDLayer.Attributes.RASTERY0.getName() %>" title="Min y bound">Min y</label>
+				<div class="col-sm-10">
+					<input type="number" step="any" name="<%= UNREDDLayer.Attributes.RASTERY0.getName() %>" class="form-control" id="<%= UNREDDLayer.Attributes.RASTERY0.getName() %>" placeholder="" value="${layer.rasterY0}" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label"  for="<%= UNREDDLayer.Attributes.RASTERY1.getName() %>" title="Max y bound">Max y</label>
+				<div class="col-sm-10">
+					<input type="number" step="any" name="<%= UNREDDLayer.Attributes.RASTERY1.getName() %>" class="form-control" id="<%= UNREDDLayer.Attributes.RASTERY1.getName() %>" placeholder="" value="${layer.rasterY1}" />
+				</div>
+			</div>
+			<%
+                   if ("vector".equals(((LayerManager)request.getAttribute("layer")).getLayerType())) {
+               %>
+                <div class="form-group">
+					<label class="col-sm-2 control-label"  for="<%= UNREDDLayer.Attributes.RASTERATTRIBNAME.getName() %>" title="Name of the numeric feature attribute to set in the raster">Attribute name</label>
+					<div class="col-sm-10">
+						<input type="text" name="<%= UNREDDLayer.Attributes.RASTERATTRIBNAME.getName() %>" class="form-control" id="<%= UNREDDLayer.Attributes.RASTERATTRIBNAME.getName() %>" placeholder="" value="${layer.rasterAttribName}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label"  for="<%= UNREDDLayer.Attributes.RASTERCQLFILTER.getName() %>" title="Optional CQL filter used to filter the features to be reported on the raster">CQL filter</label>
+					<div class="col-sm-10">	
+						<input type="text" name="<%= UNREDDLayer.Attributes.RASTERCQLFILTER.getName() %>" class="form-control" id="<%= UNREDDLayer.Attributes.RASTERCQLFILTER.getName() %>" placeholder="" value="${layer.rasterCqlFiletr}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label"  for="xml" title="No-data value for the raster">No-data value</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="<%= UNREDDLayer.Attributes.RASTERNODATA.getName() %>" name="<%= UNREDDLayer.Attributes.RASTERNODATA.getName() %>" value="${layer.data}" />
+					</div>
+				</div>
+			<% } %>
+			<div class="form-group">
+				<label class="col-sm-2 control-label"  for="xml" title="">Data</label>
+				<div class="col-sm-10">
+					<textarea  name="xml"  class="form-control" id="xml" rows="3">${layer.data}</textarea>
+				</div>
+			</div>
+			<div class="text-center">
+	            <input type="button" class="btn btn-danger btn-sm" onClick="window.location='LayerList'" value="Cancel">
+	           	<input type="submit" class="btn btn-success btn-sm">
+           	</div>
             <input type="hidden" name="<%= UNREDDLayer.Attributes.LAYERTYPE.getName() %>" value="${layer.layerType}">
             <input type="hidden" name="id" value="<%= request.getParameter("id") %>">
         </form>

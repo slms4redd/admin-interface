@@ -54,7 +54,7 @@
 		%>
 		</tbody>
 	</table>
-	<div id="tools">
+	<div id="tools" class="text-center">
 		Add layer: <a class="btn btn-primary btn-sm" role="button" href="layer-add.jsp?type=vector">vector</a> <a
 			class="btn btn-primary btn-sm" role="button" href="layer-add.jsp?type=raster">raster</a>
 	</div>

@@ -161,7 +161,7 @@
 	            </tr>
             </tbody>
         </table>
-        <div id="tools">
+        <div id="tools" class="text-center">
             <a class="btn btn-primary btn-sm" role="button" href="LayerEditForm?id=${layer.id}">edit</a>
         </div>
 </c:set>

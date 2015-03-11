@@ -2,6 +2,7 @@ h1{
 	font-family: 'Archivo Black', sans-serif;
 	font-size: 30px;
 	color: black;
+	text-align: center;
 }
 
 #headtitle{
@@ -50,7 +51,7 @@ h1{
 	width: 100%;
 	height: auto;
 	
-	text-align: center;
+	/*text-align: center;*/
 }
 
 #footer{

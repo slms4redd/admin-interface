@@ -61,23 +61,23 @@ public class LayerEdit extends AdminGUIAbstractServlet {
         }
         ResourceDecorator unreddLayer = new ResourceDecorator(unreddLayerRes); 
         
-        unreddLayer.updateTextAttribute(ModelDomainNames.LAYER_LAYERTYPE, layerType); // raster | vector
-        unreddLayer.updateTextAttribute(ModelDomainNames.LAYER_ORIGDATADESTPATH, origDataDestPath); // relative path where the geotiff has to be copied in
-        unreddLayer.updateTextAttribute(ModelDomainNames.LAYER_MOSAICPATH, mosaicPath); // relative path where the orig/data has to be moved in
-        unreddLayer.updateTextAttribute(ModelDomainNames.LAYER_DISSMOSAICPATH, dissMosaicPath);
+        updateAttribute(unreddLayer, ModelDomainNames.LAYER_LAYERTYPE, layerType); // raster | vector
+        updateAttribute(unreddLayer, ModelDomainNames.LAYER_ORIGDATADESTPATH, origDataDestPath); // relative path where the geotiff has to be copied in
+        updateAttribute(unreddLayer, ModelDomainNames.LAYER_MOSAICPATH, mosaicPath); // relative path where the orig/data has to be moved in
+        updateAttribute(unreddLayer, ModelDomainNames.LAYER_DISSMOSAICPATH, dissMosaicPath);
 
-        unreddLayer.updateTextAttribute(ModelDomainNames.LAYER_RASTERPIXELHEIGHT, rasterPixelHeight);
-        unreddLayer.updateTextAttribute(ModelDomainNames.LAYER_RASTERPIXELWIDTH, rasterPixelWidth);
-        unreddLayer.updateTextAttribute(ModelDomainNames.LAYER_RASTERX0, rasterX0);
-        unreddLayer.updateTextAttribute(ModelDomainNames.LAYER_RASTERX1, rasterX1);
-        unreddLayer.updateTextAttribute(ModelDomainNames.LAYER_RASTERY0, rasterY0);
-        unreddLayer.updateTextAttribute(ModelDomainNames.LAYER_RASTERY1, rasterY1);
+        updateAttribute(unreddLayer, ModelDomainNames.LAYER_RASTERPIXELHEIGHT, rasterPixelHeight);
+        updateAttribute(unreddLayer, ModelDomainNames.LAYER_RASTERPIXELWIDTH, rasterPixelWidth);
+        updateAttribute(unreddLayer, ModelDomainNames.LAYER_RASTERX0, rasterX0);
+        updateAttribute(unreddLayer, ModelDomainNames.LAYER_RASTERX1, rasterX1);
+        updateAttribute(unreddLayer, ModelDomainNames.LAYER_RASTERY0, rasterY0);
+        updateAttribute(unreddLayer, ModelDomainNames.LAYER_RASTERY1, rasterY1);
         
         if ("vector".equals(layerType)) {
             // attributes for vector layers: rasterization
-            unreddLayer.updateTextAttribute(ModelDomainNames.LAYER_RASTERATTRIBNAME, rasterAttribName); // name of the numeric feature attribute to set in the raster
-            unreddLayer.updateTextAttribute(ModelDomainNames.LAYER_RASTERCQLFILTER, rasterCqlFilter); // optional CQL filter used to filter the features to be reported on the raster
-            unreddLayer.updateTextAttribute(ModelDomainNames.LAYER_RASTERNODATA, rasterNoData); // nodata value for the raster
+            updateAttribute(unreddLayer, ModelDomainNames.LAYER_RASTERATTRIBNAME, rasterAttribName); // name of the numeric feature attribute to set in the raster
+            updateAttribute(unreddLayer, ModelDomainNames.LAYER_RASTERCQLFILTER, rasterCqlFilter); // optional CQL filter used to filter the features to be reported on the raster
+            updateAttribute(unreddLayer, ModelDomainNames.LAYER_RASTERNODATA, rasterNoData); // nodata value for the raster
         }
 
         unreddLayer.setCategory(null); // Category needs to be null for updates
@@ -88,5 +88,11 @@ public class LayerEdit extends AdminGUIAbstractServlet {
         
         RequestDispatcher rd = request.getRequestDispatcher("LayerShow?id=" + id);
         rd.forward(request, response);
+    }
+    
+    private static void updateAttribute(ResourceDecorator resource, ModelDomainNames name, String value){
+        if(!resource.updateTextAttribute(name, value)){
+            resource.addTextAttribute(name, value);
+        }
     }
 }

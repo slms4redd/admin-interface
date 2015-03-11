@@ -78,7 +78,7 @@
 	            </tr>
             </tbody>
         </table>
-        <div id="tools">
+        <div id="tools" class="text-center">
             <a class="btn btn-primary btn-sm" role="button"  href="StatsDefEditForm?name=<%= res.getName() %>">edit</a>
         </div>
 </c:set>
