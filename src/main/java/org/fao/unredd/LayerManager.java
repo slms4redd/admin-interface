@@ -8,6 +8,10 @@ import it.geosolutions.unredd.services.data.utils.ResourceDecorator;
 
 import java.io.IOException;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.fao.unredd.servlet.AdminGUIAbstractServlet;
+
 
 /**
  *
@@ -36,6 +40,8 @@ public class LayerManager {
     
     protected String data;
     
+    private final static Logger LOGGER = Logger.getLogger(LayerManager.class);
+    
     /**
      * TODO What's that? Why should be useful?
      */
@@ -61,12 +67,13 @@ public class LayerManager {
         this.mosaicPath = unreddLayer.getFirstAttributeValue(ModelDomainNames.LAYER_MOSAICPATH);
         this.dissMosaicPath = unreddLayer.getFirstAttributeValue(ModelDomainNames.LAYER_DISSMOSAICPATH);
         this.origDataDestPath = unreddLayer.getFirstAttributeValue(ModelDomainNames.LAYER_ORIGDATADESTPATH);
-        this.rasterPixelWidth = (long) Double.parseDouble(unreddLayer.getFirstAttributeValue(ModelDomainNames.LAYER_RASTERPIXELWIDTH));
-        this.rasterPixelHeight = (long) Double.parseDouble(unreddLayer.getFirstAttributeValue(ModelDomainNames.LAYER_RASTERPIXELHEIGHT));
-        this.rasterX0 = Double.parseDouble(unreddLayer.getFirstAttributeValue(ModelDomainNames.LAYER_RASTERX0));
-        this.rasterX1 = Double.parseDouble(unreddLayer.getFirstAttributeValue(ModelDomainNames.LAYER_RASTERX1));
-        this.rasterY0 = Double.parseDouble(unreddLayer.getFirstAttributeValue(ModelDomainNames.LAYER_RASTERY0));
-        this.rasterY1 = Double.parseDouble(unreddLayer.getFirstAttributeValue(ModelDomainNames.LAYER_RASTERY1));
+        
+        this.rasterPixelWidth = (long) parseNumericInput(unreddLayer.getFirstAttributeValue(ModelDomainNames.LAYER_RASTERPIXELWIDTH), ModelDomainNames.LAYER_RASTERPIXELWIDTH);
+        this.rasterPixelHeight = (long) parseNumericInput(unreddLayer.getFirstAttributeValue(ModelDomainNames.LAYER_RASTERPIXELHEIGHT), ModelDomainNames.LAYER_RASTERPIXELHEIGHT);
+        this.rasterX0 = parseNumericInput(unreddLayer.getFirstAttributeValue(ModelDomainNames.LAYER_RASTERX0), ModelDomainNames.LAYER_RASTERX0);
+        this.rasterX1 = parseNumericInput(unreddLayer.getFirstAttributeValue(ModelDomainNames.LAYER_RASTERX1), ModelDomainNames.LAYER_RASTERX1);
+        this.rasterY0 = parseNumericInput(unreddLayer.getFirstAttributeValue(ModelDomainNames.LAYER_RASTERY0), ModelDomainNames.LAYER_RASTERY0);
+        this.rasterY1 = parseNumericInput(unreddLayer.getFirstAttributeValue(ModelDomainNames.LAYER_RASTERY1), ModelDomainNames.LAYER_RASTERY1);
 
         // Why retrieve it now?
         //this.data = client.getData(id, MediaType.WILDCARD_TYPE);
@@ -235,6 +242,36 @@ public class LayerManager {
         unreddLayer.setName(name);
         
         return unreddLayerRes;
+    }
+    
+    /**
+     * Parse a get parameter that represent a Number.
+     * Due to the usage of primitive types in this bean we have to return -1 and 0 values in case of bad input values...
+     * 
+     * @param input
+     */
+    private static double parseNumericInput(String input, ModelDomainNames name){
+        if (input == null){
+            LOGGER.warn("A null input parameter for the value '" +  name.toString() + "' was sent... -1 is returned...");
+            return -1;
+        }
+        if (StringUtils.isEmpty(input)){
+            LOGGER.warn("An empty input parameter for the value '" +  name.toString() + "' was sent... 0 is returned");
+            return 0;
+        }
+        double result = -1;
+        try{
+            result = Double.parseDouble(input);
+        }
+        catch (NumberFormatException nfe){
+            LOGGER.error("The value '" + input + "' is not a valid value for the paramenter " + name.toString());
+            return -1;
+        }
+        catch (Exception e){
+            LOGGER.error("A generic exception occuredd while parsing the value '" + input + "' for the paramenter " + name.toString() + " exception message is: " + e.toString());
+            return -1;
+        }
+        return result;
     }
     
 }

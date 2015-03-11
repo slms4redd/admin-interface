@@ -52,7 +52,7 @@
 	            </tr>
             </tbody>
         </table>
-        <div id="tools">
+        <div id="tools" class="text-center">
             <a class="btn btn-primary btn-sm" role="button" href="ChartScriptEditForm?id=<%= res.getId() %>">edit</a>
         </div>
 </c:set>

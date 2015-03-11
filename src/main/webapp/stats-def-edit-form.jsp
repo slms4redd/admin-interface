@@ -47,27 +47,25 @@
         }
         %>
         
-        <form action="StatsDefEdit" method="POST">
-            <table class="table table-hover table-striped vertical-table table-condensed">
-            	<tbody>
-	                <tr>
-	                    <th>
-	                        Name
-	                    </th>
-	                    <td>
+        <form action="StatsDefEdit" method="POST" class="form-horizontal">
+           <div class="form-group">
+       			<label class="col-sm-2 control-label" for="layerType" title="">
+	                        Name</label>
+       			<div class="col-sm-10">
+	       
 	                        <% if (res == null) { %>
-	                            <input type="text" id="name" name="name" value="${resource.name}">
+	                            <input type="text"  class="form-control" id="name" name="name" value="${resource.name}">
 	                        <% } else { %>
-	                            ${resource.name}
+	                            <input type="text"  class="form-control" id="name" name="name" value="${resource.name}" readonly="readonly">
 	                        <% } %>
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th>
-	                        Layers
-	                    </th>
-	                    <td>
-	                        <select multiple="multiple" id="<%= ModelDomainNames.STATS_DEF_LAYER.getName() %>" name="<%= ModelDomainNames.STATS_DEF_LAYER.getName() %>">
+	       </div>
+	       </div>
+	              		<div class="form-group">
+       			<label class="col-sm-2 control-label" for="layerType" title="">
+	                        Layers</label>
+       			<div class="col-sm-10">
+	       
+	                        <select multiple="multiple" class="form-control" id="<%= ModelDomainNames.STATS_DEF_LAYER.getName() %>" name="<%= ModelDomainNames.STATS_DEF_LAYER.getName() %>">
 	                        <%
 	                        for (ResourcePOJO layer : (List<ResourcePOJO>)request.getAttribute("layerList")) { %>
 	                            <option id="<%= layer.getName() %>"
@@ -78,14 +76,14 @@
 	                            ><%= layer.getName() %></option>
 	                        <% } %>
 	                        </select>
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th>
-	                        Zonal Layer
-	                    </th>
-	                    <td>
-	                        <select id="<%= ModelDomainNames.STATS_DEF_ZONALLAYER.getName() %>" name="<%= ModelDomainNames.STATS_DEF_ZONALLAYER.getName() %>">
+	       </div>
+	       </div>
+	                        <div class="form-group">
+       			<label class="col-sm-2 control-label" for="layerType" title="">
+	                        Zonal Layer</label>
+       			<div class="col-sm-10">
+	       
+	                        <select class="form-control" id="<%= ModelDomainNames.STATS_DEF_ZONALLAYER.getName() %>" name="<%= ModelDomainNames.STATS_DEF_ZONALLAYER.getName() %>">
 	                        <%
 	                        for (ResourcePOJO layer : (List<ResourcePOJO>)request.getAttribute("layerList")) { %>
 	                            <option id="<%= layer.getName() %>"
@@ -96,21 +94,21 @@
 	                            ><%= layer.getName() %></option>
 	                        <% } %>
 	                        </select>
-	                    </td>
-	                </tr>
-	                <tr style="background-color:#fff">
-	                    <th>
-	                        XML
-	                    </th>
-	                    <td>
+	       </div>
+	       </div>
+	       <div class="form-group">
+       			<label class="col-sm-2 control-label" for="layerType" title="">
+	                        XML</label>
+       			<div class="col-sm-10">
+	       
 	                        <% String data = (String)request.getAttribute("storedData"); %>
 	                        <textarea id="xml" name="xml"><%= data == null ? "" : data %></textarea>
-	                    </td>
-	                </tr>
-                </tbody>
-            </table>
+	       </div>
+	       </div>
+	       <div class="text-center">
             <input class="btn btn-danger btn-sm" role="button" type="button" onClick="window.location='StatsDefList'" value="Cancel">
             <input class="btn btn-success btn-sm" role="button" type="submit">
+            </div>
             <% if (request.getParameter("name") != null) { %>
                 <input type="hidden" name="id" value="${resource.id}"></input>
                 <input type="hidden" name="name" value="${resource.name}"></input>

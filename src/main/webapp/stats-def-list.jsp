@@ -38,7 +38,7 @@
                 <% } %>
             </tbody>
         </table>
-        <div id="tools">
+        <div id="tools" class="text-center">
             <a class="btn btn-primary btn-sm" role="button" href="StatsDefEditForm">Add stat def</a>
             <a class="btn btn-primary btn-sm" role="button" href="StatsDefList">Show all</a>
         </div>

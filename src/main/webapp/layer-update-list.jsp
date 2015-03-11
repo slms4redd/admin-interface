@@ -93,7 +93,11 @@
 	                </tr>
 	            <% } %>
 	            <tr>
-	                <td colspan="9" style="background-color:#fff"><a class="btn btn-primary btn-sm" role="button" href="LayerList">&lt; Layers</tr></a>
+	                <td colspan="9" style="background-color:#fff">
+	                	<div class="text-center">
+	                		<a class="btn btn-primary btn-sm" role="button" href="LayerList">&lt; Layers</a>
+                		</div>
+                	</td>
 	            </tr>
             </tbody>
         </table>
