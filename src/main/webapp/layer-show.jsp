@@ -92,7 +92,7 @@
 	                </td>
 	            </tr>
 	            <%
-	                if ("vector".equals(((LayerManager)request.getAttribute("layer")).getLayerType())) {
+	                if ("vector".equalsIgnoreCase(((LayerManager)request.getAttribute("layer")).getLayerType())) {
 	            %>
 	                <tr>
 	                    <th title="Name of the numeric feature attribute to set in the raster">
