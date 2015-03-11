@@ -19,6 +19,12 @@
 		<script src="scripts/codemirror/codemirror.js"></script>
         <link rel="stylesheet" href="scripts/codemirror/codemirror.css">
         <script src="scripts/codemirror/mode/xml/xml.js"></script>
+        <script>
+        	//Enable Bootstrap's popover feature
+        	$(function () {
+      	  		$('[data-toggle="popover"]').popover()
+      		})
+        </script>
 	</head>
 	<body>
 		<div id="wrapper">
