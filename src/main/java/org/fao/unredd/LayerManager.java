@@ -78,10 +78,10 @@ public class LayerManager {
         // Why retrieve it now?
         //this.data = client.getData(id, MediaType.WILDCARD_TYPE);
 
-        if ("vector".equals(layerType)) {
+        if ("vector".equalsIgnoreCase(layerType)) {
             this.rasterAttribName = unreddLayer.getFirstAttributeValue(ModelDomainNames.LAYER_RASTERATTRIBNAME);
             this.rasterCqlFiletr = unreddLayer.getFirstAttributeValue(ModelDomainNames.LAYER_RASTERCQLFILTER);
-            this.rasterNoData = Double.parseDouble(unreddLayer.getFirstAttributeValue(ModelDomainNames.LAYER_RASTERNODATA));
+            this.rasterNoData = parseNumericInput(unreddLayer.getFirstAttributeValue(ModelDomainNames.LAYER_RASTERNODATA), ModelDomainNames.LAYER_RASTERNODATA);
         }
     }
     

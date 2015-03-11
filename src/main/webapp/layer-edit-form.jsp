@@ -88,7 +88,7 @@
 				</div>
 			</div>
 			<%
-                   if ("vector".equals(((LayerManager)request.getAttribute("layer")).getLayerType())) {
+                   if ("vector".equalsIgnoreCase(((LayerManager)request.getAttribute("layer")).getLayerType())) {
                %>
                 <div class="form-group">
 					<label class="col-sm-2 control-label"  for="<%= UNREDDLayer.Attributes.RASTERATTRIBNAME.getName() %>" title="Name of the numeric feature attribute to set in the raster">Attribute name</label>
@@ -105,7 +105,7 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label"  for="xml" title="No-data value for the raster">No-data value</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="<%= UNREDDLayer.Attributes.RASTERNODATA.getName() %>" name="<%= UNREDDLayer.Attributes.RASTERNODATA.getName() %>" value="${layer.data}" />
+						<input type="number" class="form-control" id="<%= UNREDDLayer.Attributes.RASTERNODATA.getName() %>" name="<%= UNREDDLayer.Attributes.RASTERNODATA.getName() %>" value="${layer.data}" />
 					</div>
 				</div>
 			<% } %>

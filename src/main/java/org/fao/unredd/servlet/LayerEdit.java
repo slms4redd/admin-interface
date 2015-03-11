@@ -73,7 +73,7 @@ public class LayerEdit extends AdminGUIAbstractServlet {
         updateAttribute(unreddLayer, ModelDomainNames.LAYER_RASTERY0, rasterY0);
         updateAttribute(unreddLayer, ModelDomainNames.LAYER_RASTERY1, rasterY1);
         
-        if ("vector".equals(layerType)) {
+        if ("vector".equalsIgnoreCase(layerType)) {
             // attributes for vector layers: rasterization
             updateAttribute(unreddLayer, ModelDomainNames.LAYER_RASTERATTRIBNAME, rasterAttribName); // name of the numeric feature attribute to set in the raster
             updateAttribute(unreddLayer, ModelDomainNames.LAYER_RASTERCQLFILTER, rasterCqlFilter); // optional CQL filter used to filter the features to be reported on the raster
