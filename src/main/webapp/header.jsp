@@ -77,6 +77,11 @@ ISSUE2: Improve breadcrumb adding links to it
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="<c:url value="j_spring_security_logout" />">logout</a></li>
 				</ul>
+				<ul class="nav navbar-nav navbar-right active">
+					<li>
+						<a href="#" data-toggle="modal" data-target=".bs-example-modal-lg">Help ?</a>
+					</li>
+				</ul>
 			</div>
 		</nav>
 	</div>
@@ -91,5 +96,24 @@ ISSUE2: Improve breadcrumb adding links to it
 			</c:if>
 		</ol>
 	</div>
+	
+	<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <!-- <h4 class="modal-title" id="myModalLabel">Modal title</h4> -->
+	      </div>
+	      <div class="modal-body">
+	      	<img src="img/quick-online-manual.png" />
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
 </sec:authorize>
 
