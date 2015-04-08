@@ -20,14 +20,14 @@ http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
 	<context:annotation-config />
 
 	<bean id="geostoreRestUrl" class="java.lang.String">
-		<constructor-arg type="String"
+		<constructor-arg type="java.lang.String"
 			value="http://demo1.geo-solutions.it/stg_geostore/rest" />
 	</bean>
 	<bean id="geostoreUsername" class="java.lang.String">
-		<constructor-arg type="String" value="admin" />
+		<constructor-arg type="java.lang.String" value="admin" />
 	</bean>
 	<bean id="geostorePassword" class="java.lang.String">
-		<constructor-arg type="String" value="Unr3dd" />
+		<constructor-arg type="java.lang.String" value="Unr3dd" />
 	</bean>
 	
     <bean id="manager" class="it.geosolutions.unredd.geostore.adapter.UNREDDGeostoreManagerAdapter" />

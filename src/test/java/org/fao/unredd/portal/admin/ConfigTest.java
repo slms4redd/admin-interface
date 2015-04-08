@@ -27,7 +27,7 @@ public class ConfigTest {
         GsonBuilder gb = new GsonBuilder()
                 .disableHtmlEscaping()
                 .setPrettyPrinting()
-                .registerTypeAdapter(Config.class, new ConfigDeserializer());
+                .registerTypeAdapter(Config.class, new ConfigGroupsDeserializer.ConfigDeserializer());
 
         Gson gson = gb.create();
         Config config = gson.fromJson(json, Config.class);
