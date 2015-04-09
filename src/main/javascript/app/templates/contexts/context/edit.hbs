@@ -1,0 +1,28 @@
+<form class="form-horizontal">
+  {{text-field label='Label' val=model.label isRequired=true}}
+
+  <div class="form-group">
+    <label class="control-label col-xs-2">Active</label>
+    <div class="col-xs-10">{{input type="checkbox" checked=model.active}}</div>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label col-xs-2">Layers</label>
+    <div class="col-xs-10">
+      {{view "select" class="form-control"
+             multiple=true
+             content=allLayers
+             optionValuePath='content.id'
+             optionLabelPath='content.computedLabel'
+             selectionBinding="content.layers"}}
+    </div>
+  </div>
+
+  {{text-field label='Info file' val=model.infoFile isRequired=false}}
+  {{text-field label='Inline legend URL' val=model.inlineLegendUrl isRequired=false}}
+
+  <div class="btn-toolbar pull-right" role="toolbar">
+    <button type="button" class="btn btn-default" {{action "cancelSaving"}}>Cancel</button>
+    <button type="button" class="btn btn-primary" {{action "save"}} {{!bind-attr disabled=cannotSave}}>Save</button>
+  </div>
+</form>

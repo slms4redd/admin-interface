@@ -1,0 +1,21 @@
+<div class="page-header">
+  <h1>Contexts</h1>
+</div>
+<div class="row">
+  <div class="container col-md-4">
+   <div class="list-group">
+      {{#each c in filteredContent}}
+        {{#link-to 'contexts.context' c class='list-group-item'}}
+          {{c.label}}
+          <span class="pointer glyphicon glyphicon-chevron-right pull-right"></span>
+        {{/link-to}}
+      {{/each}}
+    </div>
+    {{!#link-to 'contexts.create' classNames='btn btn-default'}}<span class="pointer glyphicon glyphicon-plus"/>{{!/link-to}}
+  </div>
+  <div class="container col-md-8">
+    <div class="list-group">
+      {{outlet}}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<div class="page-header">
+  <h1>Languages</h1>
+</div>
+<table id="language-list" class="table table-striped">
+  <thead>
+    <tr>
+      <th>Selected</th>
+      <th>Name</th>
+      <th>Native name</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each language in model}} {{!itemController='language'}}
+      <tr>
+        <td>
+          {{input type='checkbox' checked=language.isSelected}}
+        </td>
+        <td>
+          {{language.name}}
+        </td>
+        <td>
+          {{language.nativeName}}
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

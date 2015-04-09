@@ -1,0 +1,24 @@
+<dl class="dl-horizontal">
+  <dt>Label</dt>
+  <dd>{{label}}</dd>
+  <dt>Active</dt>
+  <dd>{{active}}</dd>
+  <dt>Layers</dt>
+  <dd>
+    {{#each l in layers}}
+      {{#link-to 'layer' l}}{{l.computedLabel}}{{/link-to}}<br>
+    {{/each}}
+  </dd>
+  <dt>Info file</dt>
+  <dd>{{infoFile}}</dd>
+  <dt>Inline legend URL</dt>
+  {{#if urlIsTooLong}}
+    <dd id="inline-legend-url-div"><span data-toggle="popover" data-placement="top" {{bind-attr data-content=inlineLegendUrl}}>{{truncatedInlineLegendURL}}</span></dd>
+  {{else}}
+    <dd>{{truncatedInlineLegendURL}}</dd>
+  {{/if}}
+</dl>
+<div class="btn-toolbar" role="toolbar">
+  {{#link-to 'contexts.context.edit' this classNames='btn btn-primary'}}Edit{{/link-to}}
+  <button type="button" class="btn btn-danger" {{action 'showModal' 'contexts/context/delete-confirm-dialog' model type="button"}}>Delete</button>
+</div>

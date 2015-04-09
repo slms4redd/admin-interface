@@ -1,0 +1,13 @@
+<div class="page-header">
+  <h1>Contexts tree</h1>
+</div>
+<!--div>
+	{{!#each item in content}}
+		{{!item}}<br>
+	{{!/each}}
+</div-->
+<div class="treeView">
+  {{view "group.node" contentBinding="content"}}
+</div>
+
+<button type="button" class="btn btn-default" {{action 'createGroup' type="button"}}><span class="pointer glyphicon glyphicon-plus"></span></button>

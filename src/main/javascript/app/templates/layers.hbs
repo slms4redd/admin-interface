@@ -1,0 +1,21 @@
+<div class="page-header">
+  <h1>Layers</h1>
+</div>
+<div class="row">
+  <div class="container col-md-4">
+   <div class="list-group list-group-sortable">
+      {{#each l in filteredContent}}
+        {{#link-to 'layer' l class='list-group-item' data-id=l.id}}
+          {{l.computedLabel}}
+          <span class="pointer glyphicon glyphicon-chevron-right pull-right"></span>
+        {{/link-to}}
+      {{/each}}
+    </div>
+    {{#link-to 'layers.create' classNames='btn btn-default'}}<span class="pointer glyphicon glyphicon-plus"></span>{{/link-to}}
+  </div>
+  <div class="container col-md-8">
+    <div class="list-group">
+      {{outlet}}
+    </div>
+  </div>
+</div>

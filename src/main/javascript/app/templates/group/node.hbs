@@ -1,0 +1,7 @@
+{{#each item in view.content}}
+  {{#if item.isContext}}
+    {{view "group.contextNode" contentBinding="item.context"}}
+  {{else}}
+    {{view "group.groupNode" contentBinding="item.children"}}
+  {{/if}}
+{{/each}}

@@ -4,3 +4,20 @@
 target/
 .idea/
 *.iml
+
+# compiled Ember output
+/src/main/javascript/dist
+/src/main/javascript/tmp
+
+# dependencies
+/src/main/javascript/node
+/src/main/javascript/node_modules
+/src/main/javascript/bower_components
+
+# misc
+/src/main/javascript/.sass-cache
+/src/main/javascript/connect.lock
+/src/main/javascript/coverage/*
+/src/main/javascript/libpeerconnection.log
+npm-debug.log
+testem.log

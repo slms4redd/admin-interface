@@ -1,0 +1,22 @@
+<form class="form-horizontal">
+  {{!text-field label='ID' val=model.layerId isRequired=true}}
+  {{text-field label='Label' val=model.label isRequired=false}}
+
+  {{text-field label='Base URL' val=model.baseURL isRequired=false}}
+  {{text-field label='WMS name' val=model.wmsName isRequired=true}}
+  {{text-field label='Image format' val=model.imageFormat isRequired=true}}
+
+  <div class="form-group">
+    <label class="control-label col-xs-2">Visible</label>
+    <div class="col-xs-10">{{input type="checkbox" checked=model.visible}}</div>
+  </div>
+  
+  {{text-field label='Legend' val=model.legend}}
+  {{text-field label='Source link' val=model.sourceLink}}
+  {{text-field label='Source label' val=model.sourceLabel}}
+
+  <div class="btn-toolbar pull-right" role="toolbar">
+    <button type="button" class="btn btn-default" {{action "cancelSaving"}}>Cancel</button>
+    <button type="button" class="btn btn-primary" {{action "save"}} {{bind-attr disabled=cannotSave}}>Save</button>
+  </div>
+</form>
