@@ -117,9 +117,6 @@
 			<version>3.0.1.RELEASE</version>
 		</dependency>
 		
-		<!-- Jersey for restful interface. We are matching the version Geostore 
-			client uses although there is a new one -->
-
 		<!-- Jetty, with jsp support -->
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
@@ -276,14 +273,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version> <configuration> <source>1.6</source> <target>1.6</target> 
-				</configuration> </plugin> <plugin> <groupId>org.apache.maven.plugins</groupId> 
-				<artifactId>maven-install-plugin</artifactId> <executions> <execution> <phase>install</phase> 
-				<goals> <goal>install-file</goal> </goals> <configuration> <packaging>jar</packaging> 
-				<artifactId>${project.artifactId}</artifactId> <groupId>${project.groupId}</groupId> 
-				<version>${project.version}</version> <file> ${project.build.directory}/${project.artifactId}-${project.version}.jar 
-				</file> </configuration> </execution> </executions> </plugin> -->
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
@@ -360,7 +349,6 @@
 					</connectors>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
