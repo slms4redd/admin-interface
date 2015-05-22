@@ -65,12 +65,12 @@ public class LayerAdd extends AdminGUIAbstractServlet {
         unreddLayer.addTextAttribute(ModelDomainNames.LAYER_DISSMOSAICPATH, dissMosaicPath);
         unreddLayer.addTextAttribute(ModelDomainNames.LAYER_ORIGDATADESTPATH, origDataDestPath); // relative path where the orig/data has to be moved in
 
-        unreddLayer.addTextAttribute(ModelDomainNames.LAYER_RASTERPIXELHEIGHT, rasterPixelHeight);
-        unreddLayer.addTextAttribute(ModelDomainNames.LAYER_RASTERPIXELWIDTH, rasterPixelWidth);
-        unreddLayer.addTextAttribute(ModelDomainNames.LAYER_RASTERX0, rasterX0);
-        unreddLayer.addTextAttribute(ModelDomainNames.LAYER_RASTERX1, rasterX1);
-        unreddLayer.addTextAttribute(ModelDomainNames.LAYER_RASTERY0, rasterY0);
-        unreddLayer.addTextAttribute(ModelDomainNames.LAYER_RASTERY1, rasterY1);
+        unreddLayer.addNumericAttribute(ModelDomainNames.LAYER_RASTERPIXELHEIGHT, rasterPixelHeight);
+        unreddLayer.addNumericAttribute(ModelDomainNames.LAYER_RASTERPIXELWIDTH, rasterPixelWidth);
+        unreddLayer.addNumericAttribute(ModelDomainNames.LAYER_RASTERX0, rasterX0);
+        unreddLayer.addNumericAttribute(ModelDomainNames.LAYER_RASTERX1, rasterX1);
+        unreddLayer.addNumericAttribute(ModelDomainNames.LAYER_RASTERY0, rasterY0);
+        unreddLayer.addNumericAttribute(ModelDomainNames.LAYER_RASTERY1, rasterY1);
         
         // attributes for vector layers: rasterization
         if ("vector".equals(layerType))

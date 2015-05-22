@@ -66,12 +66,12 @@ public class LayerEdit extends AdminGUIAbstractServlet {
         updateAttribute(unreddLayer, ModelDomainNames.LAYER_MOSAICPATH, mosaicPath); // relative path where the orig/data has to be moved in
         updateAttribute(unreddLayer, ModelDomainNames.LAYER_DISSMOSAICPATH, dissMosaicPath);
 
-        updateAttribute(unreddLayer, ModelDomainNames.LAYER_RASTERPIXELHEIGHT, rasterPixelHeight);
-        updateAttribute(unreddLayer, ModelDomainNames.LAYER_RASTERPIXELWIDTH, rasterPixelWidth);
-        updateAttribute(unreddLayer, ModelDomainNames.LAYER_RASTERX0, rasterX0);
-        updateAttribute(unreddLayer, ModelDomainNames.LAYER_RASTERX1, rasterX1);
-        updateAttribute(unreddLayer, ModelDomainNames.LAYER_RASTERY0, rasterY0);
-        updateAttribute(unreddLayer, ModelDomainNames.LAYER_RASTERY1, rasterY1);
+        updateAttributeNumeric(unreddLayer, ModelDomainNames.LAYER_RASTERPIXELHEIGHT, rasterPixelHeight);
+        updateAttributeNumeric(unreddLayer, ModelDomainNames.LAYER_RASTERPIXELWIDTH, rasterPixelWidth);
+        updateAttributeNumeric(unreddLayer, ModelDomainNames.LAYER_RASTERX0, rasterX0);
+        updateAttributeNumeric(unreddLayer, ModelDomainNames.LAYER_RASTERX1, rasterX1);
+        updateAttributeNumeric(unreddLayer, ModelDomainNames.LAYER_RASTERY0, rasterY0);
+        updateAttributeNumeric(unreddLayer, ModelDomainNames.LAYER_RASTERY1, rasterY1);
         
         if ("vector".equalsIgnoreCase(layerType)) {
             // attributes for vector layers: rasterization
@@ -93,6 +93,12 @@ public class LayerEdit extends AdminGUIAbstractServlet {
     private static void updateAttribute(ResourceDecorator resource, ModelDomainNames name, String value){
         if(!resource.updateTextAttribute(name, value)){
             resource.addTextAttribute(name, value);
+        }
+    }
+    
+    private static void updateAttributeNumeric(ResourceDecorator resource, ModelDomainNames name, String value){
+        if(!resource.updateNumericAttribute(name, value)){
+            resource.addNumericAttribute(name, value);
         }
     }
 }
