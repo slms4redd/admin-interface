@@ -51,7 +51,7 @@
 			<label class="col-sm-2 control-label" for="LayerName" title="">Layer
 				name</label>
 			<div class="col-sm-7">
-				<input type="text" class="form-control" name="LayerName" id="LayerName" />
+				<input type="text" required="true" class="form-control" name="LayerName" id="LayerName" />
 			</div>
 			<div class="col-sm-3">
 				<button type="button" class="btn btn-xs btn-info" data-toggle="popover" title="Layer name" data-content="NA">?</button>
@@ -61,7 +61,7 @@
 			<label class="col-sm-2 control-label" for="<%= UNREDDLayer.Attributes.MOSAICPATH.getName() %>" title="">Staging
 				mosaic path</label>
 			<div class="col-sm-7">
-				<input type="text" class="form-control"
+				<input type="text" required="true" class="form-control"
 					name="<%= UNREDDLayer.Attributes.MOSAICPATH.getName() %>"
 					id="<%= UNREDDLayer.Attributes.MOSAICPATH.getName() %>" value="">
 			</div>
@@ -73,7 +73,7 @@
 			<label class="col-sm-2 control-label" for="<%= UNREDDLayer.Attributes.DISSMOSAICPATH.getName() %>" title="">Dissemination
 				mosaic path</label>
 			<div class="col-sm-7">
-				<input type="text" class="form-control"
+				<input type="text" required="true" class="form-control"
 					name="<%= UNREDDLayer.Attributes.DISSMOSAICPATH.getName() %>"
 					id="<%= UNREDDLayer.Attributes.DISSMOSAICPATH.getName() %>"
 					value="">
@@ -99,7 +99,7 @@
 			<label class="col-sm-2 control-label" for="<%= UNREDDLayer.Attributes.RASTERPIXELWIDTH.getName() %>" title="">Pixel
 				width</label>
 			<div class="col-sm-7">
-				<input type="number" class="form-control"
+				<input type="number" required="true" class="form-control"
 					name="<%= UNREDDLayer.Attributes.RASTERPIXELWIDTH.getName() %>"
 					id="<%= UNREDDLayer.Attributes.RASTERPIXELWIDTH.getName() %>"
 					value=""></input>
@@ -112,7 +112,7 @@
 			<label class="col-sm-2 control-label" for="<%= UNREDDLayer.Attributes.RASTERPIXELHEIGHT.getName() %>" title="">Pixel
 				height</label>
 			<div class="col-sm-7">
-				<input type="number" class="form-control"
+				<input type="number" required="true" class="form-control"
 					name="<%= UNREDDLayer.Attributes.RASTERPIXELHEIGHT.getName() %>"
 					id="<%= UNREDDLayer.Attributes.RASTERPIXELHEIGHT.getName() %>"
 					value=""></input>
@@ -125,7 +125,7 @@
 			<label class="col-sm-2 control-label" for="<%= UNREDDLayer.Attributes.RASTERX0.getName() %>" title="">Min
 				x</label>
 			<div class="col-sm-7">
-				<input type="number" class="form-control"
+				<input type="number" step="any" required="true" class="form-control"
 					name="<%= UNREDDLayer.Attributes.RASTERX0.getName() %>"
 					id="<%= UNREDDLayer.Attributes.RASTERX0.getName() %>" value=""></input>
 			</div>
@@ -137,7 +137,7 @@
 			<label class="col-sm-2 control-label" for="<%= UNREDDLayer.Attributes.RASTERX1.getName() %>" title="">Max
 				x</label>
 			<div class="col-sm-7">
-				<input type="number" class="form-control"
+				<input type="number" step="any" required="true" class="form-control"
 					name="<%= UNREDDLayer.Attributes.RASTERX1.getName() %>"
 					id="<%= UNREDDLayer.Attributes.RASTERX1.getName() %>" value=""></input>
 			</div>
@@ -149,7 +149,7 @@
 			<label class="col-sm-2 control-label" for="<%= UNREDDLayer.Attributes.RASTERY0.getName() %>" title="">Min
 				y</label>
 			<div class="col-sm-7">
-				<input type="number" class="form-control"
+				<input type="number" step="any" required="true" class="form-control"
 					name="<%= UNREDDLayer.Attributes.RASTERY0.getName() %>"
 					id="<%= UNREDDLayer.Attributes.RASTERY0.getName() %>" value=""></input>
 			</div>
@@ -161,7 +161,7 @@
 			<label class="col-sm-2 control-label" for="<%= UNREDDLayer.Attributes.RASTERY1.getName() %>" title="">Max
 				y</label>
 			<div class="col-sm-7">
-				<input type="number" class="form-control"
+				<input type="number" step="any" required="true" class="form-control"
 					name="<%= UNREDDLayer.Attributes.RASTERY1.getName() %>"
 					id="<%= UNREDDLayer.Attributes.RASTERY1.getName() %>" value=""></input>
 			</div>
@@ -174,7 +174,7 @@
 				<label class="col-sm-2 control-label" for="<%= UNREDDLayer.Attributes.RASTERATTRIBNAME.getName() %>" title="">Attribute
 					name</label>
 				<div class="col-sm-7">
-					<input type="text" class="form-control"
+					<input type="text" required="true" class="form-control" 
 						name="<%= UNREDDLayer.Attributes.RASTERATTRIBNAME.getName() %>"
 						id="<%= UNREDDLayer.Attributes.RASTERATTRIBNAME.getName() %>"
 						value=""></input>
