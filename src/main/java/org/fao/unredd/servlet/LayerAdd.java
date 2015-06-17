@@ -73,7 +73,7 @@ public class LayerAdd extends AdminGUIAbstractServlet {
         unreddLayer.addNumericAttribute(ModelDomainNames.LAYER_RASTERY1, rasterY1);
         
         // attributes for vector layers: rasterization
-        if ("vector".equals(layerType))
+        if ("vector".equalsIgnoreCase(layerType))
         {
             unreddLayer.addTextAttribute(ModelDomainNames.LAYER_RASTERATTRIBNAME, rasterAttribName); // name of the numeric feature attribute to set in the raster
             unreddLayer.addTextAttribute(ModelDomainNames.LAYER_RASTERCQLFILTER, rasterCqlFilter); // optional CQL filter used to filter the features to be reported on the raster

@@ -140,7 +140,7 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label"  for="xml" title="No-data value for the raster">No-data value</label>
 					<div class="col-sm-7">
-						<input type="number" class="form-control" id="<%= UNREDDLayer.Attributes.RASTERNODATA.getName() %>" name="<%= UNREDDLayer.Attributes.RASTERNODATA.getName() %>" value="${layer.data}" />
+						<input type="number" class="form-control" id="<%= UNREDDLayer.Attributes.RASTERNODATA.getName() %>" name="<%= UNREDDLayer.Attributes.RASTERNODATA.getName() %>" value="${layer.rasterNoData}" />
 					</div>
 					<div class="col-sm-3">
 						<button type="button" class="btn btn-xs btn-info" data-toggle="popover" title="No-data value" data-content="No-data value for the raster">?</button>
