@@ -41,7 +41,7 @@ public class LayerUpdateReprocess extends AdminGUIAbstractServlet {
         Long   layerId   = Long.parseLong(request.getParameter("layerUpdateId"));
         
         ResourcePOJO unreddLayerUpdateRes = manager.getResource(layerId, false);
-        if(CategoryPOJO.LAYERUPDATE.equals(unreddLayerUpdateRes.getCategory())){
+        if(!CategoryPOJO.LAYERUPDATE.equals(unreddLayerUpdateRes.getCategory())){
             throw new IOException("The requested resource with Layer id '" + layerId + "' is not a LayerUpdate resource as expected... this should never happen...");
         }
         ResourceDecorator unreddLayerUpdate = new ResourceDecorator(unreddLayerUpdateRes);
