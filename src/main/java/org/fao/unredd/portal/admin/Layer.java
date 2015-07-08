@@ -10,20 +10,20 @@ import java.util.Map;
  * Represents a Layre portal definition
  */
 public class Layer {
-    String id;
-    String label;
-    String baseUrl;
-    String wmsName;
-    String wmsTime;
-    String imageFormat;
-    Boolean visible;
-    Boolean queryable;
-    String queryDialogType;
-    String legend;
-    String sourceLink;
-    String sourceLabel;
-    Map<String, String> wmsParameters;
-//  int rank; // Don't know yet if this is needed
+    public String id;
+    public String label;
+    public String baseUrl;
+    public String wmsName;
+    public String wmsTime;
+    public String imageFormat;
+    public Boolean visible;
+    public Boolean queryable;
+    public String queryDialogType;
+    public String legend;
+    public String sourceLink;
+    public String sourceLabel;
+    public Map<String, String> wmsParameters;
+    public int rank; // Don't know yet if this is needed
 
     @Override
     public String toString() {
@@ -41,6 +41,7 @@ public class Layer {
                 ", sourceLink='" + sourceLink + '\'' +
                 ", sourceLabel='" + sourceLabel + '\'' +
                 ", wmsParameters=" + wmsParameters +
+                ", rank=" + rank +
                 '}';
     }
 }

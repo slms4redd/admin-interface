@@ -9,12 +9,12 @@ import java.util.List;
  * Represents a portal Context definition
  */
 public class Context implements Recursive {
-    String id;
-    String label;
-    Boolean active;
-    List<Layer> layers;
-    String infoFile;
-    String inlineLegendUrl;
+    public String id;
+    public String label;
+    public Boolean active;
+    public List<Layer> layers;
+    public String infoFile;
+    public String inlineLegendUrl;
 
     @Override
     public String toString() {

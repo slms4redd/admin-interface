@@ -44,7 +44,15 @@
         <param-value>admin</param-value>
     </context-param>
     -->
-	
+
+    <servlet>
+        <servlet-name>LayersRestApi</servlet-name>
+        <servlet-class>org.fao.unredd.servlet.LayersRestApi</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ContextsRestApi</servlet-name>
+        <servlet-class>org.fao.unredd.servlet.ContextsRestApi</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>LayerList</servlet-name>
         <servlet-class>org.fao.unredd.servlet.ResourceList</servlet-class>
@@ -208,7 +216,15 @@
         <servlet-name>ChartDataList</servlet-name>
         <servlet-class>org.fao.unredd.servlet.ChartDataList</servlet-class>
     </servlet>
-    
+
+    <servlet-mapping>
+        <servlet-name>ContextsRestApi</servlet-name>
+        <url-pattern>/api/contexts/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LayersRestApi</servlet-name>
+        <url-pattern>/api/layers/*</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>

@@ -11,9 +11,9 @@ import java.util.List;
  */
 
 public class ContextGroup implements Recursive {
-    String label;
-    String infoFile;
-    List<Recursive> items = new ArrayList<>(); // can be a ContextGroup or a Context
+    public String label;
+    public String infoFile;
+    public List<Recursive> items = new ArrayList<>(); // can be a ContextGroup or a Context
 
     @Override
     public String toString() {

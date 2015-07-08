@@ -1,8 +1,10 @@
-package org.fao.unredd.portal.admin;
+package org.fao.unredd.portal.admin.serializers;
 
 import com.google.gson.*;
+import org.fao.unredd.portal.admin.*;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * Created by sgiaccio on 24/02/15.
@@ -13,7 +15,7 @@ public class ConfigSerializer implements JsonSerializer<Config> {
         JsonObject root = new JsonObject();
 
         // Serialize the layers
-        root.add("layers", jsonSerializationContext.serialize(config.layers));
+        root.add("layers", jsonSerializationContext.serialize(config.getLayers()));
 
         // Serialize the context
         JsonArray jContexts = new JsonArray();
@@ -46,7 +48,6 @@ public class ConfigSerializer implements JsonSerializer<Config> {
 
         return root;
     }
-
 
     private static class ContextGroupSerializer {
         /**

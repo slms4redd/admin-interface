@@ -1,8 +1,9 @@
-package org.fao.unredd.portal.admin;
+package org.fao.unredd.portal.admin.serializers;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import org.apache.log4j.Logger;
+import org.fao.unredd.portal.admin.*;
 import org.fao.unredd.servlet.AdminGUIAbstractServlet;
 
 import java.lang.reflect.Type;
@@ -28,15 +29,20 @@ public class ConfigGroupsDeserializer implements JsonDeserializer<Config> {
 
         // map the Layer class via GSON_BIND
         Type listType = new TypeToken<ArrayList<Layer>>(){}.getType();
-        config.layers = gson.fromJson(layersJson, listType);
+        List<Layer> layers = gson.fromJson(layersJson, listType);
+        int rank = 1;
+        for (Layer layer : layers) {
+            layer.rank = rank++;
+            config.layers.put(layer.id, layer);
+        }
 
         // Fill map with layer as key and layer as value
-        Map<String, Layer> layersMap = new HashMap<>();
-        for (Layer l : config.layers) layersMap.put(l.id, l);
+//        Map<String, Layer> layersMap = new HashMap<>();
+//        for (Layer l : config.layers) layersMap.put(l.id, l);
 
         // Deserialize the contexts
         JsonArray contextsJson = json.getAsJsonObject().getAsJsonArray("contexts");
-        List<Context> contexts = new ArrayList<>();
+//        List<Context> contexts = new ArrayList<>();
         for (JsonElement je : contextsJson) {
             Context c = new Context();
 
@@ -50,28 +56,26 @@ public class ConfigGroupsDeserializer implements JsonDeserializer<Config> {
             if (jo.getAsJsonArray("layers") != null) {
                 for (JsonElement element : jo.getAsJsonArray("layers")) {
                     String layerId = element.getAsString();
-                    c.layers.add(layersMap.get(layerId));
+                    c.layers.add(config.layers.get(layerId));
                 }
             }
 
             c.infoFile = getValue(jo, "infoFile");
             c.inlineLegendUrl = getValue(jo, "inlineLegendUrl");
 
-            contexts.add(c);
+            config.contexts.put(c.id, c);
         }
 
-        config.contexts = contexts;
-
         // Fill map with layer as key and layer as value
-        Map<String, Context> contextsMap = new HashMap<>();
-        for (Context c : contexts) contextsMap.put(c.id, c);
+//        Map<String, Context> contextsMap = new HashMap<>();
+//        for (Context c : config.contexts) contextsMap.put(c.id, c);
 
         // Deserialize the context groups
         JsonElement contextGroups = json.getAsJsonObject().getAsJsonObject("contextGroups");
         // Attach the contextGroup to a dummy group to make the recursive method deserializeContextGroups work
         JsonObject dummyGroup = new JsonObject();
         dummyGroup.add("group", contextGroups);
-        config.contextGroups = (ContextGroup)deserializeContextGroups(dummyGroup, contextsMap);
+        config.contextGroups = (ContextGroup)deserializeContextGroups(dummyGroup, config.contexts);
 
         return config;
     }
@@ -137,15 +141,20 @@ public class ConfigGroupsDeserializer implements JsonDeserializer<Config> {
 
             // map the Layer class via GSON_BIND
             Type listType = new TypeToken<ArrayList<Layer>>(){}.getType();
-            config.layers = gson.fromJson(layersJson, listType);
+            List<Layer> layers = gson.fromJson(layersJson, listType);
+            int rank = 1;
+            for (Layer layer : layers) {
+                layer.rank = rank++;
+                config.layers.put(layer.id, layer);
+            }
 
             // Fill map with layer as key and layer as value
-            Map<String, Layer> layersMap = new HashMap<>();
-            for (Layer l : config.layers) layersMap.put(l.id, l);
+//            Map<String, Layer> layersMap = new HashMap<>();
+//            for (Layer l : config.layers) layersMap.put(l.id, l);
 
             // Deserialize the contexts
             JsonArray contextsJson = json.getAsJsonObject().getAsJsonArray("contexts");
-            List<Context> contexts = new ArrayList<>();
+//            List<Context> contexts = new ArrayList<>();
             for (JsonElement je : contextsJson) {
                 Context c = new Context();
 
@@ -159,28 +168,26 @@ public class ConfigGroupsDeserializer implements JsonDeserializer<Config> {
                 if (jo.getAsJsonArray("layers") != null) {
                     for (JsonElement element : jo.getAsJsonArray("layers")) {
                         String layerId = element.getAsString();
-                        c.layers.add(layersMap.get(layerId));
+                        c.layers.add(config.layers.get(layerId));
                     }
                 }
 
                 c.infoFile = getValue(jo, "infoFile");
                 c.inlineLegendUrl = getValue(jo, "inlineLegendUrl");
 
-                contexts.add(c);
+                config.contexts.put(c.id, c);
             }
 
-            config.contexts = contexts;
-
             // Fill map with layer as key and layer as value
-            Map<String, Context> contextsMap = new HashMap<>();
-            for (Context c : contexts) contextsMap.put(c.id, c);
+//            Map<String, Context> contextsMap = new HashMap<>();
+//            for (Context c : config.contexts) contextsMap.put(c.id, c);
 
             // Deserialize the context groups
             JsonElement contextGroups = json.getAsJsonObject().getAsJsonObject("contextGroups");
             // Attach the contextGroup to a dummy group to make the recursive method deserializeContextGroups work
             JsonObject dummyGroup = new JsonObject();
             dummyGroup.add("group", contextGroups);
-            config.contextGroups = (ContextGroup)deserializeContextGroups(dummyGroup, contextsMap);
+            config.contextGroups = (ContextGroup)deserializeContextGroups(dummyGroup, config.contexts);
 
             return config;
         }

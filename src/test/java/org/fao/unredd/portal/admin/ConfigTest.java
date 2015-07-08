@@ -7,6 +7,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import org.apache.commons.io.IOUtils;
+import org.fao.unredd.portal.admin.serializers.ConfigGroupsDeserializer;
+import org.fao.unredd.portal.admin.serializers.ConfigSerializer;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -35,7 +37,6 @@ public class ConfigTest {
         // Serialize
         gson = gb.registerTypeAdapter(Config.class, new ConfigSerializer()).create();
         String result = gson.toJson(config);
-
 
         JsonParser parser = new JsonParser();
         JsonElement o1 = parser.parse(json);
