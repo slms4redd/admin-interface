@@ -21,7 +21,7 @@ http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
 
 	<bean id="geostoreRestUrl" class="java.lang.String">
 		<constructor-arg type="java.lang.String"
-			value="http://demo1.geo-solutions.it/stg_geostore/rest" />
+			value="http://178.33.8.121/stg_geostore/rest" />
 	</bean>
 	<bean id="geostoreUsername" class="java.lang.String">
 		<constructor-arg type="java.lang.String" value="admin" />
@@ -50,5 +50,12 @@ http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
 	<bean id="configure" class="org.fao.unredd.Configure">
 		<property name="geobatchFlowSaveDir" value="/var/stg_geobatch/input" />
 	</bean>
+
+	<bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+ 
+         <!-- setting maximum upload size -->
+        <property name="maxUploadSize" value="2000000000" />
+    </bean>
 
 </beans>
