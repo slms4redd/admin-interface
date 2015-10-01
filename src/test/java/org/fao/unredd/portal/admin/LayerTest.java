@@ -26,7 +26,10 @@ public class LayerTest {
     @Ignore
     @Test
     public void testParse() throws IOException {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
         Layer layer = gson.fromJson(json, Layer.class);
 
         String result = gson.toJson(layer);

@@ -18,7 +18,7 @@ public class Config {
 
     public Config() {
         layers = new LinkedHashMap(); // order matters
-        contexts = new HashMap();
+        contexts = new LinkedHashMap(); // order doesn't matter here, but necessary to pass the tests - better tests are required
     }
 
     @Override
