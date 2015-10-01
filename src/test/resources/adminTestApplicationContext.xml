@@ -27,7 +27,7 @@ default-autowire="autodetect">
     	<constructor-arg type="String" value="admin"/>
     </bean>
     <bean id="geostorePassword" class="java.lang.String">
-    	<constructor-arg type="String" value="admin"/>
+    	<constructor-arg type="String" value="Unr3dd"/>
     </bean>
 
 	<bean id="layers" class="org.fao.unredd.api.model.geostore.GeostoreLayers" />
