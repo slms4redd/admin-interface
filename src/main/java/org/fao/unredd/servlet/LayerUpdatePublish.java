@@ -72,14 +72,16 @@ public class LayerUpdatePublish extends AdminGUIAbstractServlet {
         boolean publish   = "publish".equals(action);
         //boolean unpublish = "republish".equals(action); // unpublish action not yet implemented
         
-        unreddLayerUpdate.updateTextAttribute(ModelDomainNames.LAYERUPDATE_PUBLISHED, "" + (publish));
+        if(!unreddLayerUpdate.updateTextAttribute(ModelDomainNames.LAYERUPDATE_PUBLISHED, "" + (publish))){
+        	unreddLayerUpdate.addTextAttribute(ModelDomainNames.LAYERUPDATE_PUBLISHED, "" + (publish));
+        }
         
         unreddLayerUpdate.setCategory(null); // Category needs to be null for updates
         
         String xml;
         if (publish) { // only publish action is implemented in GeoBatch for now
             xml = getPublishXml(layerName, format, year, month, day);
-            Util.saveReprocessFile(getServletContext(), xml, Util.getGeostoreFlowSaveDir(getServletContext()) + File.separator + "publish");
+//            Util.saveReprocessFile(getServletContext(), xml, Util.getGeostoreFlowSaveDir(getServletContext()) + File.separator + "publish");
             manager.updateResource(layerUpdateId, unreddLayerUpdateRes);
             
             response.sendRedirect("LayerUpdateList?layer=" + layerName);
