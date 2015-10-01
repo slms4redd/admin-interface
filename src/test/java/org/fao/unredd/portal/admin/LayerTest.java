@@ -9,6 +9,7 @@ import com.google.gson.JsonParser;
 import junit.framework.TestCase;
 import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.*;
@@ -22,6 +23,7 @@ public class LayerTest {
         json = IOUtils.toString(inputStream, "UTF-8");
     }
 
+    @Ignore
     @Test
     public void testParse() throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
