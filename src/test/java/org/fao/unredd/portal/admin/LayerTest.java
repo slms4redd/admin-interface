@@ -23,7 +23,7 @@ public class LayerTest {
         json = IOUtils.toString(inputStream, "UTF-8");
     }
 
-    @Ignore
+//    @Ignore
     @Test
     public void testParse() throws IOException {
         Gson gson = new GsonBuilder()

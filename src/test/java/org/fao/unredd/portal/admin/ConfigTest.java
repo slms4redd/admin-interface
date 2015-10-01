@@ -24,7 +24,7 @@ public class ConfigTest {
         json = IOUtils.toString(inputStream, "UTF-8");
     }
 
-    @Ignore
+//    @Ignore
     @Test
     public void testSerializeDeserialize() {
         // Deserialize
