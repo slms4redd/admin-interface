@@ -21,7 +21,7 @@ http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
 
 	<bean id="geostoreRestUrl" class="java.lang.String">
 		<constructor-arg type="java.lang.String"
-			value="http://demo1.geo-solutions.it/stg_geostore/rest" />
+			value="http://slms4redd.org/geostore/rest" />
 	</bean>
 	<bean id="geostoreUsername" class="java.lang.String">
 		<constructor-arg type="java.lang.String" value="admin" />
