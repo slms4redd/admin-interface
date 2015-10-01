@@ -15,7 +15,9 @@
 				<input name="submit" type="submit" value="submit" />
 			</div>
 		</form>
-
+		<c:if test="${param.error == true}">
+		   <p class="bg-danger">The username or password you have entered is invalid.<p>
+		</c:if>
 
 
 </c:set>
