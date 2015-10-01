@@ -40,8 +40,7 @@ public class ContextDeserializer implements JsonDeserializer<Context> {
 
     private static String getValue(JsonElement el, String name) {
         JsonElement val = el.getAsJsonObject().get(name);
-        if (val != null)
-            return val.getAsString();
+        if (val != null) return val.getAsString();
         return null;
     }
 

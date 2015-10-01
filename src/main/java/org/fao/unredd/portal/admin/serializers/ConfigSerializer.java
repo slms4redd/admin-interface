@@ -19,7 +19,7 @@ public class ConfigSerializer implements JsonSerializer<Config> {
 
         // Serialize the context
         JsonArray jContexts = new JsonArray();
-        for (Context context : config.contexts) {
+        for (Context context : config.contexts.values()) {
             JsonObject jContext = new JsonObject();
 
             jContext.addProperty("id", context.id);
