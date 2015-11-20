@@ -220,6 +220,11 @@
         <servlet-name>Upload</servlet-name>
         <servlet-class>org.fao.unredd.servlet.UploadController</servlet-class>
     </servlet>
+	<servlet>
+        <servlet-name>UploadShape</servlet-name>
+        <servlet-class>org.fao.unredd.servlet.UploadShapeController</servlet-class>
+    </servlet>
+
 
     <servlet-mapping>
         <servlet-name>ContextsRestApi</servlet-name>
@@ -340,6 +345,10 @@
     <servlet-mapping>
         <servlet-name>Upload</servlet-name>
         <url-pattern>/Upload</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UploadShape</servlet-name>
+        <url-pattern>/UploadShape</url-pattern>
     </servlet-mapping>
     
     <welcome-file-list>

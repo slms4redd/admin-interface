@@ -26,7 +26,7 @@ import org.apache.commons.fileupload.util.Streams;
 *
 * @author Alfonsetti
 */
-public class UploadController extends AdminGUIAbstractServlet {
+public class UploadShapeController extends AdminGUIAbstractServlet {
 
 	/**
 	 * 
@@ -62,7 +62,7 @@ public class UploadController extends AdminGUIAbstractServlet {
 			throws ServletException, IOException {
 		
 		PrintWriter out = response.getWriter();
-		System.out.println("Raster Load");
+		System.out.println("Shape Load");
 		out.print("Request content length is " + request.getContentLength() + "<br/>"); 
 	    out.print("Request content type is " + request.getHeader("Content-Type") + "<br/>");
 		
