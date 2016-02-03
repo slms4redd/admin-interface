@@ -21,3 +21,4 @@ target/
 /src/main/javascript/libpeerconnection.log
 npm-debug.log
 testem.log
+/bin/

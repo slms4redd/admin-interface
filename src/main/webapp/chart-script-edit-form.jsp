@@ -1,5 +1,4 @@
-<%@page
-	import="it.geosolutions.unredd.services.data.utils.ResourceDecorator"%>
+<%@page	import="it.geosolutions.unredd.services.data.utils.ResourceDecorator"%>
 <%@page import="it.geosolutions.unredd.services.data.ModelDomainNames"%>
 <%@page import="it.geosolutions.unredd.services.data.ResourcePOJO"%>
 <%@page import="java.util.ArrayList"%>
