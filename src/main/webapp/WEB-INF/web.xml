@@ -224,8 +224,25 @@
         <servlet-name>UploadShape</servlet-name>
         <servlet-class>org.fao.unredd.servlet.UploadShapeController</servlet-class>
     </servlet>
-
-
+    <servlet>
+        <servlet-name>AreaLayerBuilder</servlet-name>
+        <servlet-class>org.fao.unredd.servlet.AreaLayerBuilder</servlet-class>
+        <init-param>
+            <description>Output JSP</description>
+            <param-name>outputPage</param-name>
+            <param-value>arealayer-builder.jsp</param-value>
+        </init-param>
+    </servlet>
+    <servlet>
+        <servlet-name>LayerMenuBuilder</servlet-name>
+        <servlet-class>org.fao.unredd.servlet.LayerMenuBuilder</servlet-class>
+        <init-param>
+            <description>Output JSP</description>
+            <param-name>outputPage</param-name>
+            <param-value>menulayer-builder.jsp</param-value>
+        </init-param>
+    </servlet>
+    
     <servlet-mapping>
         <servlet-name>ContextsRestApi</servlet-name>
         <url-pattern>/api/contexts/*</url-pattern>
@@ -349,6 +366,14 @@
     <servlet-mapping>
         <servlet-name>UploadShape</servlet-name>
         <url-pattern>/UploadShape</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AreaLayerBuilder</servlet-name>
+        <url-pattern>/AreaLayerBuilder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LayerMenuBuilder</servlet-name>
+        <url-pattern>/LayerMenuBuilder</url-pattern>
     </servlet-mapping>
     
     <welcome-file-list>
