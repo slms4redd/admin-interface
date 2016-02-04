@@ -1,0 +1,128 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"id": "http://jsonschema.net",
+	"type": "object",
+	"properties": {
+		"wmsLayers": {
+			"id": "http://jsonschema.net/wmsLayers",
+			"type": "array",
+			"format": "tabs",
+			"items": {
+				"id": "http://jsonschema.net/wmsLayers/2",
+				"type": "object",
+				"properties": {
+					"id": {
+						"id": "http://jsonschema.net/wmsLayers/2/id",
+						"type": "string"
+					},
+					"baseUrl": {
+						"id": "http://jsonschema.net/wmsLayers/2/baseUrl",
+						"type": "string"
+					},
+					"wmsName": {
+						"id": "http://jsonschema.net/wmsLayers/2/wmsName",
+						"type": "string"
+					},
+					"imageFormat": {
+						"id": "http://jsonschema.net/wmsLayers/2/imageFormat",
+						"type": "string",
+						"default": "image/png",
+						"enum": ["image/jpeg", "image/png", "image/png8"]
+					},
+					"visible": {
+						"id": "http://jsonschema.net/wmsLayers/2/visible",
+						"type": "boolean",
+						"default": "true"
+					}
+				},
+				"required": [
+					"id",
+					"baseUrl",
+					"wmsName",
+					"imageFormat"
+				]
+			},
+			"required": [
+				"2"
+			]
+		},
+		"portalLayers": {
+			"id": "http://jsonschema.net/portalLayers",
+			"type": "array",
+			"format": "tabs",
+			"items": {
+				"id": "http://jsonschema.net/portalLayers/2",
+				"type": "object",
+				"format": "grid",
+				"properties": {
+					"id": {
+						"id": "http://jsonschema.net/portalLayers/2/id",
+						"type": "string"
+					},
+					"active": {
+						"id": "http://jsonschema.net/portalLayers/2/active",
+						"type": "boolean",
+						"default": "true"
+					},
+					"label": {
+						"id": "http://jsonschema.net/portalLayers/2/label",
+						"type": "string"
+					},
+					"layers": {
+						"id": "http://jsonschema.net/portalLayers/2/layers",
+						"type": "array",
+						"format": "table",
+						"items": {
+							"id": "http://jsonschema.net/portalLayers/2/layers/0",
+							"type": "string"
+						}
+					},
+					"feedback": {
+						"id": "http://jsonschema.net/portalLayers/2/feedback",
+						"type": "boolean",
+						"default": "false"
+					}
+				}
+			}
+		},
+		"groups": {
+			"id": "http://jsonschema.net/groups",
+			"type": "array",
+			"format": "tabs",
+			"items": {
+				"id": "http://jsonschema.net/groups/1",
+				"type": "object",
+				"format": "grid",
+				"properties": {
+					"id": {
+						"id": "http://jsonschema.net/groups/1/id",
+						"type": "string"
+					},
+					"label": {
+						"id": "http://jsonschema.net/groups/1/label",
+						"type": "string"
+					},
+					"visible": {
+						"id": "http://jsonschema.net/groups/1/visible",
+						"type": "boolean",
+						"default": "true"
+					},
+					"portalLayers": {
+						"id": "http://jsonschema.net/groups/1/items",
+						"type": "array",
+						"format": "table",
+						"items": {
+							"id": "http://jsonschema.net/groups/1/items/0",
+							"type": "string"
+						}
+					}
+				}
+			}
+		}
+	},
+	"required": [
+		"wmsLayers",
+		"portalLayers",
+		"groups"
+	]
+}

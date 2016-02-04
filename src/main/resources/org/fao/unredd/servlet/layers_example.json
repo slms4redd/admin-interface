@@ -1,0 +1,121 @@
+{
+		"wmsLayers": [{
+			"id": "background",
+			"baseUrl": "http://rdc-snsf.com/diss_geoserver/wms",
+			"wmsName": "unredd:blue_marble",
+			"imageFormat": "image/jpeg",
+			"visible": true,
+			"queryable": false
+		}, {
+			"id": "treecover2000",
+			"baseUrl": "http://btn-slms.org/diss_geoserver/wms",
+			"wmsName": "unredd:hansen_treecover2000_btn",
+			"imageFormat": "image/png8",
+			"visible": true,
+			"queryable": false
+		}, {
+			"id": "loss2000-2014",
+			"baseUrl": "http://btn-slms.org/diss_geoserver/wms",
+			"wmsName": "unredd:hansen_loss2000-2014_btn",
+			"imageFormat": "image/png8",
+			"visible": true,
+			"queryable": false
+		}, {
+			"id": "sentinel1Bhutan",
+			"baseUrl": "http://btn-slms.org/diss_geoserver/wms",
+			"wmsName": "unredd:sentinel1Bhutan",
+			"wmsTime": "2014-10-15T00:00:00.000Z,2014-11-08T00:00:00.000Z,2014-12-26T00:00:00.000Z,2015-01-19T00:00:00.000Z,2015-02-12T00:00:00.000Z,2015-03-08T00:00:00.000Z,2015-04-01T00:00:00.000Z,2015-04-25T00:00:00.000Z,2015-05-19T00:00:00.000Z,2015-06-12T00:00:00.000Z,2015-07-06T00:00:00.000Z,2015-10-10T00:00:00.000Z",
+			"imageFormat": "image/png",
+			"visible": true,
+			"queryable": false
+		}, {
+			"id": "bhutan_vegetation_mosaic",
+			"baseUrl": "http://btn-slms.org/diss_geoserver/wms",
+			"wmsName": "unredd:bhutan_vegetation_mosaic",
+			"wmsTime": "2007-01-01T00:00:00.000Z,2008-01-01T00:00:00.000Z,2009-01-01T00:00:00.000Z,2010-01-01T00:00:00.000Z",
+			"imageFormat": "image/png",
+			"visible": true,
+			"queryable": false
+		}, {
+			"id": "vegetation_change",
+			"baseUrl": "http://btn-slms.org/diss_geoserver/wms",
+			"wmsName": "unredd:landchange_2007_2010",
+			"imageFormat": "image/png",
+			"visible": true,
+			"queryable": false
+		}, {
+			"id": "provinces_boundaries",
+			"baseUrl": "http://btn-slms.org/diss_geoserver/wms",
+			"wmsName": "unredd:btn_FAO_provinces_boundaries",
+			"imageFormat": "image/png8",
+			"visible": true,
+			"queryable": true
+		}, {
+			"id": "country_boundaries",
+			"baseUrl": "http://btn-slms.org/diss_geoserver/wms",
+			"wmsName": "unredd:BhutanCountryBoudaries",
+			"imageFormat": "image/png8",
+			"visible": true,
+			"queryable": false
+		}],
+		"portalLayers": [{
+			"id": "treecover2000",
+			"active": true,
+			"label": "treecover 2000 (Hansen)",
+			"layers": ["treecover2000"],
+			"feedback": false
+		}, {
+			"id": "loss2000-2014",
+			"active": true,
+			"label": "forest loss 2000-2014 (Hansen)",
+			"layers": ["loss2000-2014"],
+			"feedback": false
+		}, {
+			"id": "background",
+			"active": true,
+			"label": "background",
+			"layers": ["background"],
+			"feedback": false
+		}, {
+			"id": "country_boundaries",
+			"active": true,
+			"label": "country boundaries",
+			"layers": ["country_boundaries"],
+			"feedback": false
+		}, {
+			"id": "provinces_boundaries",
+			"active": true,
+			"label": "provinces boundaries",
+			"layers": ["provinces_boundaries"],
+			"feedback": false
+		}, {
+			"id": "vegetation_change",
+			"active": false,
+			"label": "vegetation change 2007-2010(SAR)",
+			"layers": ["vegetation_change"],
+			"feedback": false
+		}, {
+			"id": "bhutan_vegetation_mosaic",
+			"active": false,
+			"label": "vegetation mosaic (SAR)",
+			"layers": ["bhutan_vegetation_mosaic"],
+			"feedback": false
+		}, {
+			"id": "sentinel1Bhutan",
+			"active": false,
+			"label": "vegetation mosaic (Sentinel1)",
+			"layers": ["sentinel1Bhutan"],
+			"feedback": false
+		}],
+		"groups": [{
+			"id": "base",
+			"label": "administrative layers",
+			"visible": true,
+			"items": ["background", "country_boundaries", "provinces_boundaries"]
+		}, {
+			"id": "forest",
+			"label": "vegetation layers",
+			"visible": true,
+			"items": ["loss2000-2014", "treecover2000", "vegetation_change", "bhutan_vegetation_mosaic", "sentinel1Bhutan"]
+		}]
+}
