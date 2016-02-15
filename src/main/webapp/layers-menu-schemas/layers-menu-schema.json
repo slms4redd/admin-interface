@@ -13,14 +13,17 @@
 				"properties": {
 					"id": {
 						"id": "http://jsonschema.net/wmsLayers/2/id",
+						"description": "an unique identifier for the wmsLayer",
 						"type": "string"
 					},
 					"baseUrl": {
 						"id": "http://jsonschema.net/wmsLayers/2/baseUrl",
+						"description": "base WMS url, example: http://btn.slms.org/diss_geoserver/wms",
 						"type": "string"
 					},
 					"wmsName": {
 						"id": "http://jsonschema.net/wmsLayers/2/wmsName",
+						"description": "workspace + layer name colon separated, example: unredd:blue_marble",
 						"type": "string"
 					},
 					"imageFormat": {
@@ -33,6 +36,16 @@
 						"id": "http://jsonschema.net/wmsLayers/2/visible",
 						"type": "boolean",
 						"default": "true"
+					},
+					"queryable": {
+						"id": "http://jsonschema.net/wmsLayers/2/queryable",
+						"type": "boolean",
+						"default": "false"
+					},
+					"wmsTime": {
+						"id": "http://jsonschema.net/wmsLayers/2/wmsTime",
+						"description": "comma separated time list, example: 2007-01-01T00:00:00.000Z,2008-01-01T00:00:00.000Z",
+						"type": "string"
 					}
 				},
 				"required": [
@@ -53,10 +66,10 @@
 			"items": {
 				"id": "http://jsonschema.net/portalLayers/2",
 				"type": "object",
-				"format": "grid",
 				"properties": {
 					"id": {
 						"id": "http://jsonschema.net/portalLayers/2/id",
+						"description": "an unique identifier for the portalLayer",
 						"type": "string"
 					},
 					"active": {
@@ -66,10 +79,12 @@
 					},
 					"label": {
 						"id": "http://jsonschema.net/portalLayers/2/label",
+						"description": "the label shown in the layer menu. Add the code if localization is required.",
 						"type": "string"
 					},
 					"layers": {
 						"id": "http://jsonschema.net/portalLayers/2/layers",
+						"description": "for each layer add one of the layers id declared above",						
 						"type": "array",
 						"format": "table",
 						"items": {
@@ -92,14 +107,15 @@
 			"items": {
 				"id": "http://jsonschema.net/groups/1",
 				"type": "object",
-				"format": "grid",
 				"properties": {
 					"id": {
 						"id": "http://jsonschema.net/groups/1/id",
+						"description": "an unique identifier for the group",
 						"type": "string"
 					},
 					"label": {
 						"id": "http://jsonschema.net/groups/1/label",
+						"description": "the label shown in the layer menu. Add the code if localization is required.",
 						"type": "string"
 					},
 					"visible": {
@@ -107,8 +123,9 @@
 						"type": "boolean",
 						"default": "true"
 					},
-					"portalLayers": {
+					"items": {
 						"id": "http://jsonschema.net/groups/1/items",
+						"description": "for each item add one of the wmsLayers id declared above",						
 						"type": "array",
 						"format": "table",
 						"items": {

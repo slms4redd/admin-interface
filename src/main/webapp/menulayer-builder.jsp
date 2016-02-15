@@ -72,6 +72,13 @@
 				    schema: schema,
 				    startval: data
 		    	});
+		      // DamianoG: brutal hack to change the background to the 3 main sections...
+		      var rows = $("#editor_holder").find(".row").filter(function() {
+				   return $(this).parents('.well').length === 1 
+			  });
+			  $(rows[0]).css({'background-color':'#F2F5A9'});
+			  $(rows[1]).css({'background-color':'#ccff99'});
+			  $(rows[2]).css({'background-color':'#ffc299'});
 		      
 		      
 		      document.getElementById('submit').addEventListener('click',function() {
