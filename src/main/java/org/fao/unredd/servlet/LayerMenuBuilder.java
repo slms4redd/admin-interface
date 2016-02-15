@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.URISyntaxException;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -143,9 +144,10 @@ public class LayerMenuBuilder extends AdminGUIAbstractServlet {
         
         public PropertiesLoader() throws IOException{
             try {
-                File f = new File("layer_json_path.properties");
+                File f = new File(LayerMenuBuilder.class.getResource("layer_json_path.properties").toURI());
+                f.getAbsolutePath();
                 prop = new PropertiesConfiguration(f);
-            } catch (ConfigurationException e) {
+            } catch (ConfigurationException | URISyntaxException e) {
                 throw new IOException("Unable to load properties file");
             }
         }
@@ -156,13 +158,6 @@ public class LayerMenuBuilder extends AdminGUIAbstractServlet {
         
         public File getLayersJson() throws IOException{
             String path = (String)prop.getProperty(LAYER_JSON_PATH);
-            if(path == null || path.isEmpty()){
-                try {
-                    return new File(LayerMenuBuilder.class.getResource("layers_example.json").toURI());
-                } catch (URISyntaxException e) {
-                    throw new IOException("the layers.json path is wrong");
-                }
-            }
             File f = new File(path);
             if(f==null || !f.exists() || f.isDirectory() || !f.canWrite()){
                 throw new IOException("the layers.json path is wrong");
