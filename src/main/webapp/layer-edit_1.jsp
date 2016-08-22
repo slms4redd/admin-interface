@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="it.geosolutions.unredd.geostore.model.UNREDDLayer"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
@@ -8,7 +9,10 @@
 
             <%-- intialize bean properties --%>
             <%
-                layer.initWithId(94);
+                //layer.initWithId(94);
+            
+            	Integer tmp_id = 94;
+            	layer.toResourcePOJO().setId(tmp_id.longValue());
             %>
         </jsp:useBean>
         <h1>Edit layer</h1>

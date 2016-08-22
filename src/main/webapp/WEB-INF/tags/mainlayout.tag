@@ -34,7 +34,7 @@
 				</p>
 			</div>
 			<div id="menubar">
-				<jsp:include page="header.jsp" />
+				<jsp:include page="../../header.jsp" />
 			</div>
 			<div id="content">
 				<jsp:doBody />
