@@ -19,8 +19,8 @@
 
 	<distributionManagement>
 		<repository>
-			<id>nfms4redd</id>
-			<url>ftp://maven.nfms4redd.org/repo</url>
+			<id>slms4redd</id>
+			<url>ftp://maven.slms4redd.org/repo</url>
 			<uniqueVersion>false</uniqueVersion>
 		</repository>
 	</distributionManagement>
@@ -186,9 +186,9 @@
 
 	<repositories>
 		<repository>
-			<id>nfms4redd</id>
-			<name>nfms4redd maven repository</name>
-			<url>http://maven.nfms4redd.org/</url>
+			<id>slms4redd</id>
+			<name>slms4redd maven repository</name>
+			<url>http://maven.slms4redd.org/</url>
 		</repository>
 
 		<repository>
