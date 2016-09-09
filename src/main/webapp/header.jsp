@@ -80,8 +80,11 @@ Please follow the existing name convention when adding new pages in order to kee
 				</ul>
 				<ul class="nav navbar-nav navbar-right active">
 					<li>
-						<a href="#" data-toggle="modal" data-target=".bs-example-modal-lg">Help ?</a>
+						<a href="#" data-toggle="modal" data-target=".bs-example-modal-lg">Help?</a>
 					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="Upload">Upload File</a></li>
 				</ul>
 			</div>
 		</nav>

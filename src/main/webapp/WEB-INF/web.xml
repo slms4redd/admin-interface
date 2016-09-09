@@ -218,11 +218,31 @@
     </servlet>
     <servlet>
         <servlet-name>Upload</servlet-name>
-        <servlet-class>org.fao.unredd.servlet.UploadController</servlet-class>
+        <servlet-class>org.fao.unredd.servlet.UploadController</servlet-class>       
+        <init-param>
+            <description>UNREDD resource category</description>
+            <param-name>unreddCategory</param-name>
+            <param-value>LAYER</param-value>
+        </init-param>
+        <init-param>
+            <description>Output JSP</description>
+            <param-name>outputPage</param-name>
+            <param-value>upload-file.jsp</param-value>
+        </init-param>
     </servlet>
 	<servlet>
         <servlet-name>UploadShape</servlet-name>
         <servlet-class>org.fao.unredd.servlet.UploadShapeController</servlet-class>
+        <init-param>
+            <description>UNREDD resource category</description>
+            <param-name>unreddCategory</param-name>
+            <param-value>LAYER</param-value>
+        </init-param>
+        <init-param>
+            <description>Output JSP</description>
+            <param-name>outputPage</param-name>
+            <param-value>upload-file-multiple.jsp</param-value>
+        </init-param>
     </servlet>
     <servlet>
         <servlet-name>AreaLayerBuilder</servlet-name>
