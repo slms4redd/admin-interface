@@ -32,7 +32,7 @@ import it.geosolutions.unredd.services.data.ResourcePOJO;
 *
 * @author Alfonsetti
 */
-public class UploadController extends AdminGUIAbstractServlet {
+public class UploadRasterController extends AdminGUIAbstractServlet {
 
 	/**
 	 * 
@@ -65,8 +65,6 @@ public class UploadController extends AdminGUIAbstractServlet {
 	
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		System.out.println("Main Upload Servlet");
 		
 		try {
             String category = getServletConfig().getInitParameter("unreddCategory");

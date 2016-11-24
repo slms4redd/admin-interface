@@ -10,6 +10,14 @@
         Name1: <input type="text" name="name"><br /> <br /> 
         File2 to upload: <input type="file" name="file"><br /> 
         Name2: <input type="text" name="name"><br /> <br />
+        
+        <script>        
+        $('#form').submit(function(eventObj) {
+		    $(this).append('<input type="text" name="field_name" value="value" /> ');
+		    return true;
+		});
+        </script>
+        
         <input type="submit" value="Upload"> Press here to upload the file!
     </form>
     

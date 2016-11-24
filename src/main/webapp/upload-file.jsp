@@ -4,11 +4,12 @@
 
 
 <c:set var="bodyContent">
-	<form method="POST" action="Upload" enctype="multipart/form-data">
-        File to upload: <input type="file" name="file"><br /> 
-        Name: <input type="text" id="name" name="name"><br /> <br /> 
-        <input type="submit" value="Upload"> Press here to upload the file!
-    </form>
+	
+    
+    <div id="tools" class="text-center">
+		Upload file: <a class="btn btn-primary btn-sm" role="button" href="upload-file-multiple.jsp?type=vector">vector</a> <a
+			class="btn btn-primary btn-sm" role="button" href="upload-file-single.jsp?type=raster">raster</a>
+	</div>
 </c:set>
 
 <t:mainlayout>

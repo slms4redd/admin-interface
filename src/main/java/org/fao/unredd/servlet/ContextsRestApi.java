@@ -41,7 +41,7 @@ public class ContextsRestApi extends HttpServlet {
         // TODO: this shouldn't be here
         String json;
         try {
-            json = FileUtils.readFileToString(new File("/Users/sgiaccio/Documents/Code/admin-interface-new-new/src/test/resources/layers.json")); // TODO
+            json = FileUtils.readFileToString(new File("C:\\Users\\workstation\\git\\admin-interface\\src\\test\\resources\\layers.json")); // TODO
         } catch (IOException e) {
             throw new ServletException("Can't open layers.json file");
         }
